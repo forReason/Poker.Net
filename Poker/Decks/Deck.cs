@@ -31,9 +31,9 @@ public class Deck
     /// <returns>The Drawn Card</returns>
     public Cards.Card DrawCard()
     {
-        if (_CardCount < 0)
+        if (_CardCount <= 0)
             throw new InvalidOperationException("You can not draw more cards than the Deck has in Total! Please reshuffle!");
-        Cards.Card selectedCard = _ShuffledCards[_CardCount];
+        Cards.Card selectedCard = _ShuffledCards[_CardCount-1];
         _CardCount--;
         return selectedCard;
     }
@@ -47,7 +47,7 @@ public class Deck
     public void ShuffleCards()
     {
         Random rng = new Random();
-        int n = _ShuffledCards.Length * rng.Next(1,3);
+        int n = _ShuffledCards.Length;
         Cards.Card tempCache;
         while (n > 1)
         {

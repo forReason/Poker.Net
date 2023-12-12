@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Multithreading_Library" Version="1.4.0" />
+      <PackageReference Include="QuickStatistics.Net" Version="2.4.0" />
+    </ItemGroup>
+
 </Project>
