@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="initial commit">
-      <change afterPath="$PROJECT_DIR$/Poker.Tests/Decks/DeckTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker.Tests/Decks/SharedCardsTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Decks/Hand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Decks/SharedCards.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.Tests/Poker.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Poker.Tests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.Tests/UnitTest1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Card.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Cards/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Cards/Card.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Class1.cs" beforeDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implemented further types">
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Chips/BankTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Chips/PotTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Chips/Bank.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Chips/Pot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Chips/Pot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Poker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Poker.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,14 +21,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="c6da4633-888a-4c54-a344-ac53d7b9d436" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3d37126de17d46baad9e2258a5a93c1bc44200/36/e823b619/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2ZSb8IIjO8CWnJhmFdQIRRIjbK8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -40,26 +43,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor&quot;: &quot;Debug&quot;,
+    &quot;f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
-      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache",
-      "/home/julian/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
+      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
+      &quot;/home/julian/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
+  <component name="RunManager" selected="c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc" />
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -68,7 +74,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1702418268683</updated>
-      <workItem from="1702418270722" duration="5357000" />
+      <workItem from="1702418270722" duration="11586000" />
+      <workItem from="1702493694513" duration="8646000" />
+      <workItem from="1702504367895" duration="3490000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -78,16 +86,64 @@
       <option name="project" value="LOCAL" />
       <updated>1702420846333</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="initial implementation of Cards, Hands and Decks. Implementation of the shared table Cards">
+      <option name="closed" value="true" />
+      <created>1702424569046</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702424569046</updated>
+    </task>
+    <task id="LOCAL-00003" summary="implemented further types">
+      <option name="closed" value="true" />
+      <created>1702425932074</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702425932074</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="initial implementation of Cards, Hands and Decks. Implementation of the shared table Cards" />
+    <MESSAGE value="implemented further types" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented further types" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Chips/PotTests.cs</url>
+          <line>27</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Chips/PotTests.cs" initialLine="27" containingFunctionPresentation="Method 'RemoveValue_DecreasesTotalValue'">
+            <startOffsets>
+              <option value="731" />
+            </startOffsets>
+            <endOffsets>
+              <option value="767" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
