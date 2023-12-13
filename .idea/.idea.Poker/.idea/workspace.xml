@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Decks/DeckTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Decks/SharedCardsTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Decks/Hand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Decks/SharedCards.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Poker.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Poker.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/UnitTest1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Card.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Cards/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Cards/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Poker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Poker.csproj" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2ZSb8IIjO8CWnJhmFdQIRRIjbK8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache",
+      "/home/julian/.local/share/Symbols/src"
+    ]
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="" />
+      <created>1702418268683</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702418268683</updated>
+      <workItem from="1702418270722" duration="5357000" />
+    </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1702420846333</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1702420846333</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+  </component>
+</project>
