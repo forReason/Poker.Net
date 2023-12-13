@@ -6,6 +6,7 @@ namespace Poker.Players;
 public class Player
 {
     // TODO: Not Yet Implemented
+    
     public ulong Bank = 0;
     public string UniqueIdentifier = new Guid().ToString();
 
