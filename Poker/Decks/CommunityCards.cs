@@ -1,4 +1,3 @@
-using Multithreading_Library.DataTransfer.DeepClone;
 using Poker.Cards;
 
 namespace Poker.Decks;
@@ -6,7 +5,7 @@ namespace Poker.Decks;
 /// <summary>
 /// The SharedCards are the Middle Cards of the Table
 /// </summary>
-public class SharedCards
+public class CommunityCards
 {
     /// <summary>
     /// the 5 Slots on the Table
@@ -21,7 +20,7 @@ public class SharedCards
     /// <summary>
     /// the current Stage we are in
     /// </summary>
-    public int Stage { get; private set; }
+    public CommunityCardStage Stage { get; private set; }
 
     /// <summary>
     /// Override method for setting custom cards. When you host a Game, you should use OpenNextStage() instead.
@@ -43,7 +42,7 @@ public class SharedCards
             _Slots[i] = cards[i];
         }
 
-        Stage = cards.Length - 2;
+        Stage = (CommunityCardStage)(cards.Length - 2);
     }
     
     /// <summary>
@@ -53,19 +52,18 @@ public class SharedCards
     /// <exception cref="InvalidOperationException">if you try to reveal cards when all cards are already revealed</exception>
     public void OpenNextStage(Deck deck)
     {
-        if (Stage >= 3)
-            throw new InvalidOperationException(
-                "The shared Cards is already at stage 3 and all Cards are Revealed! You cannot reveal more Cards");
-        if (Stage == 0)
+        if (Stage >= CommunityCardStage.River)
+            throw new InvalidOperationException("All Cards are Revealed! You cannot reveal more Cards");
+        if (Stage == CommunityCardStage.PreFlop)
         {
             for (int i = 0; i < 3; i++)
             {
                 _Slots[i] = deck.DrawCard();
             }
         }
-        else if (Stage > 0)
+        else
         {
-            _Slots[2 + Stage] = new Card();
+            _Slots[2 + (int)Stage] = deck.DrawCard();
         }
         Stage++;
     }
@@ -76,7 +74,7 @@ public class SharedCards
     /// <param name="deck"></param>
     public void RevealAll(Deck deck)
     {
-        while (Stage < 3)
+        while (Stage < CommunityCardStage.River)
         {
             OpenNextStage(deck);
         }
