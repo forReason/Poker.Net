@@ -59,28 +59,11 @@ namespace Poker.Tables
         /// <summary>
         /// The stack of Chips in front of the player representing the bet
         /// </summary>
-        public ConcurrentDictionary<PokerChip, uint> Bet = new ConcurrentDictionary<PokerChip, uint>();
-
-        /// <summary>
-        /// the Currency amount of the Bet
-        /// </summary>
-        public ulong BetValue { get; set; } = 0;
+        public Pot Bet = new ();
 
         /// <summary>
         /// The stack of Chips in reserve which the Player can use to Bet
         /// </summary>
-        public ConcurrentDictionary<PokerChip, ulong> BankChips = new ConcurrentDictionary<PokerChip, ulong>();
-
-        /// <summary>
-        /// the Currency amount of the Bet
-        /// </summary>
-        public ulong BankValue { get; set; } = 0;
-
-        /// <summary>
-        /// lock for ensuring first come first serve with a Seat
-        /// </summary>
-        private readonly object _TakeSeatLock = new object();
-
-        
+        public Pot BankChips = new ();
     }
 }
