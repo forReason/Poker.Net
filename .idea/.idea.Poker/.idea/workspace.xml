@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="">
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implement blinds calculation">
       <change afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BlindStructureTests.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Poker/Blinds/AnteToBigBlindRatio.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Poker/Blinds/BlindLevel.cs" afterDir="false" />
@@ -50,6 +50,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor": "Run",
+    "c2118558-94c0-4eb4-a325-26c13fe20f19.executor": "Debug",
     "f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor": "Debug",
     "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
@@ -79,7 +80,7 @@
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
       <workItem from="1702504367895" duration="4378000" />
-      <workItem from="1702588074217" duration="10645000" />
+      <workItem from="1702588074217" duration="11089000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -121,7 +122,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702508929309</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="implement blinds calculation">
+      <option name="closed" value="true" />
+      <created>1702601734942</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702601734942</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,7 +155,8 @@
     <MESSAGE value="implemented further types" />
     <MESSAGE value="further implementations and improvements" />
     <MESSAGE value="beatification" />
-    <option name="LAST_COMMIT_MESSAGE" value="beatification" />
+    <MESSAGE value="implement blinds calculation" />
+    <option name="LAST_COMMIT_MESSAGE" value="implement blinds calculation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -169,26 +179,13 @@
           <line>163</line>
           <properties documentPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" initialLine="92" containingFunctionPresentation="Method 'CalculateBlindStructure'">
             <startOffsets>
-              <option value="6895" />
+              <option value="6897" />
             </startOffsets>
             <endOffsets>
-              <option value="6917" />
+              <option value="6919" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs</url>
-          <line>117</line>
-          <properties documentPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" initialLine="117" containingFunctionPresentation="Method 'CalculateBlindStructure'">
-            <startOffsets>
-              <option value="4911" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4959" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
