@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implemented further types">
-      <change afterPath="$PROJECT_DIR$/Poker.Tests/Chips/BankTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker.Tests/Chips/PotTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Chips/Bank.cs" afterDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BlindStructureTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Blinds/AnteToBigBlindRatio.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Blinds/BlindLevel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Chips/Pot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Chips/Pot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Poker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Poker.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Tables/TableQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/TableQueue.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,28 +43,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor&quot;: &quot;Debug&quot;,
-    &quot;f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "3401bd39-64f8-481f-8a78-92c76ae240ab.executor": "Debug",
+    "413b0c84-62fe-4ac3-8ae1-8cc9640405fa.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor": "Run",
+    "f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor": "Debug",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
-      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
-      &quot;/home/julian/.local/share/Symbols/src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache",
+      "/home/julian/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc" />
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -76,7 +78,8 @@
       <updated>1702418268683</updated>
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
-      <workItem from="1702504367895" duration="3490000" />
+      <workItem from="1702504367895" duration="4378000" />
+      <workItem from="1702588074217" duration="10645000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -102,7 +105,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702425932074</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="further implementations and improvements">
+      <option name="closed" value="true" />
+      <created>1702508761447</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702508761447</updated>
+    </task>
+    <task id="LOCAL-00005" summary="beatification">
+      <option name="closed" value="true" />
+      <created>1702508929309</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702508929309</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,7 +144,9 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="initial implementation of Cards, Hands and Decks. Implementation of the shared table Cards" />
     <MESSAGE value="implemented further types" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented further types" />
+    <MESSAGE value="further implementations and improvements" />
+    <MESSAGE value="beatification" />
+    <option name="LAST_COMMIT_MESSAGE" value="beatification" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -142,6 +163,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs</url>
+          <line>163</line>
+          <properties documentPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" initialLine="92" containingFunctionPresentation="Method 'CalculateBlindStructure'">
+            <startOffsets>
+              <option value="6895" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6917" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs</url>
+          <line>117</line>
+          <properties documentPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" initialLine="117" containingFunctionPresentation="Method 'CalculateBlindStructure'">
+            <startOffsets>
+              <option value="4911" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4959" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

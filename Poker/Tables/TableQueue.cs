@@ -94,9 +94,8 @@ namespace Poker.Tables
         {
             if (Seats[seatID].Player == null)
                 return;
-            Seats[seatID].Player.AddPlayerBank(Seats[seatID].BankValue);
+            //Seats[seatID].Player.AddPlayerBank(Seats[seatID].BankValue);
             Seats[seatID].BankChips.Clear();
-            Seats[seatID].BankValue = 0;
             SeatedPlayers.Remove(Seats[seatID].Player.UniqueIdentifier, out _);
             Seats[seatID].Player.Seat = null;
             Seats[seatID].Player = null;
