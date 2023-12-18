@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implement blinds calculation">
-      <change afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BlindStructureTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Blinds/AnteToBigBlindRatio.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Blinds/BlindLevel.cs" afterDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="update workspace">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Tables/TableQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/TableQueue.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +74,7 @@
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
       <workItem from="1702504367895" duration="4378000" />
-      <workItem from="1702588074217" duration="11089000" />
+      <workItem from="1702588074217" duration="14128000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -130,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702601734942</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="update workspace">
+      <option name="closed" value="true" />
+      <created>1702601749408</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702601749408</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,7 +158,8 @@
     <MESSAGE value="further implementations and improvements" />
     <MESSAGE value="beatification" />
     <MESSAGE value="implement blinds calculation" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement blinds calculation" />
+    <MESSAGE value="update workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="update workspace" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

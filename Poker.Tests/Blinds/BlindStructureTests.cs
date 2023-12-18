@@ -28,8 +28,8 @@ public class BlindStructureTests
         // Check the first level
         var firstLevel = blindLevels.First();
         Assert.Equal(1, firstLevel.Level);
-        Assert.Equal(40UL, firstLevel.SmallBlind); // BuyIn / BlindRatio
-        Assert.Equal(80UL, firstLevel.BigBlind);   // SmallBlind * 2
+        Assert.Equal(50UL, firstLevel.SmallBlind); // BuyIn / BlindRatio
+        Assert.Equal(100UL, firstLevel.BigBlind);   // SmallBlind * 2
         Assert.Equal(0UL, firstLevel.Ante);        // Ante is introduced in the second half
 
         // Check the introduction of ante (assuming more than 2 levels)
