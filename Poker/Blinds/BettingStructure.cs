@@ -1,36 +1,83 @@
 ﻿using Poker.Chips;
+using Poker.Tables;
 
 namespace Poker.Blinds
 {
-    public class BlindStructure
+    public class BettingStructure
     {
+        public BettingStructure(
+            TableRuleSet ruleSet, 
+            ulong buyIn, 
+            BlindToBuyInRatio buyinRatio, 
+            AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
+            bool limit = false,
+            double capBlindRatio = 0,
+            TimeSpan? levelTime = null,
+            TimeSpan? targetTotalTime = null)
+        {
+            this.RuleSet = ruleSet;
+            this.BuyIn = buyIn;
+            this.BlindRatio = buyinRatio;
+            this.Ante = ante;
+            this.Limit = false;
+            this.CapXSmallBlind = capBlindRatio;
+            if (levelTime != null)
+                this.LevelTime = levelTime.Value;
+            if (targetTotalTime != null)
+                this.TargetTotalTimeEstimate = targetTotalTime.Value;
+            CalculateBlindStructure();
+        }
+
+        public TableRuleSet RuleSet { get; set; } 
+
         /// <summary>
         /// the Time Between each Level increase
         /// </summary>
-        public TimeSpan LevelTime { get; set; } = TimeSpan.FromMinutes(20);
+        public TimeSpan LevelTime { get; private set; } = TimeSpan.FromMinutes(20);
         /// <summary>
         /// the time each round ROUGHLY takes (for simulation purposes)
         /// </summary>
         public TimeSpan TimePerRound { get; set; } = TimeSpan.FromMinutes(2.5);
+
         /// <summary>
         /// The amount of rounds equaling to one level (for simulation purposes)
         /// </summary>
-        public int RoundsPerLevel { get; set; } = 6;
+        public ulong RoundsPerLevel => (ulong)(LevelTime / TimePerRound);
+
+        /// <summary>
+        /// cap the bet of each player to this factor of the small blind.
+        /// </summary>
+        /// <remarks>
+        /// - smaller or equal 0: no cap <br/>
+        /// - the maximum amount to bet per turn is equal to CapXSmallBlind * SmallBlind
+        /// </remarks>
+        public double CapXSmallBlind { get; private set; }
+
+        /// <summary>
+        /// defines Limit poker (can only raise the same amount than BigBlind)
+        /// </summary>
+        public bool Limit { get; private set; }
+
         /// <summary>
         /// The target time which the game should hold for.
         /// </summary>
         /// <remarks>Usually, the game ends very soon when SmallBlind >= BuyIn</remarks>
-        public TimeSpan TargetTotalTimeEstimate { get; set; } = TimeSpan.FromHours(4);
+        public TimeSpan TargetTotalTimeEstimate { get; private set; } = TimeSpan.FromHours(4);
+        
         /// <summary>
-        /// the Buyin amount to play on the Table
+        /// the Buy-in amount to play on the Table
         /// </summary>
-        public ulong BuyIn { get; set; }
+        public ulong BuyIn { get; private set; }
+        
         /// <summary>
-        /// the ratio of the buyin to the minimum bet. The smaller the ratio, the longer the game will take.
+        /// the ratio of the buy-in to the minimum bet. The smaller the ratio, the longer the game will take.
         /// </summary>
         /// <remarks>1:25 seems like a reasonable starting point</remarks>
-        public BlindToBuyInRatio BlindRatio { get; set; } = BlindToBuyInRatio.OneToTwentyFive;
+        public BlindToBuyInRatio BlindRatio { get; private set; }
 
+        /// <summary>
+        /// defines the minimum chip size (defaults to 2 units under small blind. EG SB = 50, min chip size = 10
+        /// </summary>
         public int MinimumChipSize { get; set; } = -2; // 2 chip stages below small blind
 
         /// <summary>
@@ -40,10 +87,10 @@ namespace Poker.Blinds
         /// ante defines that all players must place a Bet pre-Flop (similar to the small blind)<br/>
         /// it is usually introduced after a few Rounds
         /// </remarks>
-        public AnteToBigBlindRatio Ante { get; set; } = AnteToBigBlindRatio.None;
+        public AnteToBigBlindRatio Ante { get; private set; }
 
         // all chip sizes should be divided by 100
-        public bool Micro { get; set; } = false;
+        public bool Micro { get; private set; } = false;
         private PokerChip GetClosestChip(double value)
         {
             PokerChip closestChip = PokerChip.White;
@@ -72,12 +119,26 @@ namespace Poker.Blinds
             }
             return closestChip;
         }
+
+        public List<BlindLevel> BlindStructure { get; private set; }
+
+        public BlindLevel GetApropriateBlindLevel(ulong round)
+        {
+            if (this.RuleSet == TableRuleSet.Cash)
+                return BlindStructure[0];
+            int epoch = (int) (round / this.RoundsPerLevel);
+            if (epoch >= BlindStructure.Count)
+                return BlindStructure[^1];
+            return BlindStructure[epoch];
+        }
+
         /// <summary>
         /// Calculates the blind structure for the game.
         /// </summary>
         /// <returns>A list of blind levels and their corresponding values.</returns>
-        public List<BlindLevel> CalculateBlindStructure()
+        public void CalculateBlindStructure()
         {
+
             // calculate the count of Levels
             ulong levelCount = (ulong)(TargetTotalTimeEstimate / LevelTime);
             // we need to get from start bet to the BuyIn Amount in the calculated amount of Levels
@@ -90,12 +151,22 @@ namespace Poker.Blinds
             double smallBlind = (double)GetClosestChip(smallBlindCalculated);
             if (Micro)
                 smallBlind /= 100;
-            BlindLevel[] levels = new BlindLevel[levelCount];
+            double anteRatio = 1.0d / (double)Ante;
+            if (this.RuleSet == TableRuleSet.Cash)
+            {
+                double bigBlind = smallBlind * 2;
+                double ante = bigBlind * anteRatio;
+                List<BlindLevel> level = [new BlindLevel(1, smallBlind, bigBlind, ante)];
+                this.BlindStructure = level;
+                return;
+            }
+
+            var levels = new BlindLevel[levelCount];
             double finalValue = 0;
             double epochCount = 0;
             double stepSize = 0;
             double levelsPerEpoch = 0;
-            double anteRatio = 1.0d/ (double)Ante;
+
             while (finalValue < BuyIn)
             {
                 while (finalValue < BuyIn)
@@ -117,10 +188,12 @@ namespace Poker.Blinds
                         {
                             currentValue += currentSmallBlind * 2 * anteRatio;
                         }
+
                         finalValue = currentValue;
                     }
                 }
             }
+
             // compile
             List<BlindLevel> blindStructure = new List<BlindLevel>();
             double currentBlind = 0;
@@ -135,35 +208,37 @@ namespace Poker.Blinds
                     {
                         roundAnte = roundBigBlind * anteRatio;
                     }
+
                     blindStructure.Add(
-                        new BlindLevel((int)epoch, 
-                            roundSmallBlind, 
-                            roundBigBlind , 
+                        new BlindLevel((int)epoch,
+                            roundSmallBlind,
+                            roundBigBlind,
                             roundAnte));
                 }
 
-                currentBlind = blindStructure[blindStructure.Count - 1].SmallBlind;
+                currentBlind = blindStructure[^1].SmallBlind;
             }
+
             for (double epoch = 1; epoch <= 5; epoch++)
             {
-                    double roundSmallBlind = currentBlind + smallBlind * stepSize * epoch * levelsPerEpoch;
-                    double roundBigBlind = roundSmallBlind * 2;
-                    double roundAnte = 0;
-                    if (Ante != AnteToBigBlindRatio.None)
-                    {
-                        roundAnte = roundBigBlind * anteRatio;
-                    }
-                    blindStructure.Add(
-                        new BlindLevel((int)epoch, 
-                            roundSmallBlind, 
-                            roundBigBlind , 
-                            roundAnte));
+                double roundSmallBlind = currentBlind + smallBlind * stepSize * epoch * levelsPerEpoch;
+                double roundBigBlind = roundSmallBlind * 2;
+                double roundAnte = 0;
+                if (Ante != AnteToBigBlindRatio.None)
+                {
+                    roundAnte = roundBigBlind * anteRatio;
+                }
 
-                currentBlind = blindStructure[blindStructure.Count - 1].SmallBlind;
+                blindStructure.Add(
+                    new BlindLevel((int)epoch,
+                        roundSmallBlind,
+                        roundBigBlind,
+                        roundAnte));
+
+                currentBlind = blindStructure[^1].SmallBlind;
             }
-            return blindStructure;
-            
+
+            this.BlindStructure = blindStructure;
         }
-        
     }
 }

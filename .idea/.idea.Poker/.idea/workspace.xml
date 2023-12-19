@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="update workspace">
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implement blind structure">
+      <change afterPath="$PROJECT_DIR$/Poker/Blinds/TableRuleSet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Blinds/BlindStructureTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindToBuyInRatio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BlindToBuyInRatio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Tables/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Table.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +25,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3d37126de17d46baad9e2258a5a93c1bc44200/36/e823b619/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/julian/RiderProjects/Poker/Poker.Tests/Blinds/BlindStructureTests.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -74,7 +80,7 @@
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
       <workItem from="1702504367895" duration="4378000" />
-      <workItem from="1702588074217" duration="14128000" />
+      <workItem from="1702588074217" duration="21986000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -132,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702601749408</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="implement blind structure">
+      <option name="closed" value="true" />
+      <created>1702932856993</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702932856993</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,7 +173,8 @@
     <MESSAGE value="beatification" />
     <MESSAGE value="implement blinds calculation" />
     <MESSAGE value="update workspace" />
-    <option name="LAST_COMMIT_MESSAGE" value="update workspace" />
+    <MESSAGE value="implement blind structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="implement blind structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -176,19 +191,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs</url>
-          <line>163</line>
-          <properties documentPath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" initialLine="92" containingFunctionPresentation="Method 'CalculateBlindStructure'">
-            <startOffsets>
-              <option value="6897" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6919" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
