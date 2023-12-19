@@ -7,18 +7,40 @@ public partial class Game
 {
     public Game(
         BettingStructure structure,
+        GameTimeStructure timeStructure,
         uint minimumPlayers = 2,
         uint maxPlayers = 6
     )
     {
         this.MinimumPlayerCount = minimumPlayers;
         this.BettingStructure = structure;
-        this.GameTable = new Table(seats: maxPlayers);
+        this.GameTable = new Table(seats: maxPlayers, this);
+        this.GameTimeStructure = timeStructure;
     }
 
     public ulong Round { get; set; } = 0;
 
     public Table GameTable { get; set; }
+
+    public DateTime? StartTime { get; set; }
+
+    public TimeSpan? GameLength
+    {
+        get
+        {
+            if (GameTimeStructure == GameTimeStructure.Simulated)
+            {
+                return Round * BettingStructure.TimePerRound;
+            }
+            else if (StartTime == null)
+            {
+                return null;
+            }
+            else return DateTime.UtcNow - StartTime;
+        }
+    }
+
+    public GameTimeStructure GameTimeStructure { get; set; }
     /// <summary>
     /// the amount of players when the game starts
     /// </summary>
@@ -53,9 +75,17 @@ public partial class Game
                 }
             }
             // start the rounds
+            StartTime = DateTime.UtcNow;
             while (!cancellationToken.IsCancellationRequested)
             {
-                // TODO: Go through the stages of betting
+                // check if the game has ended
+
+
+                // Pre check if a round can be started
+                if (!await CheckRoundPrecondition())
+                    continue;
+
+
             }
         }
         finally

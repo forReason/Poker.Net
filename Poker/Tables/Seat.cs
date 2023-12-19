@@ -1,6 +1,5 @@
 ﻿using Poker.Chips;
 using Poker.Players;
-using System.Collections.Concurrent;
 
 namespace Poker.Tables
 {
@@ -65,5 +64,40 @@ namespace Poker.Tables
         /// The stack of Chips in reserve which the Player can use to Bet
         /// </summary>
         public Pot BankChips = new ();
+
+        /// <summary>
+        /// defines if and when the player chose to sit out.
+        /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked fron the Table
+        /// </summary>
+        public DateTime? SitOutTime { get; set; }
+
+        /// <summary>
+        /// sits out of the table
+        /// </summary>
+        /// <remarks>
+        /// in cash games this will reserve the seat for you without significant penalties<br/>
+        /// - after a certain time treshold, You might be kicked out from the Table<br/>
+        /// - after Big Blind Passed you, you may have to Bet Big Blind whein returning
+        /// <br/><br/>
+        /// in tournement games you do not get dealt cards but you continuely have to set blinds and ante until you are eliminated from the tournament<br/>
+        /// Staying away for too long does not get you Kicked
+        /// </remarks>
+        public void SitOut()
+        {
+            if (SitOutTime != null)
+                return;
+            SitOutTime = DateTime.Now;
+            Interlocked.Decrement(ref Table.ActivePlayers);
+        }
+        /// <summary>
+        /// seats you back into the Table, actively participating in the game again
+        /// </summary>
+        public void SitIn()
+        {
+            if (SitOutTime == null)
+                return;
+            SitOutTime = null;
+            Interlocked.Increment(ref Table.ActivePlayers);
+        }
     }
 }

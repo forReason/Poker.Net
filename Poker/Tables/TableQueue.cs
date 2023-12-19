@@ -8,7 +8,7 @@ namespace Poker.Tables
         /// <summary>
         /// the Count of Seats taken
         /// </summary>
-        public int TakenSeats { get; private set; } = 0;
+        public int TakenSeats = 0;
 
         /// <summary>
         /// the count of Seats which are still Free
@@ -64,8 +64,9 @@ namespace Poker.Tables
             {
                 Seats[seatID].Player = player;
                 player.Seat = Seats[seatID];
-                TakenSeats++;
+                Interlocked.Increment(ref TakenSeats);
                 SeatedPlayers[player.UniqueIdentifier] = true;
+                Interlocked.Increment(ref ActivePlayers);
                 return true;
             }
             return false;
@@ -94,13 +95,27 @@ namespace Poker.Tables
         {
             if (Seats[seatID].Player == null)
                 return;
-            //Seats[seatID].Player.AddPlayerBank(Seats[seatID].BankValue);
-            Seats[seatID].BankChips.Clear();
-            SeatedPlayers.Remove(Seats[seatID].Player.UniqueIdentifier, out _);
-            Seats[seatID].Player.Seat = null;
-            Seats[seatID].Player = null;
-            TakenSeats--;
-            SeatPlayers();
+
+            if (TableGame.BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
+            {
+                Seats[seatID].BankChips.Clear();
+                SeatedPlayers.Remove(Seats[seatID].Player.UniqueIdentifier, out _);
+                if (Seats[seatID].SitOutTime == null)
+                    Interlocked.Decrement(ref ActivePlayers);
+                Seats[seatID].Player.Seat = null;
+                Seats[seatID].Player = null;
+                Interlocked.Decrement(ref TakenSeats);
+                SeatPlayers();
+            }
+            else if (TableGame.BettingStructure.RuleSet == Blinds.TableRuleSet.Tournament)
+            {
+                Seats[seatID].SitOut();
+            }
+            else
+            {
+                 throw new NotImplementedException(
+                     $"The behaviour on leaving a table under the ruleset {TableGame.BettingStructure.RuleSet} is not defined!");
+            }
         }
 
         private object _SeatingLock = new object();
@@ -108,6 +123,7 @@ namespace Poker.Tables
         {
             if (!Monitor.TryEnter(_SeatingLock))
                 return; // Another thread is already executing SeatPlayers
+
             try
             {
                 List<Player> reservationStack = new List<Player>();

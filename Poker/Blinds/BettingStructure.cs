@@ -13,7 +13,8 @@ namespace Poker.Blinds
             bool limit = false,
             double capBlindRatio = 0,
             TimeSpan? levelTime = null,
-            TimeSpan? targetTotalTime = null)
+            TimeSpan? targetTotalTime = null,
+            TimeSpan? registrationGracePeriod = null)
         {
             this.RuleSet = ruleSet;
             this.BuyIn = buyIn;
@@ -25,15 +26,26 @@ namespace Poker.Blinds
                 this.LevelTime = levelTime.Value;
             if (targetTotalTime != null)
                 this.TargetTotalTimeEstimate = targetTotalTime.Value;
+            if (registrationGracePeriod != null)
+                this.RegistrationGracePeriod = registrationGracePeriod.Value;
             CalculateBlindStructure();
         }
 
-        public TableRuleSet RuleSet { get; set; } 
+        /// <summary>
+        /// defines the rules under which to operate, eg Cash or tournament
+        /// </summary>
+        public TableRuleSet RuleSet { get; set; }
+
+        /// <summary>
+        /// in tournament games defines the latest buyin after Game stard
+        /// </summary>
+        public TimeSpan RegistrationGracePeriod { get; set; } = TimeSpan.FromMinutes(0);
 
         /// <summary>
         /// the Time Between each Level increase
         /// </summary>
         public TimeSpan LevelTime { get; private set; } = TimeSpan.FromMinutes(20);
+
         /// <summary>
         /// the time each round ROUGHLY takes (for simulation purposes)
         /// </summary>

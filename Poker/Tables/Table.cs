@@ -1,4 +1,3 @@
-using Poker.Blinds;
 using Poker.Chips;
 using Poker.Decks;
 
@@ -7,7 +6,8 @@ namespace Poker.Tables;
 public partial class Table
 {
     public Table(
-        uint seats
+        uint seats,
+        Games.Game? game
         )
     {
         Seats = new Seat[seats];
@@ -15,10 +15,10 @@ public partial class Table
         {
             Seats[i] = new Seat(i, this);
         }
+        this.TableGame = game;
     }
-    
-    
-    
+
+    public Games.Game? TableGame { get; set; } = null; 
 
     /// <summary>
     /// the pots in the center which the players Bet into
@@ -44,4 +44,5 @@ public partial class Table
     public Deck TableDeck = new Deck();
     public CommunityCards TableCards = new CommunityCards();
     public Seat[] Seats;
+    public int ActivePlayers = 0;
 }
