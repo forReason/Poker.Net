@@ -7,10 +7,7 @@ namespace Poker.Tables;
 public partial class Table
 {
     public Table(
-        uint seats, 
-        BettingStructure structure,
-        uint minimumPlayers = 2
-        
+        uint seats
         )
     {
         Seats = new Seat[seats];
@@ -18,29 +15,22 @@ public partial class Table
         {
             Seats[i] = new Seat(i, this);
         }
-
-        this.MinimumPlayerCount = minimumPlayers;
-        this.BettingStructure = structure;
     }
     
     
-    /// <summary>
-    /// the amount of players when the game starts
-    /// </summary>
-    public uint MinimumPlayerCount { get; private set; }
-
-    /// <summary>
-    /// The timespan to wait before the game starts when the starting conditions are met
-    /// </summary>
-    public TimeSpan StartDelay { get; set; } = TimeSpan.FromSeconds(10);
+    
 
     /// <summary>
     /// the pots in the center which the players Bet into
     /// </summary>
     public readonly List<Pot> CenterPots = new List<Pot>();
 
-    public BettingStructure BettingStructure { get; set; }
+    
 
+    /// <summary>
+    /// Calculates the total value of the center pots
+    /// </summary>
+    /// <returns></returns>
     public ulong GetTotalPotValue()
         {
             ulong value = 0;
@@ -54,6 +44,4 @@ public partial class Table
     public Deck TableDeck = new Deck();
     public CommunityCards TableCards = new CommunityCards();
     public Seat[] Seats;
-    public ulong BuyIn { get; private set; }
-
 }

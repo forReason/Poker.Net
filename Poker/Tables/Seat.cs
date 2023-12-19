@@ -39,7 +39,7 @@ namespace Poker.Tables
         /// </summary>
         /// <remarks>
         /// the SmallBlind is the Player left of the Dealer. If only 2 players are on the table, the Dealer himself is the smallBlind.
-        /// The dealir is always the Master
+        /// The dealer is always the Master
         /// </remarks>
         public bool IsSmallBlind { get; set; } = false;
 

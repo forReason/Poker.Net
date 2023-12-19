@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="implement blind structure">
-      <change afterPath="$PROJECT_DIR$/Poker/Blinds/TableRuleSet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.Tests/Blinds/BlindStructureTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BlindToBuyInRatio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BlindToBuyInRatio.cs" afterDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="updated blind structure. Implemented more accrding rules">
+      <change afterPath="$PROJECT_DIR$/Poker/Games/Game.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Tables/Seat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Seat.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Table.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +78,7 @@
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
       <workItem from="1702504367895" duration="4378000" />
-      <workItem from="1702588074217" duration="21986000" />
+      <workItem from="1702588074217" duration="24354000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -146,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702932856993</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="updated blind structure. Implemented more accrding rules">
+      <option name="closed" value="true" />
+      <created>1702946357076</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702946357076</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +180,8 @@
     <MESSAGE value="implement blinds calculation" />
     <MESSAGE value="update workspace" />
     <MESSAGE value="implement blind structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="implement blind structure" />
+    <MESSAGE value="updated blind structure. Implemented more accrding rules" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated blind structure. Implemented more accrding rules" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
