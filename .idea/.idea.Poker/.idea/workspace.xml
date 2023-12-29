@@ -4,9 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="updated blind structure. Implemented more accrding rules">
-      <change afterPath="$PROJECT_DIR$/Poker/Games/Game.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" afterDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Poker/Games/GameBettingRound.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Games/RebuyStrategy.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Tables/SitInResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Decks/HandTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Decks/HandTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Decks/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/Deck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Decks/Hand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/Hand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Games/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Games/GameEnd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/GameEnd.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Games/RoundInitialisation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/RoundInitialisation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Players/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Players/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Seat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Seat.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Table.cs" afterDir="false" />
     </list>
@@ -41,32 +53,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "3401bd39-64f8-481f-8a78-92c76ae240ab.executor": "Debug",
-    "413b0c84-62fe-4ac3-8ae1-8cc9640405fa.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor": "Run",
-    "c2118558-94c0-4eb4-a325-26c13fe20f19.executor": "Debug",
-    "f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor": "Debug",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;3401bd39-64f8-481f-8a78-92c76ae240ab.executor&quot;: &quot;Debug&quot;,
+    &quot;413b0c84-62fe-4ac3-8ae1-8cc9640405fa.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc.executor&quot;: &quot;Run&quot;,
+    &quot;c2118558-94c0-4eb4-a325-26c13fe20f19.executor&quot;: &quot;Debug&quot;,
+    &quot;f5bfdeb0-133c-4cd7-b0f9-13cd72569b83.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
-      "/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache",
-      "/home/julian/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
+      &quot;/home/julian/.config/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
+      &quot;/home/julian/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected="c075f9f8-5c11-4c90-bb8d-cdeb5f8723cc" />
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -78,7 +89,9 @@
       <workItem from="1702418270722" duration="11586000" />
       <workItem from="1702493694513" duration="8646000" />
       <workItem from="1702504367895" duration="4378000" />
-      <workItem from="1702588074217" duration="24354000" />
+      <workItem from="1702588074217" duration="25607000" />
+      <workItem from="1703004400459" duration="199000" />
+      <workItem from="1703799429965" duration="11721000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -152,7 +165,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702946357076</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="first starts of the game implementation">
+      <option name="closed" value="true" />
+      <created>1702948886577</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1702948886577</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,7 +202,8 @@
     <MESSAGE value="update workspace" />
     <MESSAGE value="implement blind structure" />
     <MESSAGE value="updated blind structure. Implemented more accrding rules" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated blind structure. Implemented more accrding rules" />
+    <MESSAGE value="first starts of the game implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="first starts of the game implementation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

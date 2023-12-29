@@ -22,7 +22,7 @@ public class Hand
     /// <summary>
     /// override method to set a new hand. When simulating a Game, you should draw apropriately
     /// </summary>
-    public void SetHand(Card card1, Card card2)
+    public void SetHand(Card? card1, Card? card2)
     {
         _Slots[0] = card1;
         _Slots[1] = card2;
@@ -33,7 +33,7 @@ public class Hand
     /// </summary>
     /// <param name="deck"></param>
     /// <exception cref="InvalidOperationException">if you try to draw more than two cards</exception>
-    public void DrawCard(Deck deck)
+    public void DealCard(Deck deck)
     {
         if (CardCount >= 2)
             throw new InvalidOperationException("You Cannot draw more than two Cards!");

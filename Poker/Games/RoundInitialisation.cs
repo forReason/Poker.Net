@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Poker.Tables;
 using System.Reflection.Metadata.Ecma335;
 
@@ -10,18 +11,19 @@ public partial class Game
     /// returns true if the game got started
     /// </summary>
     /// <returns></returns>
-    private async Task<bool> InitializeRound()
+    private async Task InitializeRound()
     {
-        // initialize dealer
-        for(int i = 0; i < GameTable.Seats.Length; i++)
+        // move buttons
+        if (this.GameTable.DealerSeat == -1)
         {
-            if (GameTable.Seats[i].IsDealer)
-            {
-
-            }
+            DetermineStartingDealer();
         }
+        this.GameTable.MoveButtons();
+        
+        // shuffle deck and deal player cards
+        this.GameTable.DealPlayerCards();
     }
-    private async Task<bool> CheckRoundPrecondition()
+    private async Task SitOutBrokePlayers()
     {
         // clean up players without cash from the table
         foreach (Seat seat in GameTable.Seats)
@@ -29,24 +31,18 @@ public partial class Game
             if (seat.BankChips.GetValue() <= 0)
             {
                 // player is out of chips
-                if (BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
-                {
-                    seat.SitOut();
-                }
-                else if(BettingStructure.RuleSet == Blinds.TableRuleSet.Tournament)
-                {
-                    GameTable.LeaveTable(seat.SeatID);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                Debug.WriteLine($"Player {seat.Player.UniqueIdentifier} is broke and sits out from seat {seat.SeatID}!");
+                seat.SitOut();
             }
         }
+    }
+    private async Task<bool> CheckRoundPrecondition()
+    {
         // make sure we have enough players to play a round
         if (GameTable.ActivePlayers < 1)
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.1));
+            if (this.GameTimeStructure == GameTimeStructure.RealTime)
+                await Task.Delay(TimeSpan.FromSeconds(2));
             return false;
         }
         return true;

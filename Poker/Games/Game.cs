@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Poker.Blinds;
 using Poker.Tables;
 
@@ -40,6 +41,14 @@ public partial class Game
         }
     }
 
+    public int GetGameLevel()
+    {
+        TimeSpan? gameLength = GameLength;
+        if (gameLength == null)
+            return 0; 
+        return BettingStructure.GetApropriateBlindLevel(gameLength.Value).Level;
+    }
+
     public GameTimeStructure GameTimeStructure { get; set; }
     /// <summary>
     /// the amount of players when the game starts
@@ -70,21 +79,34 @@ public partial class Game
                     IsGameStarted = await CheckStartGame();
                     if (IsGameStarted == true)
                     {
+                        Debug.WriteLine("The Start Condition has been met. Game is starting!");
                         break;
                     }
                 }
             }
+            
             // start the rounds
             StartTime = DateTime.UtcNow;
+            
             while (!cancellationToken.IsCancellationRequested)
             {
+                await SitOutBrokePlayers();
+                
                 // check if the game has ended
-
+                if (await CheckEndGame())
+                {
+                    Debug.WriteLine("less than 2 seats taken. the game has ended");
+                    break;
+                }
 
                 // Pre check if a round can be started
                 if (!await CheckRoundPrecondition())
                     continue;
-
+                
+                // init round
+                InitializeRound();
+                
+                // progress through stages
 
             }
         }

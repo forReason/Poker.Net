@@ -13,7 +13,7 @@ namespace Poker.Tests
         {
             var deck = new Deck();
             var hand = new Hand();
-            hand.DrawCard(deck);
+            hand.DealCard(deck);
 
             Assert.Equal(1, hand.CardCount);
         }
@@ -23,8 +23,8 @@ namespace Poker.Tests
         {
             var deck = new Deck();
             var hand = new Hand();
-            hand.DrawCard(deck);
-            hand.DrawCard(deck);
+            hand.DealCard(deck);
+            hand.DealCard(deck);
 
             Assert.Equal(2, hand.CardCount);
             Assert.NotNull(hand.Slots[0]);
@@ -36,10 +36,10 @@ namespace Poker.Tests
         {
             var deck = new Deck();
             var hand = new Hand();
-            hand.DrawCard(deck);
-            hand.DrawCard(deck);
+            hand.DealCard(deck);
+            hand.DealCard(deck);
 
-            Assert.Throws<InvalidOperationException>(() => hand.DrawCard(deck));
+            Assert.Throws<InvalidOperationException>(() => hand.DealCard(deck));
         }
 
         [Fact]
@@ -47,8 +47,8 @@ namespace Poker.Tests
         {
             var deck = new Deck();
             var hand = new Hand();
-            hand.DrawCard(deck);
-            hand.DrawCard(deck);
+            hand.DealCard(deck);
+            hand.DealCard(deck);
             hand.Clear();
 
             Assert.Equal(0, hand.CardCount);

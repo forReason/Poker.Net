@@ -1,4 +1,6 @@
 ﻿using Poker.Chips;
+using Poker.Decks;
+using Poker.Games;
 using Poker.Players;
 
 namespace Poker.Tables
@@ -24,6 +26,24 @@ namespace Poker.Tables
         public volatile Player? Player = null;
 
         /// <summary>
+        /// checks wether a seat is still active or not. This is the case when there are coins in the bank/pot or the player has cards
+        /// </summary>
+        /// <remarks>
+        /// relevant for several actions in tournament rule games
+        /// </remarks>
+        /// <returns></returns>
+        public bool IsActive()
+        {
+            if (this.BankChips != null && this.BankChips.GetValue() > 0)
+                return true;
+            if (this.Bet != null && this.Bet.GetValue() > 0)
+                return true;
+            if (PlayerHand != null && PlayerHand.CardCount > 0)
+                return true;
+            return false;
+        }
+
+        /// <summary>
         /// The SeatID is used as a Reference of the Tables Seat Position 
         /// </summary>
         public int SeatID { get; set; }
@@ -32,6 +52,11 @@ namespace Poker.Tables
         /// the Table this Seat belongs to
         /// </summary>
         public Table Table { get; private set; }
+        
+        /// <summary>
+        /// The hand of Cards of the player
+        /// </summary>
+        public Hand PlayerHand = new Hand();
 
         /// <summary>
         /// The SmallBlind must reserve half the minimum bet, even before seeing his Cards
@@ -88,16 +113,39 @@ namespace Poker.Tables
                 return;
             SitOutTime = DateTime.Now;
             Interlocked.Decrement(ref Table.ActivePlayers);
+            if (!IsActive())
+                Interlocked.Decrement(ref Table.ActiveSeats);
         }
         /// <summary>
         /// seats you back into the Table, actively participating in the game again
         /// </summary>
-        public void SitIn()
+        public SitInResult SitIn(ulong buyIn = 0)
         {
+            // fast precheck
             if (SitOutTime == null)
-                return;
+                return SitInResult.Sucess;
+            
+            // buyin check
+            if (!IsActive()) // need to perform buyin
+            {
+                // buyin prechecks
+                if (buyIn == 0)
+                    return SitInResult.BuyinTooLow;
+                if (this.Player.Bank < buyIn )
+                    return SitInResult.NotEnoughFunds;
+                if (buyIn > this.Table.TableGame.BettingStructure.MaxBuyIn)
+                    return SitInResult.BuyinToHigh;
+                if (buyIn < this.Table.TableGame.BettingStructure.BuyIn)
+                    return SitInResult.BuyinTooLow;
+                // purchase chips
+                this.BankChips.AddChips(Chips.Bank.DistributeValueForUse(buyIn), this.Player);
+            }
+            
+            // activate
             SitOutTime = null;
             Interlocked.Increment(ref Table.ActivePlayers);
+            Interlocked.Increment(ref Table.ActiveSeats);
+            return SitInResult.Sucess;
         }
     }
 }

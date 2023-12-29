@@ -16,7 +16,8 @@ public class BettingStructureTests
         var blindStructure = new BettingStructure(
             TableRuleSet.Tournament,
             buyIn: 1000,
-            buyinRatio: BlindToBuyInRatio.OneToEighty,
+            blindtoByinRatio: BlindToBuyInRatio.OneToEighty,
+            maxBuyInRatio: 1,
             ante: AnteToBigBlindRatio.OneToFive);
 
         // Act

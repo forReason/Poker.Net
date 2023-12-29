@@ -8,7 +8,8 @@ namespace Poker.Blinds
         public BettingStructure(
             TableRuleSet ruleSet, 
             ulong buyIn, 
-            BlindToBuyInRatio buyinRatio, 
+            BlindToBuyInRatio blindtoByinRatio, 
+            ulong maxBuyInRatio,
             AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
             bool limit = false,
             double capBlindRatio = 0,
@@ -18,7 +19,8 @@ namespace Poker.Blinds
         {
             this.RuleSet = ruleSet;
             this.BuyIn = buyIn;
-            this.BlindRatio = buyinRatio;
+            this.BlindRatio = blindtoByinRatio;
+            this.MaxBuyinRatio = maxBuyInRatio;
             this.Ante = ante;
             this.Limit = false;
             this.CapXSmallBlind = capBlindRatio;
@@ -80,12 +82,22 @@ namespace Poker.Blinds
         /// the Buy-in amount to play on the Table
         /// </summary>
         public ulong BuyIn { get; private set; }
+
+        /// <summary>
+        /// the maximum buyin
+        /// </summary>
+        public ulong MaxBuyIn => BuyIn * MaxBuyinRatio;
         
         /// <summary>
         /// the ratio of the buy-in to the minimum bet. The smaller the ratio, the longer the game will take.
         /// </summary>
         /// <remarks>1:25 seems like a reasonable starting point</remarks>
         public BlindToBuyInRatio BlindRatio { get; private set; }
+
+        /// <summary>
+        /// defines how much larger the maxumum buyin can be. for tournaments, this is usually the same as buin, so a ratio of 1;
+        /// </summary>
+        public ulong MaxBuyinRatio { get; private set; } = 2;
 
         /// <summary>
         /// defines the minimum chip size (defaults to 2 units under small blind. EG SB = 50, min chip size = 10
@@ -134,11 +146,32 @@ namespace Poker.Blinds
 
         public List<BlindLevel> BlindStructure { get; private set; }
 
+        /// <summary>
+        /// Calculates the correct Blind structure according to the Current Game Round
+        /// </summary>
+        /// <remarks>this is good for simulations</remarks>
+        /// <param name="round"></param>
+        /// <returns></returns>
         public BlindLevel GetApropriateBlindLevel(ulong round)
         {
             if (this.RuleSet == TableRuleSet.Cash)
                 return BlindStructure[0];
             int epoch = (int) (round / this.RoundsPerLevel);
+            if (epoch >= BlindStructure.Count)
+                return BlindStructure[^1];
+            return BlindStructure[epoch];
+        }
+        /// <summary>
+        /// Calculates the correct Blind structure according to the Current Game Duration
+        /// </summary>
+        /// <remarks>
+        /// the correct Blind Structure also contains the Level/epoch information
+        /// </remarks>
+        /// <param name="GameDuration"></param>
+        /// <returns></returns>
+        public BlindLevel GetApropriateBlindLevel(TimeSpan GameDuration)
+        {
+            int epoch = (int)(GameDuration / TimePerRound);
             if (epoch >= BlindStructure.Count)
                 return BlindStructure[^1];
             return BlindStructure[epoch];
@@ -150,7 +183,6 @@ namespace Poker.Blinds
         /// <returns>A list of blind levels and their corresponding values.</returns>
         public void CalculateBlindStructure()
         {
-
             // calculate the count of Levels
             ulong levelCount = (ulong)(TargetTotalTimeEstimate / LevelTime);
             // we need to get from start bet to the BuyIn Amount in the calculated amount of Levels
