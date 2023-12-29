@@ -90,7 +90,7 @@ public partial class Game
             
             while (!cancellationToken.IsCancellationRequested)
             {
-                await SitOutBrokePlayers();
+                SitOutBrokePlayers();
                 
                 // check if the game has ended
                 if (await CheckEndGame())
@@ -102,10 +102,11 @@ public partial class Game
                 // Pre check if a round can be started
                 if (!await CheckRoundPrecondition())
                     continue;
-                
+
                 // init round
-                InitializeRound();
-                
+                this.GameTable.MoveButtons();
+                this.GameTable.DealPlayerCards();
+
                 // progress through stages
 
             }

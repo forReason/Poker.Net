@@ -1,48 +1,38 @@
-using System.Diagnostics;
 using Poker.Tables;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Poker.Games;
 
 public partial class Game
 {
-
-    /// <summary>
-    /// returns true if the game got started
-    /// </summary>
-    /// <returns></returns>
-    private async Task InitializeRound()
-    {
-        // move buttons
-        if (this.GameTable.DealerSeat == -1)
-        {
-            DetermineStartingDealer();
-        }
-        this.GameTable.MoveButtons();
-        
-        // shuffle deck and deal player cards
-        this.GameTable.DealPlayerCards();
-    }
-    private async Task SitOutBrokePlayers()
+    private void SitOutBrokePlayers()
     {
         // clean up players without cash from the table
         foreach (Seat seat in GameTable.Seats)
         {
-            if (seat.BankChips.GetValue() <= 0)
+            if (seat.IsParticipatingGame())
             {
                 // player is out of chips
-                Debug.WriteLine($"Player {seat.Player.UniqueIdentifier} is broke and sits out from seat {seat.SeatID}!");
-                seat.SitOut();
+                if (BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
+                {
+                    seat.SitOut();
+                }
+                else if (BettingStructure.RuleSet == Blinds.TableRuleSet.Tournament)
+                {
+                    GameTable.LeaveTable(seat.SeatID);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
     }
     private async Task<bool> CheckRoundPrecondition()
     {
         // make sure we have enough players to play a round
-        if (GameTable.ActivePlayers < 1)
+        if (GameTable.SeatedPlayersCount < 1)
         {
-            if (this.GameTimeStructure == GameTimeStructure.RealTime)
-                await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(0.1));
             return false;
         }
         return true;

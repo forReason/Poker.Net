@@ -1,6 +1,6 @@
 namespace Poker.Chips;
 
-public enum PokerChip
+public enum PokerChip : ulong
 {
     White = 1,
     Red = 5,

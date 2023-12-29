@@ -1,6 +1,6 @@
 ﻿namespace Poker.Blinds
 {
-    public enum BlindToBuyInRatio
+    public enum BlindToBuyInRatio : ulong
     {
         OneToTwentyFive = 25,
         OneToFive = 5, // "short stack"

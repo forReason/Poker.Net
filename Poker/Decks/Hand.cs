@@ -18,14 +18,23 @@ public class Hand
     public Card?[] Slots => (Card?[])_Slots.Clone()!;
 
     public int CardCount { get; private set; } = 0;
+    public bool HandIsFull => CardCount >= 2;
+    public bool HasCards => CardCount > 0;
+    public bool IsFold => CardCount == 0;
 
     /// <summary>
     /// override method to set a new hand. When simulating a Game, you should draw apropriately
     /// </summary>
     public void SetHand(Card? card1, Card? card2)
     {
+        int count = 0;
         _Slots[0] = card1;
+        if (card1 != null)
+            count++;
         _Slots[1] = card2;
+        if (card2 != null)
+            count++;
+        CardCount = count;
     }
 
     /// <summary>
@@ -35,7 +44,7 @@ public class Hand
     /// <exception cref="InvalidOperationException">if you try to draw more than two cards</exception>
     public void DealCard(Deck deck)
     {
-        if (CardCount >= 2)
+        if (HandIsFull)
             throw new InvalidOperationException("You Cannot draw more than two Cards!");
         _Slots[CardCount] = deck.DrawCard();
         CardCount++;

@@ -25,22 +25,35 @@ public partial class Table
     /// </summary>
     public readonly List<Pot> CenterPots = new List<Pot>();
 
-    
-
     /// <summary>
     /// Calculates the total value of the center pots
     /// </summary>
     /// <returns></returns>
     public ulong GetTotalPotValue()
+    {
+        ulong value = 0;
+        foreach (Pot pot in CenterPots)
         {
-            ulong value = 0;
-            foreach (Pot pot in CenterPots)
-            {
-                value += pot.GetValue();
-            }
-        return value;
+            value += pot.PotValue;
         }
+        return value;
+    }
+    public int GetNextBettingSeat(int seatID)
+    {
+        if (PlayersInBettingRoundCount <= 1)
+            return -1;
+        int counter = 0;
+        do
+        {
+            seatID = (seatID + 1) % Seats.Length;
+            counter++;
+        }
+        while ((!Seats[seatID].IsParticipatingGame() || Seats[seatID].IsFold || Seats[seatID].IsAllIn) && counter < Seats.Length);
 
+        if (counter >= Seats.Length)
+            return -1;
+        return seatID;
+    }
     /// <summary>
     /// returns the next active seat on the Table
     /// </summary>
@@ -59,7 +72,7 @@ public partial class Table
             seatID = (seatID + 1) % Seats.Length;
             counter++;
         } 
-        while (!Seats[seatID].IsActive() && counter < Seats.Length);
+        while (!Seats[seatID].IsParticipatingGame() && counter < Seats.Length);
 
         if (counter >= Seats.Length)
             return -1;
@@ -86,7 +99,7 @@ public partial class Table
                 seatID = Seats.Length - 1;
             counter++;
         } 
-        while (!Seats[seatID].IsActive() && counter < Seats.Length);
+        while (!Seats[seatID].IsParticipatingGame() && counter < Seats.Length);
 
         if (counter >= Seats.Length)
             return -1;
@@ -107,7 +120,7 @@ public partial class Table
         Seats[DealerSeat].IsDealer = true;
         // Move smallBlind
         Seats[SmallBlindSeat].IsSmallBlind = false;
-        if (ActivePlayers < 2)
+        if (SeatedPlayersCount < 2)
             SmallBlindSeat = DealerSeat;
         else
             SmallBlindSeat = GetNextActiveSeat(DealerSeat);
@@ -136,17 +149,57 @@ public partial class Table
         for (int card = 1; card == 2; card++)
         {
             int currentSeat = DealerSeat;
-            for (int activeSeat = 0; activeSeat < ActiveSeats; activeSeat++)
+            for (int activeSeat = 0; activeSeat < SeatsWithStakesCount; activeSeat++)
             {
                 currentSeat = GetNextActiveSeat(currentSeat);
                 Seats[currentSeat].PlayerHand.DealCard(TableDeck);
             }
         }
     }
+    public bool CheckAllPlayersAllIn()
+    {
+        // precheck
+        if (SeatsWithStakesCount == 0)
+            return false;
+        // go through seats
+        for (int i = 0; i < Seats.Length; i++)
+        {
+            if (Seats[i].IsParticipatingGame() && !Seats[i].PlayerHand.IsFold && !Seats[i].IsAllIn)
+                return false;
+        }
+        return true;
+    }
+    public bool CheckBetsAreAllEqual()
+    {
+        if (SeatsWithStakesCount <= 1)
+            return true; // only 1 player left
+        // go through seats
+        ulong? betValue = null;
+        for (int i = 0; i < Seats.Length; i++)
+        {
+            if (Seats[i].IsParticipatingGame() && !Seats[i].IsFold && !Seats[i].IsAllIn)
+            {
+                // seat is in the game! compare Bet
+                if (betValue == null) // betvalue is uninitialized
+                    betValue = Seats[i].PendingBets.PotValue;
+                if (betValue != Seats[i].PendingBets.PotValue)
+                    return false;
+            }
+        }
+        return true;
+    }
 
     public Deck TableDeck = new Deck();
     public CommunityCards TableCards = new CommunityCards();
     public Seat[] Seats;
-    public int ActivePlayers = 0;
-    public int ActiveSeats = 0;
+
+    /// <summary>
+    /// the number of players sitting at the table
+    /// </summary>
+    public int SeatedPlayersCount = 0;
+    /// <summary>
+    /// while a player is not in his seat, the seats funds might still be at stake
+    /// </summary>
+    public int SeatsWithStakesCount = 0;
+    public int PlayersInBettingRoundCount = 0;
 }

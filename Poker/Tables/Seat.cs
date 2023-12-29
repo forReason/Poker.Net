@@ -1,6 +1,5 @@
 ﻿using Poker.Chips;
 using Poker.Decks;
-using Poker.Games;
 using Poker.Players;
 
 namespace Poker.Tables
@@ -26,17 +25,18 @@ namespace Poker.Tables
         public volatile Player? Player = null;
 
         /// <summary>
-        /// checks wether a seat is still active or not. This is the case when there are coins in the bank/pot or the player has cards
+        /// checks wether a seat is still active or not. <br/>
+        /// This is the case when the player still has funds or still has cards to participate
         /// </summary>
         /// <remarks>
         /// relevant for several actions in tournament rule games
         /// </remarks>
         /// <returns></returns>
-        public bool IsActive()
+        public bool IsParticipatingGame()
         {
-            if (this.BankChips != null && this.BankChips.GetValue() > 0)
+            if (this.Stack != null && this.Stack.PotValue > 0)
                 return true;
-            if (this.Bet != null && this.Bet.GetValue() > 0)
+            if (this.UncalledPendingBets != null && this.UncalledPendingBets.PotValue > 0)
                 return true;
             if (PlayerHand != null && PlayerHand.CardCount > 0)
                 return true;
@@ -81,21 +81,56 @@ namespace Poker.Tables
         public bool IsDealer { get; set; } = false;
 
         /// <summary>
-        /// The stack of Chips in front of the player representing the bet
+        /// The stack of Chips in front of the player representing the bet (but not yet added to the tablePot)
         /// </summary>
-        public Pot Bet = new ();
+        public Pot PendingBets = new ();
+
+        /// <summary>
+        /// the stack of chips a player may have reserved for calling and raising. Used to perform the bet according to player action
+        /// </summary>
+        public Pot UncalledPendingBets = new();
 
         /// <summary>
         /// The stack of Chips in reserve which the Player can use to Bet
         /// </summary>
-        public Pot BankChips = new ();
+        public Pot Stack = new ();
+        private readonly object _lock = new object ();
+        public ulong StackValue => Stack.PotValue + UncalledPendingBets.PotValue;
+
+        /// <summary>
+        /// this function is used to set the Blinds and Ante for examble and cannot be revoked
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public PerformBetResult ForceBet(ulong value)
+        {
+            Pot temporaryPot = new Pot();
+            PerformBetResult betResult = UncalledPendingBets.PerformBet(temporaryPot, value, this.Player);
+            if (betResult == PerformBetResult.PlayerHasNoFunds || betResult == PerformBetResult.AllIn)
+            {
+                PerformBetResult stackBetResult = Stack.PerformBet(temporaryPot, value - temporaryPot.PotValue, this.Player);
+            }
+            return temporaryPot.PerformBet(PendingBets, value, this.Player);
+        }
+        public void CommitUncalledPendingBets()
+        {
+            UncalledPendingBets.MoveAllChips(PendingBets, this.Player);
+        }
+        public PerformBetResult MoveStackToUncalledPendingBets(ulong value)
+        {
+
+            return Stack.PerformBet(UncalledPendingBets, value, this.Player);
+        }
+
+        public bool IsAllIn => (Stack.PotValue == 0 && PendingBets.PotValue > 0 && UncalledPendingBets.PotValue == 0 && !IsFold);
+        public bool IsAllInCall => (Stack.PotValue == 0 && (PendingBets.PotValue + UncalledPendingBets.PotValue) > 0 && !IsFold);
+        public bool IsFold => PlayerHand.IsFold;
 
         /// <summary>
         /// defines if and when the player chose to sit out.
         /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked fron the Table
         /// </summary>
         public DateTime? SitOutTime { get; set; }
-
         /// <summary>
         /// sits out of the table
         /// </summary>
@@ -112,21 +147,22 @@ namespace Poker.Tables
             if (SitOutTime != null)
                 return;
             SitOutTime = DateTime.Now;
-            Interlocked.Decrement(ref Table.ActivePlayers);
-            if (!IsActive())
-                Interlocked.Decrement(ref Table.ActiveSeats);
+            Interlocked.Decrement(ref Table.SeatedPlayersCount);
+            if (!IsParticipatingGame())
+                Interlocked.Decrement(ref Table.SeatsWithStakesCount);
+
         }
         /// <summary>
         /// seats you back into the Table, actively participating in the game again
         /// </summary>
-        public SitInResult SitIn(ulong buyIn = 0)
+        public SitInResult SitIn(decimal buyIn = 0)
         {
             // fast precheck
             if (SitOutTime == null)
                 return SitInResult.Sucess;
             
             // buyin check
-            if (!IsActive()) // need to perform buyin
+            if (!IsParticipatingGame()) // need to perform buyin
             {
                 // buyin prechecks
                 if (buyIn == 0)
@@ -138,14 +174,27 @@ namespace Poker.Tables
                 if (buyIn < this.Table.TableGame.BettingStructure.BuyIn)
                     return SitInResult.BuyinTooLow;
                 // purchase chips
-                this.BankChips.AddChips(Chips.Bank.DistributeValueForUse(buyIn), this.Player);
+                ulong chipBuyInValue = (ulong)buyIn;
+                if (this.Table.TableGame.BettingStructure.Micro)
+                {
+                    chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
+                }
+                this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), this.Player);
             }
             
             // activate
             SitOutTime = null;
-            Interlocked.Increment(ref Table.ActivePlayers);
-            Interlocked.Increment(ref Table.ActiveSeats);
+            Interlocked.Increment(ref Table.SeatedPlayersCount);
+            Interlocked.Increment(ref Table.SeatsWithStakesCount);
             return SitInResult.Sucess;
+        }
+        /// <summary>
+        /// Discards the player's hand, essentially skipping the round.
+        /// </summary>
+        public void Fold()
+        {
+            this.PlayerHand.Clear();
+            Interlocked.Decrement(ref this.Table.PlayersInBettingRoundCount);
         }
     }
 }

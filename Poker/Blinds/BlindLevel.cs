@@ -1,11 +1,11 @@
 public struct BlindLevel
 {
     public int Level { get; set; }
-    public double SmallBlind { get; set; }
-    public double BigBlind { get; set; }
-    public double Ante { get; set; }
+    public ulong SmallBlind { get; set; }
+    public ulong BigBlind { get; set; }
+    public ulong Ante { get; set; }
 
-    public BlindLevel(int level, double smallBlind, double bigBlind, double ante)
+    public BlindLevel(int level, ulong smallBlind, ulong bigBlind, ulong ante)
     {
         Level = level;
         SmallBlind = smallBlind;

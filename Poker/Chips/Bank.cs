@@ -203,5 +203,32 @@ public class Bank
         }
     }
 
+    public static double GetChipMicroValue(PokerChip chip)
+    {
+        return ConvertMacroToMicro((ulong)chip);
+    }
+
+    public static ulong ConvertMicroToMacro(double microValue)
+    {
+        double value = microValue * 100;
+        value = Math.Round(value, 0);
+        return (ulong)value;
+    }
+    public static ulong ConvertMicroToMacro(decimal microValue)
+    {
+        decimal value = microValue * 100;
+        value = Math.Round(value, 0);
+        return (ulong)value;
+    }
+    public static double ConvertMacroToMicro(ulong microValue)
+    {
+        double value = (double)microValue / 100;
+        return Math.Round(value, 2);
+    }
+    public static decimal ConvertMacroToPreciseMicro(ulong microValue)
+    {
+        decimal value = (decimal)microValue / 100;
+        return Math.Round(value, 2);
+    }
 
 }

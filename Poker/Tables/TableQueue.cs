@@ -66,7 +66,7 @@ namespace Poker.Tables
                 player.Seat = Seats[seatID];
                 Interlocked.Increment(ref TakenSeats);
                 SeatedPlayers[player.UniqueIdentifier] = true;
-                Interlocked.Increment(ref ActivePlayers);
+                Interlocked.Increment(ref SeatedPlayersCount);
                 return true;
             }
             return false;
@@ -98,10 +98,11 @@ namespace Poker.Tables
 
             if (TableGame.BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
             {
-                Seats[seatID].BankChips.Clear();
+                Seats[seatID].Player.AddPlayerBank(Seats[seatID].Stack.Clear());
+                Seats[seatID].Player.AddPlayerBank(Seats[seatID].UncalledPendingBets.Clear());
                 SeatedPlayers.Remove(Seats[seatID].Player.UniqueIdentifier, out _);
                 if (Seats[seatID].SitOutTime == null)
-                    Interlocked.Decrement(ref ActivePlayers);
+                    Interlocked.Decrement(ref SeatedPlayersCount);
                 Seats[seatID].Player.Seat = null;
                 Seats[seatID].Player = null;
                 Interlocked.Decrement(ref TakenSeats);

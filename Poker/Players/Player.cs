@@ -1,56 +1,66 @@
 using Poker.Decks;
 using Poker.Tables;
+using System.Threading;
 
 namespace Poker.Players;
 
 public class Player
 {
-    // TODO: Not Yet Implemented
-    
-    public ulong Bank = 0;
-    public string UniqueIdentifier = new Guid().ToString();
-
-    
-
+    private decimal _bank;
+    private readonly object _bankLock = new object();
+    public string UniqueIdentifier = Guid.NewGuid().ToString();
     public Seat? Seat = null;
 
-    /// <summary>
-    /// adds value to the player bank
-    /// </summary>
-    /// <param name="amount"></param>
-    public void AddPlayerBank(ulong amount)
+    public decimal Bank
     {
-        Interlocked.Add(ref Bank, amount);
-    }
-    /// <summary>
-    /// adds value to the player bank
-    /// </summary>
-    /// <param name="amount"></param>
-    public bool TryRemovePlayerBank(ulong amount)
-    {
-        while (true)
+        get
         {
-            // Capture the original value
-            ulong original = Bank;
-
-            // Check if there are enough funds
-            if (original < amount)
-                return false;  // Not enough funds
-
-            // Compute the new value
-            ulong newValue = original - amount;
-
-            // Atomically update if the original value has not changed
-            if (Interlocked.CompareExchange(ref Bank, newValue, original) == original)
-                return true;  // Successfully updated
+            lock (_bankLock)
+            {
+                return _bank;
+            }
+        }
+        private set
+        {
+            lock (_bankLock)
+            {
+                _bank = value;
+            }
         }
     }
 
     /// <summary>
-    /// Discards the players Hand, essentially skipping the Round
+    /// Adds value to the player's bank.
     /// </summary>
-    public void Fold()
+    /// <param name="amount">Amount to add.</param>
+    public void AddPlayerBank(decimal amount)
     {
-        this.Seat.PlayerHand.Clear();
+        lock (_bankLock)
+        {
+            _bank += amount;
+        }
+    }
+
+    /// <summary>
+    /// Tries to remove a specified amount from the player's bank.
+    /// </summary>
+    /// <param name="amount">Amount to remove.</param>
+    /// <returns>True if removal was successful, false otherwise.</returns>
+    public bool TryRemovePlayerBank(decimal amount)
+    {
+        lock (_bankLock)
+        {
+            if (_bank >= amount)
+            {
+                _bank -= amount;
+                return true;
+            }
+            return false;
+        }
+    }
+    public void CallForAction()
+    {
+        // TODO: implement playerAction
+        throw new NotImplementedException("player action mechanic is not yet implemented");
     }
 }

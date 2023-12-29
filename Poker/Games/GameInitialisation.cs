@@ -45,7 +45,7 @@ public partial class Game
         HashSet<int> ActiveSeats = new HashSet<int>();
         foreach (Seat seat in this.GameTable.Seats)
         {
-            if (seat.IsActive())
+            if (seat.IsParticipatingGame())
                 ActiveSeats.Add(seat.SeatID);
         }
 

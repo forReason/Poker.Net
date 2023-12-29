@@ -13,7 +13,7 @@ public class PotTests
 
         pot.AddChips(chipsToAdd, player);
 
-        Assert.Equal(500UL, pot.GetValue()); // Blue chips are worth 50 each
+        Assert.Equal(500UL, pot.PotValue); // Blue chips are worth 50 each
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class PotTests
 
         pot.RemoveValue(76);
 
-        Assert.Equal(424UL, pot.GetValue()); // 509 - 76
+        Assert.Equal(424UL, pot.PotValue); // 509 - 76
     }
 
     [Fact]
