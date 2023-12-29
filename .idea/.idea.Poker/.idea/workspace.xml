@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="">
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="optimisations and implementations around game rounds">
       <change afterPath="$PROJECT_DIR$/Poker/Games/GameBettingRound.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Poker/Games/RebuyStrategy.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Poker/Tables/SitInResult.cs" afterDir="false" />
@@ -21,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/Poker/Players/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Players/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Seat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Seat.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Table.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +36,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3d37126de17d46baad9e2258a5a93c1bc44200/36/e823b619/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/julian/RiderProjects/Poker/Poker.Tests/Blinds/BlindStructureTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/julian/RiderProjects/Poker/Poker/Blinds/BettingStructure.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -91,7 +92,7 @@
       <workItem from="1702504367895" duration="4378000" />
       <workItem from="1702588074217" duration="25607000" />
       <workItem from="1703004400459" duration="199000" />
-      <workItem from="1703799429965" duration="11721000" />
+      <workItem from="1703799429965" duration="12465000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -173,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702948886577</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="optimisations and implementations around game rounds">
+      <option name="closed" value="true" />
+      <created>1703833165799</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1703833165799</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,7 +212,8 @@
     <MESSAGE value="implement blind structure" />
     <MESSAGE value="updated blind structure. Implemented more accrding rules" />
     <MESSAGE value="first starts of the game implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="first starts of the game implementation" />
+    <MESSAGE value="optimisations and implementations around game rounds" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimisations and implementations around game rounds" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
