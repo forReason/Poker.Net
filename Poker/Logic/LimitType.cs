@@ -1,5 +1,9 @@
 ﻿namespace Poker.Blinds
 {
+    /// <summary>
+    /// defines the limit structure of a game.
+    /// </summary>
+    /// <remarks>The Limit Structure is being used to determine which bet sizes are allowed</remarks>
     public enum LimitType
     {
         /// <summary>
@@ -19,7 +23,7 @@
         /// </summary>
         /// <remarks>
         /// The Limit in the pre-Flop is usually set to the BigBlind. After the Flop, the Limit is set to 2*BigBlind,<br/>
-        /// The players can bet up to 4 Times. Set (1) Raise (2) Reraise (3) Cap (4)
+        /// The players can bet up to 4 Times. Set (1) Raise (2) re-raise (3) Cap (4)
         /// </remarks>
         FixedLimit
     }

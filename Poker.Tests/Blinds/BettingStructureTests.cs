@@ -4,6 +4,7 @@ using Poker.Blinds;
 using System.Linq;
 using Poker.Tables;
 using Poker.Games;
+using Poker.Logic.Blinds;
 
 
 namespace Poker.Tests.Blinds;

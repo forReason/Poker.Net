@@ -1,5 +1,7 @@
 ﻿using Poker.Blinds;
 using Poker.Chips;
+using Poker.Logic.Blinds;
+using Poker.Logic.Fees;
 
 namespace Poker.Games
 {
@@ -40,7 +42,7 @@ namespace Poker.Games
             RakeStructure? rakeStructure = null,
             bool autoCalculateRakeStructure = false)
         {
-            RuleSet = ruleSet;
+            GameMode = ruleSet;
             BuyIn = buyIn;
             BlindRatio = blindtoByinRatio;
             MaxBuyinRatio = maxBuyInRatio;
@@ -62,7 +64,7 @@ namespace Poker.Games
         /// <summary>
         /// defines the rules under which to operate, eg Cash or tournament
         /// </summary>
-        public GameMode RuleSet { get; set; }
+        public GameMode GameMode { get; set; }
 
         /// <summary>
         /// in tournament games defines the latest buyin after Game stard
@@ -180,7 +182,7 @@ namespace Poker.Games
         /// <returns></returns>
         public BlindLevel GetApropriateBlindLevel(ulong round)
         {
-            if (RuleSet == GameMode.Cash)
+            if (GameMode == GameMode.Cash)
                 return BlindStructure[0];
             int epoch = (int)(round / RoundsPerLevel);
             if (epoch >= BlindStructure.Count)
@@ -227,7 +229,7 @@ namespace Poker.Games
             }
             ulong smallBlind = (ulong)GetClosestChip(smallBlindCalculated);
             decimal anteRatio = 1.0m / (decimal)Ante;
-            if (RuleSet == GameMode.Cash)
+            if (GameMode == GameMode.Cash)
             {
                 ulong bigBlind = smallBlind * 2;
                 ulong ante = (ulong)(bigBlind * anteRatio);

@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Poker.Chips;
 using Poker.Decks;
+using Poker.Logic.Blinds;
+using Poker.Logic.GameLogic.BettingRounds;
 using Poker.Players;
 using Poker.Tables;
 
@@ -19,6 +21,7 @@ public partial class Game
         this.BettingStructure = structure;
         this.GameTable = new Table(seats: maxPlayers, this);
         this.GameTimeStructure = timeStructure;
+        this.BettingRound = new BettingRound(this); 
     }
 
     public ulong Round { get; set; } = 0;
@@ -67,6 +70,7 @@ public partial class Game
     public Task GameTask { get; private set; }
     public CancellationToken CancelGame = new CancellationToken();
     private readonly object _GameTaskInitLock = new object();
+    public readonly BettingRound BettingRound;
 
     private async Task Run(CancellationToken cancellationToken)
     {
@@ -115,8 +119,8 @@ public partial class Game
                 BettingRoundResult bettingResult;
                 do
                 {
-                    await PerformBettingRound();
-                    bettingResult = EvaluateBettingRound();
+                    BettingRound.PerformBettingRound();
+                    bettingResult = BettingRound.EvaluateBettingRound();
                     if (bettingResult != BettingRoundResult.OpenNextStage)
                     {
                         if (bettingResult == BettingRoundResult.RevealAllCards)
@@ -129,7 +133,7 @@ public partial class Game
                 } while (this.GameTable.CommunityCards.Stage != CommunityCardStage.River);
                 
                 // collect bets and create pots from it
-                CollectAndSplitBets();
+                BettingRound.CollectAndSplitBets();
                 
                 // Evaluate Winner(s) and distribute wins
                 foreach (Pot pot in GameTable.CenterPots)

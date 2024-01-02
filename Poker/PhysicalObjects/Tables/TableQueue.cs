@@ -97,7 +97,7 @@ namespace Poker.Tables
             if (Seats[seatID].Player == null)
                 return;
 
-            if (TableGame.BettingStructure.RuleSet == GameMode.Cash)
+            if (TableGame.BettingStructure.GameMode == GameMode.Cash)
             {
                 Seats[seatID].Player.AddPlayerBank(Seats[seatID].Stack.Clear());
                 Seats[seatID].Player.AddPlayerBank(Seats[seatID].UncalledPendingBets.Clear());
@@ -109,14 +109,14 @@ namespace Poker.Tables
                 Interlocked.Decrement(ref TakenSeats);
                 SeatPlayers();
             }
-            else if (TableGame.BettingStructure.RuleSet == GameMode.Tournament)
+            else if (TableGame.BettingStructure.GameMode == GameMode.Tournament)
             {
                 Seats[seatID].SitOut();
             }
             else
             {
                  throw new NotImplementedException(
-                     $"The behaviour on leaving a table under the ruleset {TableGame.BettingStructure.RuleSet} is not defined!");
+                     $"The behaviour on leaving a table under the ruleset {TableGame.BettingStructure.GameMode} is not defined!");
             }
         }
 
