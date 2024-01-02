@@ -7,30 +7,37 @@ namespace Poker.Games;
 
 public partial class Game
 {
-// TODO: Implement BettingRounds 
+    /// <summary>
+    /// this function sets the bets for BigBlind and SmallBlind player and Ante for everyone
+    /// </summary>
     public void SetBlindsAndAnte()
     {
-        BlindLevel blindLevel = this.BettingStructure.GetApropriateBlindLevel(this.GameLength);
+        this.CurrentBlindLevel = this.BettingStructure.GetApropriateBlindLevel(this.GameLength);
         // collect blinds
-        this.GameTable.Seats[this.GameTable.SmallBlindSeat].ForceBet(blindLevel.SmallBlind);
-        this.GameTable.Seats[this.GameTable.BigBlindSeat].ForceBet(blindLevel.BigBlind);
-        CallValue = blindLevel.BigBlind;
+        this.GameTable.Seats[this.GameTable.SmallBlindSeat].ForceBet(this.CurrentBlindLevel.SmallBlind);
+        this.GameTable.Seats[this.GameTable.BigBlindSeat].ForceBet(this.CurrentBlindLevel.BigBlind);
+        CallValue = this.CurrentBlindLevel.BigBlind;
         // set ante
-        if (blindLevel.Ante == 0)
+        if (this.CurrentBlindLevel.Ante == 0)
             return;
         foreach(Seat seat in this.GameTable.Seats)
         {
             if (seat.IsParticipatingGame())
             {
-                seat.ForceBet(blindLevel.Ante);
+                seat.ForceBet(this.CurrentBlindLevel.Ante);
             }
         }
-        CallValue += blindLevel.Ante;
+        CallValue += this.CurrentBlindLevel.Ante;
     }
     /// <summary>
     /// the current bet call value for the round which has to be matched.
     /// </summary>
     public ulong CallValue { get; private set; } = 0;
+    /// <summary>
+    /// this variable counts how many Bets/raises have been executed during this betting round. 
+    /// It is used to limit the maximum of raises in limit poker
+    /// </summary>
+    public ulong BetsReceived { get; private set; } = 0;
     /// <summary>
     /// Performs one full betting round for one game stage (pre-flop, flop, etc.), 
     /// where all players have the chance to call, raise, or fold. 
@@ -61,24 +68,63 @@ public partial class Game
         // initialize
         int currentSeat = this.GameTable.GetNextBettingSeat(startingSeat);
         int lastRaisedSeatId = currentSeat;
-
+        BetsReceived = 0;
         // Loop through the betting rounds, allowing each player to take action.
         // Players can choose to call, raise, or fold based on their strategy and hand.
         do 
         {
+            ulong minRaise = CallValue * 2;
+            ulong maxRaise = ulong.MaxValue;
+            if (this.BettingStructure.Limit == Blinds.LimitType.PotLimit)
+            {
+                ulong playerBets = 0;
+                foreach (Seat seat in this.GameTable.Seats)
+                {
+                    playerBets += seat.PendingBets.PotValue;
+                }
+                maxRaise = this.GameTable.GetTotalPotValue() + CallValue + playerBets;
+            }
+            else if(this.BettingStructure.Limit == Blinds.LimitType.FixedLimit)
+            {
+                if (BetsReceived == 4)
+                {
+                    minRaise = 0; maxRaise = 0;
+                }
+                else if (this.GameTable.CommunityCards.Stage <= CommunityCardStage.Flop)
+                {
+                    minRaise = this.CurrentBlindLevel.BigBlind + CallValue;
+                    maxRaise = minRaise;
+                }
+                else
+                {
+                    minRaise = this.CurrentBlindLevel.BigBlind * 2 + CallValue;
+                    maxRaise = minRaise;
+                }
+            }
+
             Seat actionSeat = this.GameTable.Seats[currentSeat];
-            actionSeat.Player.CallForAction();
+            actionSeat.Player.CallForAction(CallValue, minRaise, maxRaise);
             // evaluate playerAction
             ulong betValue = actionSeat.PendingBets.PotValue + actionSeat.UncalledPendingBets.PotValue;
             if (betValue >= CallValue || actionSeat.IsAllInCall)
             {
                 if (betValue > CallValue) // raise
                 {
-                    CallValue = betValue;
-                    lastRaisedSeatId = currentSeat;
+                    ulong limitedBetValue = Math.Min(betValue, maxRaise);
+                    if (limitedBetValue- actionSeat.PendingBets.PotValue > 0)
+                    {
+                        CallValue = limitedBetValue;
+                        lastRaisedSeatId = currentSeat;
+                        BetsReceived++;
+                    }
+                    actionSeat.UncalledPendingBets.MoveValue(actionSeat.PendingBets, limitedBetValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
                 }
-                // commit bet
-                actionSeat.UncalledPendingBets.MoveAllChips(actionSeat.PendingBets, actionSeat.Player);
+                else // call
+                {
+                    actionSeat.UncalledPendingBets.MoveValue(actionSeat.PendingBets, CallValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
+                }
+                // move leftover chips back to the player stack
+                actionSeat.UncalledPendingBets.MoveAllChips(actionSeat.Stack, actionSeat.Player);
             }
             // fold the player if he does not want to contribute enough
             else if (!actionSeat.IsAllIn && !actionSeat.IsAllInCall)

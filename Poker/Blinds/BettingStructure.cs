@@ -1,5 +1,6 @@
 ﻿using Poker.Chips;
 using Poker.Tables;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Poker.Blinds
 {
@@ -11,18 +12,20 @@ namespace Poker.Blinds
             BlindToBuyInRatio blindtoByinRatio, 
             ulong maxBuyInRatio,
             AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
-            bool limit = false,
+            LimitType limit = LimitType.NoLimit,
             double capBlindRatio = 0,
             TimeSpan? levelTime = null,
             TimeSpan? targetTotalTime = null,
-            TimeSpan? registrationGracePeriod = null)
+            TimeSpan? registrationGracePeriod = null,
+            RakeStructure? rakeStructure = null,
+            bool autoCalculateRakeStructure = false)
         {
             this.RuleSet = ruleSet;
             this.BuyIn = buyIn;
             this.BlindRatio = blindtoByinRatio;
             this.MaxBuyinRatio = maxBuyInRatio;
             this.Ante = ante;
-            this.Limit = false;
+            this.Limit = limit;
             this.CapXSmallBlind = capBlindRatio;
             if (levelTime != null)
                 this.LevelTime = levelTime.Value;
@@ -31,6 +34,9 @@ namespace Poker.Blinds
             if (registrationGracePeriod != null)
                 this.RegistrationGracePeriod = registrationGracePeriod.Value;
             CalculateBlindStructure();
+            RakeStructure = rakeStructure;
+            if (autoCalculateRakeStructure)
+                RakeStructure = new RakeStructure(limit);
         }
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace Poker.Blinds
         /// <summary>
         /// defines Limit poker (can only raise the same amount than BigBlind)
         /// </summary>
-        public bool Limit { get; private set; }
+        public LimitType Limit { get; private set; }
 
         /// <summary>
         /// The target time which the game should hold for.
@@ -103,6 +109,8 @@ namespace Poker.Blinds
         /// defines the minimum chip size (defaults to 2 units under small blind. EG SB = 50, min chip size = 10
         /// </summary>
         public int MinimumChipSize { get; set; } = -2; // 2 chip stages below small blind
+
+        public RakeStructure? RakeStructure { get; set; }
 
         /// <summary>
         /// Whether to use ante or not

@@ -28,6 +28,8 @@ public partial class Game
 
     public DateTime? StartTime { get; set; }
 
+    public BlindLevel CurrentBlindLevel { get; set; }
+
     public TimeSpan? GameLength
     {
         get
@@ -134,6 +136,7 @@ public partial class Game
                 foreach (Pot pot in GameTable.CenterPots)
                 {
                     Player[] winners = EvaluateWinners(pot);
+
                     // TODO: Split pots
                 }
                 // TODO: clean up table and everything from the round

@@ -58,7 +58,7 @@ public class Player
             return false;
         }
     }
-    public void CallForAction()
+    public void CallForAction(ulong callValue, ulong minRaise, ulong maxRaise)
     {
         // TODO: implement playerAction
         throw new NotImplementedException("player action mechanic is not yet implemented");
