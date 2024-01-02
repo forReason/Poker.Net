@@ -4,24 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="optimisations and implementations around game rounds">
-      <change afterPath="$PROJECT_DIR$/Poker/Games/GameBettingRound.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Games/RebuyStrategy.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Poker/Tables/SitInResult.cs" afterDir="false" />
+    <list default="true" id="6d540b8b-1596-4899-9540-768c67cbcf86" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker.Tests/TestAssets/CardRankTestSamples.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Decks/CardEvaluation.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Decks/HandRank.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Decks/HandScore.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Poker/Games/BettingRoundResult.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Blinds/BettingStructureTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker.Tests/Decks/HandTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Decks/HandTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Blinds/BettingStructure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Decks/DeckTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Decks/DeckTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Decks/HandTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Decks/PocketCardsTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.Tests/Decks/SharedCardsTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.Tests/Decks/SharedCardsTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Poker.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Cards/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Cards/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Cards/Rank.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Cards/Rank.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Cards/Suit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Cards/Suit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Decks/CommunityCards.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/CommunityCards.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Decks/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/Deck.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Decks/Hand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/Hand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Decks/Hand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Decks/PocketCards.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Games/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Games/GameEnd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/GameEnd.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poker/Games/GameBettingRound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/GameBettingRound.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/GameInitialisation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Games/RoundInitialisation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Games/RoundInitialisation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Poker/Players/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Players/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Seat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Seat.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Poker/Tables/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Poker/Tables/Table.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,12 +41,16 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3d37126de17d46baad9e2258a5a93c1bc44200/36/e823b619/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/julian/RiderProjects/Poker/Poker/Blinds/BettingStructure.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3d37126de17d46baad9e2258a5a93c1bc44200/5e/753a120b/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ec11489f13fea2ba3e5dfbdea086f41dac024556d53f318c75a75a2cbd73/EqualityAsserts.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -69,6 +78,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -79,6 +89,7 @@
     ]
   }
 }</component>
+  <component name="RunManager" selected="3401bd39-64f8-481f-8a78-92c76ae240ab" />
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -92,7 +103,10 @@
       <workItem from="1702504367895" duration="4378000" />
       <workItem from="1702588074217" duration="25607000" />
       <workItem from="1703004400459" duration="199000" />
-      <workItem from="1703799429965" duration="12465000" />
+      <workItem from="1703799429965" duration="12487000" />
+      <workItem from="1703867262648" duration="49988000" />
+      <workItem from="1704076689133" duration="12096000" />
+      <workItem from="1704146802937" duration="7242000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -182,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703833165799</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="workspace update">
+      <option name="closed" value="true" />
+      <created>1703833179654</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1703833179654</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,7 +235,8 @@
     <MESSAGE value="updated blind structure. Implemented more accrding rules" />
     <MESSAGE value="first starts of the game implementation" />
     <MESSAGE value="optimisations and implementations around game rounds" />
-    <option name="LAST_COMMIT_MESSAGE" value="optimisations and implementations around game rounds" />
+    <MESSAGE value="workspace update" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -223,13 +246,104 @@
           <line>27</line>
           <properties documentPath="$PROJECT_DIR$/Poker.Tests/Chips/PotTests.cs" initialLine="27" containingFunctionPresentation="Method 'RemoveValue_DecreasesTotalValue'">
             <startOffsets>
-              <option value="731" />
+              <option value="761" />
             </startOffsets>
             <endOffsets>
-              <option value="767" />
+              <option value="763" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>45</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="45" containingFunctionPresentation="Method 'ScoreCards_ShouldCorrectlyIdentifyHand'">
+            <startOffsets>
+              <option value="1465" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1512" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>335</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="326" containingFunctionPresentation="Method 'TestoneHighCardLowerThanRoyalFlush'">
+            <startOffsets>
+              <option value="15235" />
+            </startOffsets>
+            <endOffsets>
+              <option value="15273" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker/Decks/HandScore.cs</url>
+          <line>36</line>
+          <properties documentPath="$PROJECT_DIR$/Poker/Decks/HandScore.cs" initialLine="34" containingFunctionPresentation="Method 'CompareHand'">
+            <startOffsets>
+              <option value="1122" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1132" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>455</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="455" containingFunctionPresentation="Method 'FourOfAKindRanking2'">
+            <startOffsets>
+              <option value="19884" />
+            </startOffsets>
+            <endOffsets>
+              <option value="19922" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>554</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="554" containingFunctionPresentation="Method 'StraightRanking'">
+            <startOffsets>
+              <option value="23811" />
+            </startOffsets>
+            <endOffsets>
+              <option value="23849" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>587</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="587" containingFunctionPresentation="Method 'ThreeOfAKindRanking1'">
+            <startOffsets>
+              <option value="25130" />
+            </startOffsets>
+            <endOffsets>
+              <option value="25168" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs</url>
+          <line>818</line>
+          <properties documentPath="$PROJECT_DIR$/Poker.Tests/Decks/HandScoreTests.cs" initialLine="818" containingFunctionPresentation="Method 'HighCardranking'">
+            <startOffsets>
+              <option value="34332" />
+            </startOffsets>
+            <endOffsets>
+              <option value="34370" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="62" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

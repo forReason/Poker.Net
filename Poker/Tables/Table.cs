@@ -138,7 +138,7 @@ public partial class Table
     {
         foreach (Seat seat in Seats)
         {
-            seat.PlayerHand.Clear();
+            seat.PlayerPocketCards.Clear();
         }
     }
 
@@ -152,7 +152,7 @@ public partial class Table
             for (int activeSeat = 0; activeSeat < SeatsWithStakesCount; activeSeat++)
             {
                 currentSeat = GetNextActiveSeat(currentSeat);
-                Seats[currentSeat].PlayerHand.DealCard(TableDeck);
+                Seats[currentSeat].PlayerPocketCards.DealCard(TableDeck);
             }
         }
     }
@@ -164,7 +164,7 @@ public partial class Table
         // go through seats
         for (int i = 0; i < Seats.Length; i++)
         {
-            if (Seats[i].IsParticipatingGame() && !Seats[i].PlayerHand.IsFold && !Seats[i].IsAllIn)
+            if (Seats[i].IsParticipatingGame() && !Seats[i].PlayerPocketCards.IsFold && !Seats[i].IsAllIn)
                 return false;
         }
         return true;
@@ -190,7 +190,7 @@ public partial class Table
     }
 
     public Deck TableDeck = new Deck();
-    public CommunityCards TableCards = new CommunityCards();
+    public CommunityCards CommunityCards = new CommunityCards();
     public Seat[] Seats;
 
     /// <summary>

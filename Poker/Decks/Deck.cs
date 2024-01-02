@@ -9,7 +9,7 @@ namespace Poker.Decks;
 public class Deck
 {
     /// <summary>
-    /// Initializes the Deck with the 42 Poker Cards
+    /// Initializes the Deck with the 52 Poker Cards
     /// </summary>
     public Deck()
     {
@@ -19,29 +19,27 @@ public class Deck
     /// <summary>
     /// The count of cards left in the Deck which are available to be drawn
     /// </summary>
-    public int _CardCount { get; private set; } = 0;
+    public int CardCount { get; private set; } = 52;
 
     /// <summary>
     /// All 52 Cards in a Deck
     /// </summary>
-    private Cards.Card[] _ShuffledCards = new Cards.Card[52];
+    private Card[] _shuffledCards = new Card[52];
 
     /// <summary>
     /// Draws a new Card from the Shuffled Deck
     /// </summary>
     /// <returns>The Drawn Card</returns>
-    public Cards.Card DrawCard()
+    /// <exception cref="InvalidOperationException">thrown when there are no more cords in the deck and you still try to draw one</exception>
+    public Card DrawCard()
     {
-        if (_CardCount <= 0)
+        if (CardCount <= 0)
             throw new InvalidOperationException("You can not draw more cards than the Deck has in Total! Please reshuffle!");
-        Cards.Card selectedCard = _ShuffledCards[_CardCount-1];
-        _CardCount--;
+        Card selectedCard = _shuffledCards[CardCount-1];
+        CardCount--;
         return selectedCard;
     }
     
-    /// <summary>
-    /// Shuffles all the cards in the Deck
-    /// </summary>
     /// <summary>
     /// Shuffles all the cards in the Deck
     /// </summary>
@@ -75,15 +73,13 @@ public class Deck
         byte[] randomBytes = new byte[4];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
     
-        for (int i = 0; i < _ShuffledCards.Length; i++)
+        for (int i = 0; i < _shuffledCards.Length; i++)
         {
             rng.GetBytes(randomBytes);
-            int randomIndex = BitConverter.ToInt32(randomBytes, 0) % _ShuffledCards.Length;
+            int randomIndex = BitConverter.ToInt32(randomBytes, 0) % _shuffledCards.Length;
         
             // Swap the cards
-            Cards.Card temp = _ShuffledCards[i];
-            _ShuffledCards[i] = _ShuffledCards[randomIndex];
-            _ShuffledCards[randomIndex] = temp;
+            (_shuffledCards[i], _shuffledCards[randomIndex]) = (_shuffledCards[randomIndex], _shuffledCards[i]);
         }
 
         rng.Dispose();
@@ -94,30 +90,30 @@ public class Deck
     /// </summary>
     public void RiffleShuffle()
     {
-        Cards.Card[] shuffled = new Cards.Card[52];
-        int middle = _ShuffledCards.Length / 2;
+        Card[] shuffled = new Card[52];
+        int middle = _shuffledCards.Length / 2;
         int leftIndex = 0, rightIndex = middle;
 
-        for (int i = 0; i < _ShuffledCards.Length; i++)
+        for (int i = 0; i < _shuffledCards.Length; i++)
         {
             byte[] randomNumber = new byte[1];
             RandomNumberGenerator.Fill(randomNumber);
             bool takeFromLeft = randomNumber[0] % 2 == 0;
 
-            shuffled[i] = takeFromLeft ? _ShuffledCards[leftIndex++] : _ShuffledCards[rightIndex++];
+            shuffled[i] = takeFromLeft ? _shuffledCards[leftIndex++] : _shuffledCards[rightIndex++];
             if (leftIndex == middle) leftIndex = 0;
-            if (rightIndex == _ShuffledCards.Length) rightIndex = middle;
+            if (rightIndex == _shuffledCards.Length) rightIndex = middle;
         }
 
-        _ShuffledCards = shuffled;
+        _shuffledCards = shuffled;
     }
     /// <summary>
     /// takes stacks of random amounts of cards and places them under
     /// </summary>
     public void StripShuffle()
     {
-        Cards.Card[] shuffled = new Cards.Card[52];
-        List<Cards.Card> tempDeck = new List<Cards.Card>(_ShuffledCards);
+        Card[] shuffled = new Card[52];
+        List<Card> tempDeck = [.._shuffledCards];
     
         for (int i = 0; i < shuffled.Length;)
         {
@@ -134,7 +130,7 @@ public class Deck
             tempDeck.RemoveRange(chunkStart, chunkSize);
         }
 
-        _ShuffledCards = shuffled;
+        _shuffledCards = shuffled;
     }
 
     /// <summary>
@@ -143,13 +139,13 @@ public class Deck
     public void Cut()
     {
         Random rnd = new Random();
-        int cutPoint = rnd.Next(1, _ShuffledCards.Length);
-        Cards.Card[] cutDeck = new Cards.Card[52];
+        int cutPoint = rnd.Next(1, _shuffledCards.Length);
+        Card[] cutDeck = new Card[52];
 
-        Array.Copy(_ShuffledCards, cutPoint, cutDeck, 0, _ShuffledCards.Length - cutPoint);
-        Array.Copy(_ShuffledCards, 0, cutDeck, _ShuffledCards.Length - cutPoint, cutPoint);
+        Array.Copy(_shuffledCards, cutPoint, cutDeck, 0, _shuffledCards.Length - cutPoint);
+        Array.Copy(_shuffledCards, 0, cutDeck, _shuffledCards.Length - cutPoint, cutPoint);
 
-        _ShuffledCards = cutDeck;
+        _shuffledCards = cutDeck;
     }
 
 
@@ -163,7 +159,7 @@ public class Deck
         {
             foreach (Suit suit in Enum.GetValuesAsUnderlyingType<Suit>())
             {
-                _ShuffledCards[i] = new Cards.Card(rank, suit);
+                _shuffledCards[i] = new Card(rank, suit);
                 i++;
             }
         }

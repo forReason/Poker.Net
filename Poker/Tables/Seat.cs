@@ -38,7 +38,7 @@ namespace Poker.Tables
                 return true;
             if (this.UncalledPendingBets != null && this.UncalledPendingBets.PotValue > 0)
                 return true;
-            if (PlayerHand != null && PlayerHand.CardCount > 0)
+            if (PlayerPocketCards != null && PlayerPocketCards.CardCount > 0)
                 return true;
             return false;
         }
@@ -56,7 +56,7 @@ namespace Poker.Tables
         /// <summary>
         /// The hand of Cards of the player
         /// </summary>
-        public Hand PlayerHand = new Hand();
+        public PocketCards PlayerPocketCards = new PocketCards();
 
         /// <summary>
         /// The SmallBlind must reserve half the minimum bet, even before seeing his Cards
@@ -124,8 +124,8 @@ namespace Poker.Tables
 
         public bool IsAllIn => (Stack.PotValue == 0 && PendingBets.PotValue > 0 && UncalledPendingBets.PotValue == 0 && !IsFold);
         public bool IsAllInCall => (Stack.PotValue == 0 && (PendingBets.PotValue + UncalledPendingBets.PotValue) > 0 && !IsFold);
-        public bool IsFold => PlayerHand.IsFold;
-
+        public bool IsFold => PlayerPocketCards.IsFold;
+        
         /// <summary>
         /// defines if and when the player chose to sit out.
         /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked fron the Table
@@ -193,7 +193,7 @@ namespace Poker.Tables
         /// </summary>
         public void Fold()
         {
-            this.PlayerHand.Clear();
+            this.PlayerPocketCards.Clear();
             Interlocked.Decrement(ref this.Table.PlayersInBettingRoundCount);
         }
     }

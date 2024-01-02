@@ -3,31 +3,43 @@ using Poker.Cards;
 namespace Poker.Decks;
 
 /// <summary>
-/// The SharedCards are the Middle Cards of the Table
+/// Manages the community cards (shared cards) on the table in a poker game.
+/// This includes handling of both the visible community cards and the burn cards.
 /// </summary>
 public class CommunityCards
 {
     /// <summary>
     /// the 5 Slots on the Table
     /// </summary>
-    private Card?[] _Slots = new Card?[5];
+    private readonly Card?[] _tableCards = new Card?[5];
 
     /// <summary>
-    /// Returns a shallow Copy of the current Slots, preventing external modifications
+    /// Gets a shallow copy of the current community cards on the table.
+    /// This prevents external modification of the cards array.
     /// </summary>
-    public Card?[] Slots => (Card?[])_Slots.Clone()!;
-
+    public Card?[] TableCards => (Card?[])_tableCards.Clone();
+    
+    /// <summary>
+    /// the burn cards which are put before each stage reveal
+    /// </summary>
+    private readonly Card?[] _burnCards = new Card?[3];
+    
+    /// <summary>
+    /// Gets a shallow copy of the burn cards used during the game.
+    /// Burn cards are discarded unseen to prevent any unfair advantage.
+    /// </summary>
+    public Card?[] BurnCards => (Card?[])_burnCards.Clone();
+    
     /// <summary>
     /// the current Stage we are in
     /// </summary>
     public CommunityCardStage Stage { get; private set; }
 
     /// <summary>
-    /// Override method for setting custom cards. When you host a Game, you should use OpenNextStage() instead.
+    /// Sets custom community cards for the game. This method is primarily used for testing or specific game scenarios.
     /// </summary>
-    /// <param name="cards">the cards to set, from left to right</param>
-    /// <exception cref="InvalidOperationException">
-    /// you either set less than 3 or more than 5 cards or the array contains null elements</exception>
+    /// <param name="cards">The array of cards to set as community cards, ordered from left to right.</param>
+    /// <exception cref="InvalidOperationException">Thrown if the array length is not within 3 to 5 cards.</exception>
     public void Set(Card[] cards)
     {
         if (cards.Length > 5)
@@ -37,41 +49,42 @@ public class CommunityCards
         Clear();
         for (int i = 0; i < cards.Length; i++)
         {
-            if (cards[i] == null)
-                throw new InvalidOperationException("Cannot Assign an empty slot. Please assign cards from left to Right");
-            _Slots[i] = cards[i];
+            _tableCards[i] = cards[i];
         }
 
         Stage = (CommunityCardStage)(cards.Length - 2);
     }
     
     /// <summary>
-    /// Opens the next stage and reveals more Cards
+    /// Advances the game to the next stage by revealing community cards and burning one card.
+    /// In the PreFlop stage, three community cards are drawn. In subsequent stages, one additional card is drawn.
     /// </summary>
-    /// <param name="deck"></param>
-    /// <exception cref="InvalidOperationException">if you try to reveal cards when all cards are already revealed</exception>
+    /// <param name="deck">The deck from which cards are drawn.</param>
+    /// <exception cref="InvalidOperationException">Thrown if attempting to reveal cards when all have already been revealed.</exception>
     public void OpenNextStage(Deck deck)
     {
         if (Stage >= CommunityCardStage.River)
             throw new InvalidOperationException("All Cards are Revealed! You cannot reveal more Cards");
+        _burnCards[(ulong)Stage] = deck.DrawCard();
         if (Stage == CommunityCardStage.PreFlop)
         {
             for (int i = 0; i < 3; i++)
             {
-                _Slots[i] = deck.DrawCard();
+                _tableCards[i] = deck.DrawCard();
             }
         }
         else
         {
-            _Slots[2 + (int)Stage] = deck.DrawCard();
+            _tableCards[2 + (int)Stage] = deck.DrawCard();
         }
         Stage++;
     }
 
     /// <summary>
-    /// Reveals all cards
+    /// Reveals all remaining community cards until the River stage is reached.
+    /// This method consecutively calls OpenNextStage until all community cards are revealed.
     /// </summary>
-    /// <param name="deck"></param>
+    /// <param name="deck">The deck from which cards are drawn.</param>
     public void RevealAll(Deck deck)
     {
         while (Stage < CommunityCardStage.River)
@@ -81,15 +94,13 @@ public class CommunityCards
     }
 
     /// <summary>
-    /// clears the Slots
+    /// Clears all community and burn cards from the table and resets the game stage.
+    /// This method is used for resetting the community cards at the end of a hand or when starting a new game.
     /// </summary>
     public void Clear()
     {
-        for (int i = 0; i < _Slots.Length; i++)
-        {
-            _Slots[i] = null;
-        }
-
+        Array.Clear(_tableCards, 0, _tableCards.Length);
+        Array.Clear(_burnCards, 0 , _burnCards.Length);
         Stage = 0;
     }
 }

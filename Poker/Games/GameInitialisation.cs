@@ -54,15 +54,15 @@ public partial class Game
             // remove cards from previous rounds
             foreach (int seatId in ActiveSeats)
             {
-                this.GameTable.Seats[seatId].PlayerHand.Clear();
+                this.GameTable.Seats[seatId].PlayerPocketCards.Clear();
             }
             // shuffle deck if too little cards remaining
-            if (this.GameTable.TableDeck._CardCount < ActiveSeats.Count)
+            if (this.GameTable.TableDeck.CardCount < ActiveSeats.Count)
                 this.GameTable.TableDeck.ShuffleCards();
             // deal new cards
             foreach (int seatId in ActiveSeats)
             {
-                this.GameTable.Seats[seatId].PlayerHand.DealCard(this.GameTable.TableDeck);
+                this.GameTable.Seats[seatId].PlayerPocketCards.DealCard(this.GameTable.TableDeck);
             }
             // evaluate
             Card highestCard = new Card(Rank.Two, Suit.Hearts);
@@ -72,13 +72,13 @@ public partial class Game
                 HashSet<int> remainingSeats = new HashSet<int>();
                 foreach (int seatId in ActiveSeats)
                 {
-                    if (this.GameTable.Seats[seatId].PlayerHand.Slots[0] < highestCard)
+                    if (this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0] < highestCard)
                     {
-                        this.GameTable.Seats[seatId].PlayerHand.Clear();
+                        this.GameTable.Seats[seatId].PlayerPocketCards.Clear();
                         continue;
                     }
-                    else if (this.GameTable.Seats[seatId].PlayerHand.Slots[0] > highestCard)
-                        highestCard = this.GameTable.Seats[seatId].PlayerHand.Slots[0].Value;
+                    else if (this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0] > highestCard)
+                        highestCard = this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0].Value;
                     remainingSeats.Add(seatId);
                 }
                 ActiveSeats = remainingSeats;

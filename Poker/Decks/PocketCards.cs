@@ -5,17 +5,17 @@ namespace Poker.Decks;
 /// <summary>
 /// represents a players hand with a maximum of 2 Cards
 /// </summary>
-public class Hand
+public class PocketCards
 {
     // <summary>
     /// the 5 Slots on the Table
     /// </summary>
-    private Card?[] _Slots = new Card?[2];
+    private Card?[] _cards = new Card?[2];
 
     /// <summary>
     /// Returns a shallow Copy of the current Slots, preventing external modifications
     /// </summary>
-    public Card?[] Slots => (Card?[])_Slots.Clone()!;
+    public Card?[] Cards => (Card?[])_cards.Clone()!;
 
     public int CardCount { get; private set; } = 0;
     public bool HandIsFull => CardCount >= 2;
@@ -28,10 +28,10 @@ public class Hand
     public void SetHand(Card? card1, Card? card2)
     {
         int count = 0;
-        _Slots[0] = card1;
+        _cards[0] = card1;
         if (card1 != null)
             count++;
-        _Slots[1] = card2;
+        _cards[1] = card2;
         if (card2 != null)
             count++;
         CardCount = count;
@@ -46,7 +46,7 @@ public class Hand
     {
         if (HandIsFull)
             throw new InvalidOperationException("You Cannot draw more than two Cards!");
-        _Slots[CardCount] = deck.DrawCard();
+        _cards[CardCount] = deck.DrawCard();
         CardCount++;
     }
     
@@ -56,9 +56,9 @@ public class Hand
     /// </summary>
     public void Clear()
     {
-        for (int i = 0; i < _Slots.Length; i++)
+        for (int i = 0; i < _cards.Length; i++)
         {
-            _Slots[i] = null;
+            _cards[i] = null;
         }
         CardCount = 0;
     }

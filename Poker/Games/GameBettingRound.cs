@@ -1,3 +1,4 @@
+using Poker.Chips;
 using Poker.Decks;
 using Poker.Tables;
 
@@ -45,12 +46,13 @@ public partial class Game
     /// The round continues until it either comes back to the last player who raised, 
     /// or there are no more players who can act due to folding or going all-in.
     /// </remarks>
-    public async Task PerformBettingRound(CommunityCardStage stage)
+    /// <returns>true if all cards are to </returns>
+    public async Task PerformBettingRound()
     {
         // Select the appropriate starting seat based on the stage of the game.
         // In pre-flop, the player next to the Big Blind starts the betting round and blinds get collected.
         int startingSeat = this.GameTable.DealerSeat;
-        if (stage == CommunityCardStage.PreFlop)
+        if (this.GameTable.CommunityCards.Stage == CommunityCardStage.PreFlop)
         {
             startingSeat = this.GameTable.BigBlindSeat;
             SetBlindsAndAnte();
@@ -96,5 +98,62 @@ public partial class Game
             currentSeat != -1 && // there are no more players who can take action (either all are all in, or folded, or only 1 player left in the money)
             currentSeat != lastRaisedSeatId // the round has progressed without any raise
         );
+    }
+
+    /// <summary>
+    /// Collects all bets from the players and splits the pot if necessary.
+    /// This method handles scenarios where side pots need to be created due to players going all-in with different bet amounts.
+    /// </summary>
+    public void CollectAndSplitBets()
+    {
+        ulong min, max;
+        do
+        {
+            // Initialize minimum and maximum values to track the smallest and largest bets in this iteration.
+            min = ulong.MaxValue;
+            max = 0;
+
+            // Iterate over all seats to find the minimum and maximum bet amounts among players who are still in the game.
+            foreach (var seat in this.GameTable.Seats)
+            {
+                if (!seat.IsFold)
+                {
+                    ulong potValue = seat.PendingBets.PotValue;
+                    if (potValue > max)
+                        max = potValue;
+                    if (potValue < min)
+                        min = potValue;
+                }
+            }
+
+            // If max is zero, it means no active bets are present, and the loop can be exited.
+            if (max == 0)
+                break;
+
+            // Create a new pot to handle the side pot for this iteration.
+            Pot newCenterPot = new();
+        
+            // Move the minimum bet amount from each active player's pending bets to the new side pot.
+            foreach (var seat in this.GameTable.Seats)
+            {
+                if (seat.PendingBets.PotValue > 0)
+                    seat.PendingBets.MoveValue(newCenterPot, min, seat.Player);
+            }
+
+            // Add the new side pot to the collection of center pots.
+            this.GameTable.CenterPots.Add(newCenterPot);
+
+            // Continue the loop until the minimum and maximum bet amounts are equal, indicating no further side pots are needed.
+        } while (min != max);
+    }
+
+
+    public BettingRoundResult EvaluateBettingRound()
+    {
+        if (this.GameTable.PlayersInBettingRoundCount <= 1)
+            return BettingRoundResult.LastManStanding;
+        if (this.GameTable.CheckAllPlayersAllIn())
+            return BettingRoundResult.RevealAllCards;
+        return BettingRoundResult.OpenNextStage;
     }
 }
