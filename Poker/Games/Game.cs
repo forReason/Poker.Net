@@ -136,10 +136,12 @@ public partial class Game
                 foreach (Pot pot in GameTable.CenterPots)
                 {
                     Player[] winners = EvaluateWinners(pot);
-
-                    // TODO: Split pots
+                    DistributePot(pot, winners);
                 }
+
                 // TODO: clean up table and everything from the round
+                GameTable.CenterPots.Clear();
+
             }
         }
         finally

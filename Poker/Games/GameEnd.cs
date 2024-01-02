@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using Poker.Tables;
-using System.Reflection.Metadata.Ecma335;
-
 namespace Poker.Games;
 
 public partial class Game
@@ -14,7 +10,7 @@ public partial class Game
     /// <returns></returns>
     private async Task<bool> CheckEndGame()
     {
-        if (GameTable.TakenSeats < 2)
+        if (GameTable.SeatsWithStakesCount < 2)
             return true;
 
         return false;
