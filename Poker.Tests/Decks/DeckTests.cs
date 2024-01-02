@@ -8,7 +8,7 @@ namespace Poker.Tests.Decks
         public void Deck_InitializesWith52Cards()
         {
             var deck = new Deck();
-            Assert.Equal(52, deck._CardCount);
+            Assert.Equal(52, deck.CardCount);
         }
 
         [Fact]
@@ -16,7 +16,7 @@ namespace Poker.Tests.Decks
         {
             var deck = new Deck();
             deck.DrawCard();
-            Assert.Equal(51, deck._CardCount);
+            Assert.Equal(51, deck.CardCount);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Poker.Tests.Decks
         {
             var deck = new Deck();
             deck.ShuffleCards();
-            Assert.Equal(52, deck._CardCount);
+            Assert.Equal(52, deck.CardCount);
         }
 
         [Fact]

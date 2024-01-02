@@ -136,4 +136,9 @@ public struct Card : IEquatable<Card>, IComparable<Card>
             return 1;
         return 0;
     }
+
+    public override string ToString()
+    {
+        return $"[{Suit}-{Rank}]";
+    }
 }

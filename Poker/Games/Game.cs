@@ -1,5 +1,8 @@
 using System.Diagnostics;
 using Poker.Blinds;
+using Poker.Chips;
+using Poker.Decks;
+using Poker.Players;
 using Poker.Tables;
 
 namespace Poker.Games;
@@ -106,9 +109,34 @@ public partial class Game
                 // init round
                 this.GameTable.MoveButtons();
                 this.GameTable.DealPlayerCards();
-
+                
                 // progress through stages
-
+                BettingRoundResult bettingResult;
+                do
+                {
+                    await PerformBettingRound();
+                    bettingResult = EvaluateBettingRound();
+                    if (bettingResult != BettingRoundResult.OpenNextStage)
+                    {
+                        if (bettingResult == BettingRoundResult.RevealAllCards)
+                        {
+                            this.GameTable.CommunityCards.RevealAll(this.GameTable.TableDeck);
+                        }
+                        break;
+                    }
+                    this.GameTable.CommunityCards.OpenNextStage(this.GameTable.TableDeck);
+                } while (this.GameTable.CommunityCards.Stage != CommunityCardStage.River);
+                
+                // collect bets and create pots from it
+                CollectAndSplitBets();
+                
+                // Evaluate Winner(s) and distribute wins
+                foreach (Pot pot in GameTable.CenterPots)
+                {
+                    Player[] winners = EvaluateWinners(pot);
+                    // TODO: Split pots
+                }
+                // TODO: clean up table and everything from the round
             }
         }
         finally

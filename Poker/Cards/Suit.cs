@@ -7,6 +7,6 @@ public enum Suit
 {
     Spades,
     Hearts,
-    Diamond,
+    Diamonds,
     Clubs
 }

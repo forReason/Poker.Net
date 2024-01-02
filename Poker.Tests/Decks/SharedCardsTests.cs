@@ -34,7 +34,7 @@ namespace Poker.Tests
             sharedCards.Clear();
 
             Assert.Equal(0, (int)sharedCards.Stage);
-            Assert.All(sharedCards.Slots, slot => Assert.Null(slot));
+            Assert.All(sharedCards.TableCards, slot => Assert.Null(slot));
         }
 
         [Fact]
@@ -54,10 +54,10 @@ namespace Poker.Tests
             var sharedCards = new CommunityCards();
             sharedCards.OpenNextStage(deck);
 
-            var slotsCopy = sharedCards.Slots;
+            var slotsCopy = sharedCards.TableCards;
             slotsCopy[0] = new Card(); // Modify the copy
 
-            Assert.NotEqual(slotsCopy[0], sharedCards.Slots[0]);
+            Assert.NotEqual(slotsCopy[0], sharedCards.TableCards[0]);
         }
 
         // Additional tests can be added here
