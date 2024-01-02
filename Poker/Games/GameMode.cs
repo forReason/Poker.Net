@@ -1,6 +1,6 @@
-namespace Poker.Blinds;
+namespace Poker.Games;
 
-public enum TableRuleSet
+public enum GameMode
 {
     /// <summary>
     /// In a cash game:<br/>

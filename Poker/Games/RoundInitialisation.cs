@@ -12,11 +12,11 @@ public partial class Game
             if (seat.IsParticipatingGame())
             {
                 // player is out of chips
-                if (BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
+                if (BettingStructure.RuleSet == GameMode.Cash)
                 {
                     seat.SitOut();
                 }
-                else if (BettingStructure.RuleSet == Blinds.TableRuleSet.Tournament)
+                else if (BettingStructure.RuleSet == GameMode.Tournament)
                 {
                     GameTable.LeaveTable(seat.SeatID);
                 }

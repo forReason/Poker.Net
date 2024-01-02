@@ -3,6 +3,7 @@ using Xunit;
 using Poker.Blinds;
 using System.Linq;
 using Poker.Tables;
+using Poker.Games;
 
 
 namespace Poker.Tests.Blinds;
@@ -13,8 +14,8 @@ public class BettingStructureTests
     public void BlindStructure_CalculatesCorrectLevels()
     {
         // Arrange
-        var blindStructure = new BettingStructure(
-            TableRuleSet.Tournament,
+        var blindStructure = new RuleSet(
+            GameMode.Tournament,
             buyIn: 1000,
             blindtoByinRatio: BlindToBuyInRatio.OneToEighty,
             maxBuyInRatio: 1,

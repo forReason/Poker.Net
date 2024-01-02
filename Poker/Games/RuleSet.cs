@@ -1,15 +1,35 @@
-﻿using Poker.Chips;
-using Poker.Tables;
-using System.Security.Cryptography.X509Certificates;
+﻿using Poker.Blinds;
+using Poker.Chips;
 
-namespace Poker.Blinds
+namespace Poker.Games
 {
-    public class BettingStructure
+    /// <summary>
+    /// Defines the betting structure for a poker game, including rules, blinds, antes, and rake.
+    /// </summary>
+    public class RuleSet
     {
-        public BettingStructure(
-            TableRuleSet ruleSet, 
-            ulong buyIn, 
-            BlindToBuyInRatio blindtoByinRatio, 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Games.RuleSet"/> class.
+        /// </summary>
+        /// <param name="ruleSet">The set of rules governing the game (e.g., Cash, Tournament).</param>
+        /// <param name="buyIn">The amount required to buy into the game.</param>
+        /// <param name="blindtoByinRatio">The ratio of the blind to the buy-in amount.</param>
+        /// <param name="maxBuyInRatio">The maximum ratio for the buy-in amount.</param>
+        /// <param name="ante">The ante amount in relation to the big blind.</param>
+        /// <param name="limit">The type of limit applied to the game (e.g., No Limit, Pot Limit).</param>
+        /// <param name="capBlindRatio">The ratio of the cap to the small blind.</param>
+        /// <param name="levelTime">The duration of each level in the game.</param>
+        /// <param name="targetTotalTime">The estimated total duration of the game.</param>
+        /// <param name="registrationGracePeriod">The grace period for late registration in tournament games.</param>
+        /// <param name="rakeStructure">The structure for calculating the rake.</param>
+        /// <param name="autoCalculateRakeStructure">Indicates whether to automatically calculate the rake structure.</param>
+        /// <remarks>
+        /// This class provides the necessary settings to define the betting dynamics of a poker game, including blinds, antes, and rake calculations.
+        /// </remarks>
+        public RuleSet(
+            GameMode ruleSet,
+            ulong buyIn,
+            BlindToBuyInRatio blindtoByinRatio,
             ulong maxBuyInRatio,
             AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
             LimitType limit = LimitType.NoLimit,
@@ -20,19 +40,19 @@ namespace Poker.Blinds
             RakeStructure? rakeStructure = null,
             bool autoCalculateRakeStructure = false)
         {
-            this.RuleSet = ruleSet;
-            this.BuyIn = buyIn;
-            this.BlindRatio = blindtoByinRatio;
-            this.MaxBuyinRatio = maxBuyInRatio;
-            this.Ante = ante;
-            this.Limit = limit;
-            this.CapXSmallBlind = capBlindRatio;
+            RuleSet = ruleSet;
+            BuyIn = buyIn;
+            BlindRatio = blindtoByinRatio;
+            MaxBuyinRatio = maxBuyInRatio;
+            Ante = ante;
+            Limit = limit;
+            CapXSmallBlind = capBlindRatio;
             if (levelTime != null)
-                this.LevelTime = levelTime.Value;
+                LevelTime = levelTime.Value;
             if (targetTotalTime != null)
-                this.TargetTotalTimeEstimate = targetTotalTime.Value;
+                TargetTotalTimeEstimate = targetTotalTime.Value;
             if (registrationGracePeriod != null)
-                this.RegistrationGracePeriod = registrationGracePeriod.Value;
+                RegistrationGracePeriod = registrationGracePeriod.Value;
             CalculateBlindStructure();
             RakeStructure = rakeStructure;
             if (autoCalculateRakeStructure)
@@ -42,7 +62,7 @@ namespace Poker.Blinds
         /// <summary>
         /// defines the rules under which to operate, eg Cash or tournament
         /// </summary>
-        public TableRuleSet RuleSet { get; set; }
+        public GameMode RuleSet { get; set; }
 
         /// <summary>
         /// in tournament games defines the latest buyin after Game stard
@@ -83,7 +103,7 @@ namespace Poker.Blinds
         /// </summary>
         /// <remarks>Usually, the game ends very soon when SmallBlind >= BuyIn</remarks>
         public TimeSpan TargetTotalTimeEstimate { get; private set; } = TimeSpan.FromHours(4);
-        
+
         /// <summary>
         /// the Buy-in amount to play on the Table
         /// </summary>
@@ -93,7 +113,7 @@ namespace Poker.Blinds
         /// the maximum buyin
         /// </summary>
         public decimal MaxBuyIn => BuyIn * MaxBuyinRatio;
-        
+
         /// <summary>
         /// the ratio of the buy-in to the minimum bet. The smaller the ratio, the longer the game will take.
         /// </summary>
@@ -160,9 +180,9 @@ namespace Poker.Blinds
         /// <returns></returns>
         public BlindLevel GetApropriateBlindLevel(ulong round)
         {
-            if (this.RuleSet == TableRuleSet.Cash)
+            if (RuleSet == GameMode.Cash)
                 return BlindStructure[0];
-            int epoch = (int) (round / this.RoundsPerLevel);
+            int epoch = (int)(round / RoundsPerLevel);
             if (epoch >= BlindStructure.Count)
                 return BlindStructure[^1];
             return BlindStructure[epoch];
@@ -207,12 +227,12 @@ namespace Poker.Blinds
             }
             ulong smallBlind = (ulong)GetClosestChip(smallBlindCalculated);
             decimal anteRatio = 1.0m / (decimal)Ante;
-            if (this.RuleSet == TableRuleSet.Cash)
+            if (RuleSet == GameMode.Cash)
             {
                 ulong bigBlind = smallBlind * 2;
                 ulong ante = (ulong)(bigBlind * anteRatio);
                 List<BlindLevel> level = [new BlindLevel(1, smallBlind, bigBlind, ante)];
-                this.BlindStructure = level;
+                BlindStructure = level;
                 return;
             }
             ulong buyInChipValue = Bank.ConvertMicroToMacro(BuyIn);
@@ -238,15 +258,15 @@ namespace Poker.Blinds
                 while (distributionCycleCount <= levelCount && totalBlindValue < buyInChipValue)
                 {
                     distributionCycleCount++;
-                    levelsPerDistributionCycle = (levelCount / distributionCycleCount);
+                    levelsPerDistributionCycle = levelCount / distributionCycleCount;
 
                     ulong currentCycleValue = 0;
-                    ulong currentCycleSmallBlind =( smallBlind * blindIncrementFactor);
+                    ulong currentCycleSmallBlind = smallBlind * blindIncrementFactor;
 
                     // Calculate the total value for the current distribution cycle.
                     for (ulong cycle = 1; cycle <= distributionCycleCount; cycle++)
                     {
-                        currentCycleValue += (levelsPerDistributionCycle * currentCycleSmallBlind * cycle);
+                        currentCycleValue += levelsPerDistributionCycle * currentCycleSmallBlind * cycle;
                     }
 
                     // Adjust for ante if applicable.
@@ -304,7 +324,7 @@ namespace Poker.Blinds
                 currentBlind = blindStructure[^1].SmallBlind;
             }
 
-            this.BlindStructure = blindStructure;
+            BlindStructure = blindStructure;
         }
     }
 }

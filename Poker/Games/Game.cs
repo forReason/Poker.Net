@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Poker.Blinds;
 using Poker.Chips;
 using Poker.Decks;
 using Poker.Players;
@@ -10,7 +9,7 @@ namespace Poker.Games;
 public partial class Game
 {
     public Game(
-        BettingStructure structure,
+        RuleSet structure,
         GameTimeStructure timeStructure,
         uint minimumPlayers = 2,
         uint maxPlayers = 6
@@ -63,7 +62,7 @@ public partial class Game
     /// <summary>
     /// defines the betting structure of the game
     /// </summary>
-    public BettingStructure BettingStructure { get; set; }
+    public RuleSet BettingStructure { get; set; }
 
     public Task GameTask { get; private set; }
     public CancellationToken CancelGame = new CancellationToken();

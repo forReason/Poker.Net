@@ -1,4 +1,5 @@
-﻿using Poker.Players;
+﻿using Poker.Games;
+using Poker.Players;
 using System.Collections.Concurrent;
 
 namespace Poker.Tables
@@ -96,7 +97,7 @@ namespace Poker.Tables
             if (Seats[seatID].Player == null)
                 return;
 
-            if (TableGame.BettingStructure.RuleSet == Blinds.TableRuleSet.Cash)
+            if (TableGame.BettingStructure.RuleSet == GameMode.Cash)
             {
                 Seats[seatID].Player.AddPlayerBank(Seats[seatID].Stack.Clear());
                 Seats[seatID].Player.AddPlayerBank(Seats[seatID].UncalledPendingBets.Clear());
@@ -108,7 +109,7 @@ namespace Poker.Tables
                 Interlocked.Decrement(ref TakenSeats);
                 SeatPlayers();
             }
-            else if (TableGame.BettingStructure.RuleSet == Blinds.TableRuleSet.Tournament)
+            else if (TableGame.BettingStructure.RuleSet == GameMode.Tournament)
             {
                 Seats[seatID].SitOut();
             }
