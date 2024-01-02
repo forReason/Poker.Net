@@ -48,7 +48,7 @@ public partial class BettingRound
     {
         ulong minRaise = CallValue * 2;
         ulong maxRaise = ulong.MaxValue;
-        if (_game.BettingStructure.Limit == LimitType.PotLimit)
+        if (_game.Rules.Limit == LimitType.PotLimit)
         {
             ulong playerBets = 0;
             foreach (Seat seat in _game.GameTable.Seats)
@@ -57,7 +57,7 @@ public partial class BettingRound
             }
             maxRaise = _game.GameTable.GetTotalPotValue() + CallValue + playerBets;
         }
-        else if(_game.BettingStructure.Limit == LimitType.FixedLimit)
+        else if(_game.Rules.Limit == LimitType.FixedLimit)
         {
             if (BetsReceived == 4)
             {

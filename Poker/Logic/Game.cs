@@ -18,7 +18,7 @@ public partial class Game
     )
     {
         this.MinimumPlayerCount = minimumPlayers;
-        this.BettingStructure = structure;
+        this.Rules = structure;
         this.GameTable = new Table(seats: maxPlayers, this);
         this.GameTimeStructure = timeStructure;
         this.BettingRound = new BettingRound(this); 
@@ -38,7 +38,7 @@ public partial class Game
         {
             if (GameTimeStructure == GameTimeStructure.Simulated)
             {
-                return Round * BettingStructure.TimePerRound;
+                return Round * Rules.TimePerRound;
             }
             else if (StartTime == null)
             {
@@ -53,7 +53,7 @@ public partial class Game
         TimeSpan? gameLength = GameLength;
         if (gameLength == null)
             return 0; 
-        return BettingStructure.GetApropriateBlindLevel(gameLength.Value).Level;
+        return Rules.GetApropriateBlindLevel(gameLength.Value).Level;
     }
 
     public GameTimeStructure GameTimeStructure { get; set; }
@@ -65,7 +65,7 @@ public partial class Game
     /// <summary>
     /// defines the betting structure of the game
     /// </summary>
-    public RuleSet BettingStructure { get; set; }
+    public RuleSet Rules { get; set; }
 
     public Task GameTask { get; private set; }
     public CancellationToken CancelGame = new CancellationToken();

@@ -20,10 +20,10 @@ namespace Poker.Games
         {
             // calculate rake and win per player
             ulong rake = 0;
-            if (this.BettingStructure.RakeStructure != null)
+            if (this.Rules.RakeStructure != null)
             {
-                BlindLevel level = this.BettingStructure.GetApropriateBlindLevel(this.GameLength);
-                rake = this.BettingStructure.RakeStructure.CalculateRake(pot, level.SmallBlind, this.BettingStructure.Micro);
+                BlindLevel level = this.Rules.GetApropriateBlindLevel(this.GameLength);
+                rake = this.Rules.RakeStructure.CalculateRake(pot, level.SmallBlind, this.Rules.Micro);
 
             }
             ulong leftover = pot.PotValue - rake;

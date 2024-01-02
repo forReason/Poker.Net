@@ -27,7 +27,7 @@ public static class BlindsAndAnte
     /// </remarks>
     public static ulong Set(Game game)
     {
-        game.CurrentBlindLevel = game.BettingStructure.GetApropriateBlindLevel(game.GameLength);
+        game.CurrentBlindLevel = game.Rules.GetApropriateBlindLevel(game.GameLength);
         // collect blinds
         game.GameTable.Seats[game.GameTable.SmallBlindSeat].ForceBet(game.CurrentBlindLevel.SmallBlind);
         game.GameTable.Seats[game.GameTable.BigBlindSeat].ForceBet(game.CurrentBlindLevel.BigBlind);

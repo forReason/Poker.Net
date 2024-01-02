@@ -169,13 +169,13 @@ namespace Poker.Tables
                     return SitInResult.BuyinTooLow;
                 if (this.Player.Bank < buyIn )
                     return SitInResult.NotEnoughFunds;
-                if (buyIn > this.Table.TableGame.BettingStructure.MaxBuyIn)
+                if (buyIn > this.Table.TableGame.Rules.MaxBuyIn)
                     return SitInResult.BuyinToHigh;
-                if (buyIn < this.Table.TableGame.BettingStructure.BuyIn)
+                if (buyIn < this.Table.TableGame.Rules.BuyIn)
                     return SitInResult.BuyinTooLow;
                 // purchase chips
                 ulong chipBuyInValue = (ulong)buyIn;
-                if (this.Table.TableGame.BettingStructure.Micro)
+                if (this.Table.TableGame.Rules.Micro)
                 {
                     chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
                 }
