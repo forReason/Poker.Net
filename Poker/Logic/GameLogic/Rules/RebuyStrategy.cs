@@ -23,13 +23,19 @@ public partial class Game
     ///default is 0, beaning only players with 0 chips on the Table are allowed to Rebuy
     /// </remarks>
     public int MaxChipsForRebuy { get; set; } = 0;
-    
 
-    // Method to determine if rebuy is allowed
+    /// <summary>
+    /// Method to determine if rebuy is allowed
+    /// </summary>
+    /// <param name="currentRebuys"></param>
+    /// <param name="tournamentTime"></param>
+    /// <param name="currentChips"></param>
+    /// <returns></returns>
     public bool CanRebuy(int currentRebuys, TimeSpan tournamentTime, int currentChips)
     {
+        // TODO: implement Method?
         return currentRebuys < MaxRebuys && 
-               GetGameLevel() <= MaxRebuyLevel && 
+            CurrentBlindLevel.Level <= MaxRebuyLevel && 
                currentChips <= MaxChipsForRebuy;
     }
 }

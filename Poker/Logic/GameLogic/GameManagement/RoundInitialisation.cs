@@ -1,9 +1,14 @@
+using Poker.Logic.GameLogic.Rules;
 using Poker.Tables;
 
 namespace Poker.Games;
 
 public partial class Game
 {
+    /// <summary>
+    /// sits out player which do no longer have stash. they can then rebuy according to the gamerules
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
     private void SitOutBrokePlayers()
     {
         // clean up players without cash from the table
@@ -20,13 +25,13 @@ public partial class Game
                 {
                     GameTable.LeaveTable(seat.SeatID);
                 }
-                else
-                {
-                    throw new NotImplementedException();
-                }
             }
         }
     }
+    /// <summary>
+    /// checks if we have enough seated players to start a round
+    /// </summary>
+    /// <returns></returns>
     private async Task<bool> CheckRoundPrecondition()
     {
         // make sure we have enough players to play a round

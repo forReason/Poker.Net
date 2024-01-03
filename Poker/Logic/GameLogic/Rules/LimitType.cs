@@ -1,4 +1,4 @@
-﻿namespace Poker.Blinds
+﻿namespace Poker.Logic.GameLogic.Rules
 {
     /// <summary>
     /// defines the limit structure of a game.

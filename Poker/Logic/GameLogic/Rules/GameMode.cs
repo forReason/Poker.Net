@@ -1,5 +1,8 @@
-namespace Poker.Games;
+namespace Poker.Logic.GameLogic.Rules;
 
+/// <summary>
+/// The GameMode defines wether the Table follows Tournament or Cash Game Rules
+/// </summary>
 public enum GameMode
 {
     /// <summary>

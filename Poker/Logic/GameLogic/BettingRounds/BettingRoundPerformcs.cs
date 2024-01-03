@@ -1,5 +1,5 @@
-using Poker.Blinds;
 using Poker.Decks;
+using Poker.Logic.GameLogic.Rules;
 using Poker.Tables;
 
 namespace Poker.Logic.GameLogic.BettingRounds;
@@ -36,7 +36,7 @@ public partial class BettingRound
             HandlePlayerAction(actionSeat, minRaise, maxRaise, ref lastRaisedSeatId);
             currentSeat = _game.GameTable.GetNextBettingSeat(currentSeat);
         } 
-        while (IsBettingRoundContinuing(currentSeat, lastRaisedSeatId));
+        while (IsBettingRoundContinuing(currentSeat, lastRaisedSeatId) && !_game.CancelGame.IsCancellationRequested);
     }
 
     /// <summary>

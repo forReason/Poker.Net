@@ -1,9 +1,8 @@
-﻿using Poker.Blinds;
-using Poker.Chips;
+﻿using Poker.Chips;
 using Poker.Logic.Blinds;
 using Poker.Logic.Fees;
 
-namespace Poker.Games
+namespace Poker.Logic.GameLogic.Rules
 {
     /// <summary>
     /// Defines the betting structure for a poker game, including rules, blinds, antes, and rake.
@@ -11,15 +10,18 @@ namespace Poker.Games
     public class RuleSet
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Games.RuleSet"/> class.
+        /// Initializes a new instance of the <see cref="RuleSet"/> class.
         /// </summary>
         /// <param name="ruleSet">The set of rules governing the game (e.g., Cash, Tournament).</param>
         /// <param name="buyIn">The amount required to buy into the game.</param>
         /// <param name="blindtoByinRatio">The ratio of the blind to the buy-in amount.</param>
         /// <param name="maxBuyInRatio">The maximum ratio for the buy-in amount.</param>
+        /// <param name="minPlayerCount">The minimum amount of players for the game / round to continue. Defaults to 2.</param>
+        /// <param name="maxPlayerCount">The maximum amount of players (seats at the Table) defaults to 6.</param>
         /// <param name="ante">The ante amount in relation to the big blind.</param>
         /// <param name="limit">The type of limit applied to the game (e.g., No Limit, Pot Limit).</param>
         /// <param name="capBlindRatio">The ratio of the cap to the small blind.</param>
+        /// <param name="timeMode">Wether we are in a simulated or live environment</param>
         /// <param name="levelTime">The duration of each level in the game.</param>
         /// <param name="targetTotalTime">The estimated total duration of the game.</param>
         /// <param name="registrationGracePeriod">The grace period for late registration in tournament games.</param>
@@ -33,16 +35,22 @@ namespace Poker.Games
             ulong buyIn,
             BlindToBuyInRatio blindtoByinRatio,
             ulong maxBuyInRatio,
+            uint maxPlayerCount = 6,
+            uint minPlayerCount = 2,
             AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
             LimitType limit = LimitType.NoLimit,
             double capBlindRatio = 0,
+            GameTime timeMode = GameTime.RealTime,
             TimeSpan? levelTime = null,
             TimeSpan? targetTotalTime = null,
             TimeSpan? registrationGracePeriod = null,
             RakeStructure? rakeStructure = null,
             bool autoCalculateRakeStructure = false)
         {
+            MinimumPlayerCount = minPlayerCount;
+            MaximumPlayerCount = maxPlayerCount;
             GameMode = ruleSet;
+            GameTimeStructure = timeMode;
             BuyIn = buyIn;
             BlindRatio = blindtoByinRatio;
             MaxBuyinRatio = maxBuyInRatio;
@@ -55,10 +63,10 @@ namespace Poker.Games
                 TargetTotalTimeEstimate = targetTotalTime.Value;
             if (registrationGracePeriod != null)
                 RegistrationGracePeriod = registrationGracePeriod.Value;
-            CalculateBlindStructure();
             RakeStructure = rakeStructure;
             if (autoCalculateRakeStructure)
                 RakeStructure = new RakeStructure(limit);
+            CalculateBlindStructure();
         }
 
         /// <summary>
@@ -75,6 +83,24 @@ namespace Poker.Games
         /// the Time Between each Level increase
         /// </summary>
         public TimeSpan LevelTime { get; private set; } = TimeSpan.FromMinutes(20);
+
+        /// <summary>
+        /// defines how the gametime is beeing Calculated.
+        /// </summary>
+        /// <remarks>
+        /// with real time set, the Engine uses the current system TimeStanmps<br/>
+        /// when set to simulated, the Game time is beeing Calculated from the rounds played
+        /// </remarks>
+        public GameTime GameTimeStructure { get; set; }
+
+        /// <summary>
+        /// the amount of players when the game starts
+        /// </summary>
+        public uint MinimumPlayerCount { get; private set; } = 2;
+        /// <summary>
+        /// the maximum Amount of players which can Sit on the Table
+        /// </summary>
+        public uint MaximumPlayerCount { get; private set; } = 6;
 
         /// <summary>
         /// the time each round ROUGHLY takes (for simulation purposes)
@@ -132,6 +158,9 @@ namespace Poker.Games
         /// </summary>
         public int MinimumChipSize { get; set; } = -2; // 2 chip stages below small blind
 
+        /// <summary>
+        /// defines the fees for the house
+        /// </summary>
         public RakeStructure? RakeStructure { get; set; }
 
         /// <summary>
@@ -143,7 +172,9 @@ namespace Poker.Games
         /// </remarks>
         public AnteToBigBlindRatio Ante { get; private set; }
 
-        // all chip sizes should be divided by 100
+        /// <summary>
+        /// all chip sizes should be divided by 100
+        /// </summary>
         public bool Micro { get; private set; } = false;
         private PokerChip GetClosestChip(decimal value)
         {

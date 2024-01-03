@@ -1,4 +1,4 @@
-﻿using Poker.Games;
+﻿using Poker.Logic.GameLogic.Rules;
 using Poker.Players;
 using System.Collections.Concurrent;
 

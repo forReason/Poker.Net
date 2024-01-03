@@ -10,6 +10,9 @@ public partial class Game
     /// </summary>
     public TimeSpan StartDelay { get; set; } = TimeSpan.FromSeconds(10);
 
+    /// <summary>
+    /// can be used to shedule a Game start
+    /// </summary>
     public DateTime StartGameAfter { get; set; } = DateTime.MinValue;
 
     /// <summary>
@@ -19,7 +22,7 @@ public partial class Game
     private async Task<bool> CheckStartGame()
     {
         // pre condition check
-        if (DateTime.Now < StartGameAfter || GameTable.TakenSeats < MinimumPlayerCount)
+        if (DateTime.Now < StartGameAfter || GameTable.TakenSeats < Rules.MinimumPlayerCount)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
             return false;
@@ -32,13 +35,13 @@ public partial class Game
         }
         
         // final start condition check
-        return GameTable.TakenSeats >= MinimumPlayerCount;
+        return GameTable.TakenSeats >= Rules.MinimumPlayerCount;
     }
 
     /// <summary>
     /// this function deals cards to the players and chooses the player with the highest rank as starting dealer
     /// </summary>
-    private async Task DetermineStartingDealer()
+    private void DetermineStartingDealer()
     {
         this.GameTable.TableDeck.ShuffleCards();
         // determine active Seats

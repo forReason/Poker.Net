@@ -39,5 +39,6 @@ public partial class BettingRound
     {
         BetsReceived = 0;
         CallValue = BlindsAndAnte.Set(_game);
+        _game.
     }
 }
