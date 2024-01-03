@@ -1,15 +1,15 @@
-namespace Poker.Decks;
+namespace Poker.PhysicalObjects.Decks;
 
 /// <summary>
 /// defines the primary score of a hand which can be compared to eachother
 /// </summary>
 /// <remarks>
-/// within each handrank, the hands have to be compared further
+/// within each handCardRank, the hands have to be compared further
 /// </remarks>
-public enum HandRank
+public enum HandCardRank
 {
     /// <summary>
-    /// the lowest Rank out there
+    /// the lowest CardRank out there
     /// </summary>
     /// <remarks>
     /// winrate: Better Fold<br/>
@@ -41,7 +41,7 @@ public enum HandRank
     /// </remarks>
     ThreeOfAKind,
     /// <summary>
-    /// the sixth highest Rank
+    /// the sixth highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: Solid hand<br/>
@@ -49,7 +49,7 @@ public enum HandRank
     /// </remarks>
     Straight,
     /// <summary>
-    /// the fith highest Rank
+    /// the fith highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: Strong hand with a good win rate<br/>
@@ -57,7 +57,7 @@ public enum HandRank
     /// </remarks>
     Flush,
     /// <summary>
-    /// the fourth highest Rank
+    /// the fourth highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: High win rate<br/>
@@ -65,7 +65,7 @@ public enum HandRank
     /// </remarks>
     FullHouse,
     /// <summary>
-    /// the third highest Rank
+    /// the third highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: Very high win rate, rarely beaten<br/>
@@ -73,7 +73,7 @@ public enum HandRank
     /// </remarks>
     FourOfAKind,
     /// <summary>
-    /// the second highest Rank
+    /// the second highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: Extremely high<br/>
@@ -81,7 +81,7 @@ public enum HandRank
     /// </remarks>
     StraightFlush,
     /// <summary>
-    /// the highest Rank
+    /// the highest CardRank
     /// </summary>
     /// <remarks>
     /// winrate: 100%<br/>

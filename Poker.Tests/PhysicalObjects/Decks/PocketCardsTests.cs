@@ -3,7 +3,7 @@ using Poker.Decks;
 using Poker.Cards;
 using System;
 
-namespace Poker.Tests
+namespace Poker.Tests.PhysicalObjects.Decks
 {
     public class PocketCardsTests
     {

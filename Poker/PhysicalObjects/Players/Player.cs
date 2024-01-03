@@ -1,6 +1,6 @@
 using Poker.Tables;
 
-namespace Poker.Players;
+namespace Poker.PhysicalObjects.Players;
 
 /// <summary>
 /// represents a player character

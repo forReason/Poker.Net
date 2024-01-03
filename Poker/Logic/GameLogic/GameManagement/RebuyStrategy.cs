@@ -1,7 +1,8 @@
-namespace Poker.Games;
+namespace Poker.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {
+    // TODO: This belongs into rules
     /// <summary>
     /// defines the maximum count of Rebuys
     /// </summary>

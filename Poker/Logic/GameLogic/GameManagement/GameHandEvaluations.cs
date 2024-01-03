@@ -3,7 +3,7 @@ using Poker.Chips;
 using Poker.Decks;
 using Poker.Players;
 
-namespace Poker.Games;
+namespace Poker.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

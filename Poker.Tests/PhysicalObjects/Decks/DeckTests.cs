@@ -1,6 +1,6 @@
 using Poker.Decks;
 
-namespace Poker.Tests.Decks
+namespace Poker.Tests.PhysicalObjects.Decks
 {
     public class DeckTests
     {
@@ -31,7 +31,7 @@ namespace Poker.Tests.Decks
 
             Assert.Throws<InvalidOperationException>(() => deck.DrawCard());
         }
-        
+
         [Fact]
         public void ShuffleCards_MaintainsCardCount()
         {
@@ -45,9 +45,9 @@ namespace Poker.Tests.Decks
         {
             var deck = new Deck();
             deck.ShuffleCards();
-            Poker.Cards.Card firstCard = deck.DrawCard();
+            Cards.Card firstCard = deck.DrawCard();
             deck.ShuffleCards();
-            Poker.Cards.Card secondCard = deck.DrawCard();
+            Cards.Card secondCard = deck.DrawCard();
             Assert.NotEqual(firstCard, secondCard);
         }
     }

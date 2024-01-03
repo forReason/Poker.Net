@@ -1,9 +1,9 @@
-namespace Poker.Cards;
+namespace Poker.PhysicalObjects.Cards;
 
 /// <summary>
-/// Suits are not ranked, so hands that differ by suit alone are of equal rank.
+/// Suits are not CardRanked, so hands that differ by suit alone are of equal CardRank.
 /// </summary>
-public enum Suit
+public enum CardSuit
 {
     /// <summary>
     /// a black leaf

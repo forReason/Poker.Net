@@ -1,7 +1,7 @@
 using Poker.Chips;
 using Poker.Decks;
 
-namespace Poker.Tables;
+namespace Poker.PhysicalObjects.Tables;
 
 /// <summary>
 /// table is the central hub for all physical game actions. It contains the cards, chips, seats and players

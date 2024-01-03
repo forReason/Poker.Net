@@ -1,12 +1,11 @@
-﻿namespace Poker.Tables
+﻿namespace Poker.PhysicalObjects.Tables;
+
+/// <summary>
+/// beeing used when a player tries to bet, in order to provide feedback
+/// </summary>
+public enum PerformBetResult
 {
-    /// <summary>
-    /// beeing used when a player tries to bet, in order to provide feedback
-    /// </summary>
-    public enum PerformBetResult
-    {
-        Success,
-        PlayerHasNoFunds,
-        AllIn
-    }
+    Success,
+    PlayerHasNoFunds,
+    AllIn
 }

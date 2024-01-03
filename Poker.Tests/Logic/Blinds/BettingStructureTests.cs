@@ -7,7 +7,7 @@ using Poker.Games;
 using Poker.Logic.GameLogic.Rules;
 
 
-namespace Poker.Tests.Blinds;
+namespace Poker.Tests.Logic.Blinds;
 
 public class BettingStructureTests
 {

@@ -4,8 +4,8 @@ using Poker.Cards;
 using Poker.Decks;
 using Poker.Tests.TestAssets;
 
-namespace Poker.Tests.Decks;
-    
+namespace Poker.Tests.PhysicalObjects.Decks;
+
 public class CardEvaluationTests
 {
     [Fact]
@@ -13,23 +13,23 @@ public class CardEvaluationTests
     {
         var communityCards = new Card[]
         {
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Queen, Suit.Hearts),
-            new Card(Rank.Two, Suit.Spades),
-            new Card(Rank.Three, Suit.Spades)
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Queen, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Spades),
+            new Card(CardRank.Three, CardSuit.Spades)
         };
         var playerPocketCards = new PocketCards();
-        playerPocketCards.SetHand(new Card(Rank.Three, Suit.Hearts), new Card(Rank.Two, Suit.Clubs));
+        playerPocketCards.SetHand(new Card(CardRank.Three, CardSuit.Hearts), new Card(CardRank.Two, CardSuit.Clubs));
 
         var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
-        Assert.Equal(HandRank.FullHouse, handScore.Rank);
+        Assert.Equal(HandCardRank.FullHouse, handScore.CardRank);
         // Add more assertions as needed
     }
     [Theory]
     [MemberData(nameof(CardRankTestSamples.GetSampleData), MemberType = typeof(CardRankTestSamples))]
-    public void ScoreCards_ShouldCorrectlyIdentifyHand(HandRank expectedHandRank, Card[] communityCards, Card[] pocketCards)
+    public void ScoreCards_ShouldCorrectlyIdentifyHand(HandCardRank expectedHandCardRank, Card[] communityCards, Card[] pocketCards)
     {
         // Arrange
         var playerPocketCards = new PocketCards();
@@ -37,20 +37,20 @@ public class CardEvaluationTests
         {
             playerPocketCards.SetHand(pocketCards[0], pocketCards[1]);
         }
-        
+
 
         // Act
         var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
         // Assert
-        Assert.Equal(expectedHandRank, handScore.Rank);
+        Assert.Equal(expectedHandCardRank, handScore.CardRank);
         // Add more specific assertions if necessary
     }
 
     [Fact]
-    public void TestRoyalFlushesSameRank()
+    public void TestRoyalFlushesSameCardRank()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] samples = CardRankTestSamples.Samples[HandRank.RoyalFlush];
+        (Card[] CommunityCards, Card[] PocketCards)[] samples = CardRankTestSamples.Samples[HandCardRank.RoyalFlush];
         (Card[] CommunityCards, Card[] PocketCards) sample1 = samples[0];
         var sample1PocketCards = new PocketCards();
         if (sample1.PocketCards.Length > 0)
@@ -72,8 +72,8 @@ public class CardEvaluationTests
     [Fact]
     public void TestRoyalFlushesHigherThanStraightFlushes()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] royalFlushes = CardRankTestSamples.Samples[HandRank.RoyalFlush];
-        (Card[] CommunityCards, Card[] PocketCards)[] straightFlushes = CardRankTestSamples.Samples[HandRank.StraightFlush];
+        (Card[] CommunityCards, Card[] PocketCards)[] royalFlushes = CardRankTestSamples.Samples[HandCardRank.RoyalFlush];
+        (Card[] CommunityCards, Card[] PocketCards)[] straightFlushes = CardRankTestSamples.Samples[HandCardRank.StraightFlush];
         foreach (var royalFlush in royalFlushes)
         {
             var royalFlushPocketCards = new PocketCards();
@@ -93,15 +93,15 @@ public class CardEvaluationTests
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
-            
+
         }
     }
 
     [Fact]
     public void TestStraightFlushesHigherThanFourOfAKind()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] fourOfAkinds = CardRankTestSamples.Samples[HandRank.FourOfAKind];
-        (Card[] CommunityCards, Card[] PocketCards)[] straightFlushes = CardRankTestSamples.Samples[HandRank.StraightFlush];
+        (Card[] CommunityCards, Card[] PocketCards)[] fourOfAkinds = CardRankTestSamples.Samples[HandCardRank.FourOfAKind];
+        (Card[] CommunityCards, Card[] PocketCards)[] straightFlushes = CardRankTestSamples.Samples[HandCardRank.StraightFlush];
         foreach (var straightFlush in straightFlushes)
         {
             var straightFlushPocketCards = new PocketCards();
@@ -121,15 +121,15 @@ public class CardEvaluationTests
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
-            
+
         }
     }
-    
+
     [Fact]
     public void TestFourOfAKindHigherThanFullHouse()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] fourOfKinds = CardRankTestSamples.Samples[HandRank.FourOfAKind];
-        (Card[] CommunityCards, Card[] PocketCards)[] fullHouses = CardRankTestSamples.Samples[HandRank.FullHouse];
+        (Card[] CommunityCards, Card[] PocketCards)[] fourOfKinds = CardRankTestSamples.Samples[HandCardRank.FourOfAKind];
+        (Card[] CommunityCards, Card[] PocketCards)[] fullHouses = CardRankTestSamples.Samples[HandCardRank.FullHouse];
         foreach (var higherCards in fourOfKinds)
         {
             var higherPocketCards = new PocketCards();
@@ -151,12 +151,12 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void TestFullHouseHigherThanFlush()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] fullHouse = CardRankTestSamples.Samples[HandRank.FullHouse];
-        (Card[] CommunityCards, Card[] PocketCards)[] flush = CardRankTestSamples.Samples[HandRank.Flush];
+        (Card[] CommunityCards, Card[] PocketCards)[] fullHouse = CardRankTestSamples.Samples[HandCardRank.FullHouse];
+        (Card[] CommunityCards, Card[] PocketCards)[] flush = CardRankTestSamples.Samples[HandCardRank.Flush];
         foreach (var higherCards in fullHouse)
         {
             var higherPocketCards = new PocketCards();
@@ -178,12 +178,12 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void TestFlushHigherThanStraight()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] flush = CardRankTestSamples.Samples[HandRank.Flush];
-        (Card[] CommunityCards, Card[] PocketCards)[] straight = CardRankTestSamples.Samples[HandRank.Straight];
+        (Card[] CommunityCards, Card[] PocketCards)[] flush = CardRankTestSamples.Samples[HandCardRank.Flush];
+        (Card[] CommunityCards, Card[] PocketCards)[] straight = CardRankTestSamples.Samples[HandCardRank.Straight];
         foreach (var higherCards in flush)
         {
             var higherPocketCards = new PocketCards();
@@ -205,12 +205,12 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void TestStraightHigherThanTheeOfAKind()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] straight = CardRankTestSamples.Samples[HandRank.Straight];
-        (Card[] CommunityCards, Card[] PocketCards)[] threeOfaKind = CardRankTestSamples.Samples[HandRank.ThreeOfAKind];
+        (Card[] CommunityCards, Card[] PocketCards)[] straight = CardRankTestSamples.Samples[HandCardRank.Straight];
+        (Card[] CommunityCards, Card[] PocketCards)[] threeOfaKind = CardRankTestSamples.Samples[HandCardRank.ThreeOfAKind];
         foreach (var higherCards in straight)
         {
             var higherPocketCards = new PocketCards();
@@ -232,12 +232,12 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void TestTheeOfAKindHigherThanTwoPairs()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] threeOfaKind = CardRankTestSamples.Samples[HandRank.ThreeOfAKind];
-        (Card[] CommunityCards, Card[] PocketCards)[] twoPairs = CardRankTestSamples.Samples[HandRank.TwoPairs];
+        (Card[] CommunityCards, Card[] PocketCards)[] threeOfaKind = CardRankTestSamples.Samples[HandCardRank.ThreeOfAKind];
+        (Card[] CommunityCards, Card[] PocketCards)[] twoPairs = CardRankTestSamples.Samples[HandCardRank.TwoPairs];
         foreach (var higherCards in threeOfaKind)
         {
             var higherPocketCards = new PocketCards();
@@ -262,8 +262,8 @@ public class CardEvaluationTests
     [Fact]
     public void TestTwoPairsHigherThanOnePair()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] twoPairs = CardRankTestSamples.Samples[HandRank.TwoPairs];
-        (Card[] CommunityCards, Card[] PocketCards)[] onePair = CardRankTestSamples.Samples[HandRank.OnePair];
+        (Card[] CommunityCards, Card[] PocketCards)[] twoPairs = CardRankTestSamples.Samples[HandCardRank.TwoPairs];
+        (Card[] CommunityCards, Card[] PocketCards)[] onePair = CardRankTestSamples.Samples[HandCardRank.OnePair];
         foreach (var higherCards in twoPairs)
         {
             var higherPocketCards = new PocketCards();
@@ -288,8 +288,8 @@ public class CardEvaluationTests
     [Fact]
     public void TestonePairHigherThanHighCard()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] onePair = CardRankTestSamples.Samples[HandRank.OnePair];
-        (Card[] CommunityCards, Card[] PocketCards)[] highCard = CardRankTestSamples.Samples[HandRank.HighCard];
+        (Card[] CommunityCards, Card[] PocketCards)[] onePair = CardRankTestSamples.Samples[HandCardRank.OnePair];
+        (Card[] CommunityCards, Card[] PocketCards)[] highCard = CardRankTestSamples.Samples[HandCardRank.HighCard];
         foreach (var higherCards in onePair)
         {
             var higherPocketCards = new PocketCards();
@@ -311,12 +311,12 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void TestoneHighCardLowerThanRoyalFlush()
     {
-        (Card[] CommunityCards, Card[] PocketCards)[] royalFlush = CardRankTestSamples.Samples[HandRank.RoyalFlush];
-        (Card[] CommunityCards, Card[] PocketCards)[] highCard = CardRankTestSamples.Samples[HandRank.HighCard];
+        (Card[] CommunityCards, Card[] PocketCards)[] royalFlush = CardRankTestSamples.Samples[HandCardRank.RoyalFlush];
+        (Card[] CommunityCards, Card[] PocketCards)[] highCard = CardRankTestSamples.Samples[HandCardRank.HighCard];
         foreach (var higherCards in royalFlush)
         {
             var higherPocketCards = new PocketCards();
@@ -338,52 +338,52 @@ public class CardEvaluationTests
             }
         }
     }
-    
+
     [Fact]
     public void ScoreCards_ShouldIdentifyHighCard()
     {
         var communityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Five, Suit.Clubs),
-            new Card(Rank.Seven, Suit.Spades),
-            new Card(Rank.Nine, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Five, CardSuit.Clubs),
+            new Card(CardRank.Seven, CardSuit.Spades),
+            new Card(CardRank.Nine, CardSuit.Hearts)
         };
         var playerPocketCards = new PocketCards();
-        playerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Ace, Suit.Diamonds));
+        playerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
-        Assert.Equal(HandRank.HighCard, handScore.Rank);
+        Assert.Equal(HandCardRank.HighCard, handScore.CardRank);
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void StraightFlushRanking()
+    public void StraightFlushCardRanking()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Five, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Five, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Nine, Suit.Hearts));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Five, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Five, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Ace, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -392,31 +392,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void FourOfAKindRanking1()
+    public void FourOfAKindCardRanking1()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Ace, Suit.Hearts),
-            new Card(Rank.Ace, Suit.Spades),
-            new Card(Rank.Ace, Suit.Clubs),
-            new Card(Rank.Ace, Suit.Diamonds),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Ace, CardSuit.Hearts),
+            new Card(CardRank.Ace, CardSuit.Spades),
+            new Card(CardRank.Ace, CardSuit.Clubs),
+            new Card(CardRank.Ace, CardSuit.Diamonds),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Hearts));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Ace, Suit.Hearts),
-            new Card(Rank.Ace, Suit.Spades),
-            new Card(Rank.Ace, Suit.Clubs),
-            new Card(Rank.Ace, Suit.Diamonds),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Ace, CardSuit.Hearts),
+            new Card(CardRank.Ace, CardSuit.Spades),
+            new Card(CardRank.Ace, CardSuit.Clubs),
+            new Card(CardRank.Ace, CardSuit.Diamonds),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Queen, Suit.Hearts), new Card(Rank.Queen, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Queen, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -425,31 +425,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void FourOfAKindRanking2()
+    public void FourOfAKindCardRanking2()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Ace, Suit.Hearts),
-            new Card(Rank.Ace, Suit.Spades),
-            new Card(Rank.Ace, Suit.Clubs),
-            new Card(Rank.Ace, Suit.Diamonds),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Ace, CardSuit.Hearts),
+            new Card(CardRank.Ace, CardSuit.Spades),
+            new Card(CardRank.Ace, CardSuit.Clubs),
+            new Card(CardRank.Ace, CardSuit.Diamonds),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Hearts));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Queen, Suit.Hearts),
-            new Card(Rank.Queen, Suit.Spades),
-            new Card(Rank.Queen, Suit.Clubs),
-            new Card(Rank.Queen, Suit.Diamonds),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Queen, CardSuit.Hearts),
+            new Card(CardRank.Queen, CardSuit.Spades),
+            new Card(CardRank.Queen, CardSuit.Clubs),
+            new Card(CardRank.Queen, CardSuit.Diamonds),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -458,31 +458,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void FullHouseRanking()
+    public void FullHouseCardRanking()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Ace, Suit.Hearts),
-            new Card(Rank.Ace, Suit.Spades),
-            new Card(Rank.Ace, Suit.Clubs),
-            new Card(Rank.Six, Suit.Diamonds),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Ace, CardSuit.Hearts),
+            new Card(CardRank.Ace, CardSuit.Spades),
+            new Card(CardRank.Ace, CardSuit.Clubs),
+            new Card(CardRank.Six, CardSuit.Diamonds),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Hearts));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Six, Suit.Hearts),
-            new Card(Rank.Six, Suit.Spades),
-            new Card(Rank.Six, Suit.Clubs),
-            new Card(Rank.Ace, Suit.Diamonds),
-            new Card(Rank.Ace, Suit.Hearts)
+            new Card(CardRank.Six, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Spades),
+            new Card(CardRank.Six, CardSuit.Clubs),
+            new Card(CardRank.Ace, CardSuit.Diamonds),
+            new Card(CardRank.Ace, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -495,27 +495,27 @@ public class CardEvaluationTests
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Jack, Suit.Hearts),
-            new Card(Rank.Three, Suit.Spades),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Jack, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Spades),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Hearts));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Jack, Suit.Hearts),
-            new Card(Rank.Three, Suit.Spades),
-            new Card(Rank.Ace, Suit.Clubs),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Jack, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Spades),
+            new Card(CardRank.Ace, CardSuit.Clubs),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Queen, Suit.Hearts));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Hearts));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -524,31 +524,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void StraightRanking()
+    public void StraightCardRanking()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Five, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Five, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Five, Suit.Diamonds),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Five, CardSuit.Diamonds),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Ace, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -557,31 +557,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void ThreeOfAKindRanking1()
+    public void ThreeOfAKindCardRanking1()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Two, Suit.Clubs),
-            new Card(Rank.Two, Suit.Diamonds),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Clubs),
+            new Card(CardRank.Two, CardSuit.Diamonds),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Ace, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -590,31 +590,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void ThreeOfAKindRanking2()
+    public void ThreeOfAKindCardRanking2()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Seven, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Seven, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -623,31 +623,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void TwoPairRanking1()
+    public void TwoPairCardRanking1()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Eight, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Three, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Three, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -656,31 +656,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void TwoPairRanking2()
+    public void TwoPairCardRanking2()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Eight, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -689,31 +689,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void TwoPairRanking3()
+    public void TwoPairCardRanking3()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Queen, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -722,31 +722,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void OnePairRanking1()
+    public void OnePairCardRanking1()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Eight, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Three, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Three, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.King, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -755,31 +755,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void OnePairRanking2()
+    public void OnePairCardRanking2()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.King, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Four, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.Two, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Four, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.Two, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Eight, Suit.Hearts), new Card(Rank.Queen, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -788,31 +788,31 @@ public class CardEvaluationTests
         // Assert that the highest card is correctly identified
     }
     [Fact]
-    public void HighCardranking()
+    public void HighCardRanking()
     {
         var higherCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Ten, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.King, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Ten, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.King, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(Rank.Two, Suit.Hearts), new Card(Rank.Nine, Suit.Spades));
+        higherPocketCards.SetHand(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
-        
+
         var lowerCommunityCards = new Card[]
         {
-            new Card(Rank.Four, Suit.Diamonds),
-            new Card(Rank.Ten, Suit.Clubs),
-            new Card(Rank.Three, Suit.Hearts),
-            new Card(Rank.King, Suit.Hearts),
-            new Card(Rank.Six, Suit.Hearts)
+            new Card(CardRank.Four, CardSuit.Diamonds),
+            new Card(CardRank.Ten, CardSuit.Clubs),
+            new Card(CardRank.Three, CardSuit.Hearts),
+            new Card(CardRank.King, CardSuit.Hearts),
+            new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(Rank.Two, Suit.Hearts), new Card(Rank.Seven, Suit.Diamonds));
+        lowerPocketCards.SetHand(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Seven, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 

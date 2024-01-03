@@ -1,12 +1,12 @@
 using Poker.Chips;
 
-namespace Poker.Tests.Chips;
+namespace Poker.Tests.PhysicalObjects.Chips;
 public class BankTests
 {
     [Fact]
     public void TestRecolorize()
     {
-        var chips = new Dictionary<PokerChip, ulong> 
+        var chips = new Dictionary<PokerChip, ulong>
         {
             { PokerChip.White, 10 },  // $10
             { PokerChip.Red, 3 },      // $15
@@ -29,7 +29,7 @@ public class BankTests
     [Fact]
     public void TestConvertChipsToValue()
     {
-        var chips = new Dictionary<PokerChip, ulong> 
+        var chips = new Dictionary<PokerChip, ulong>
         {
             { PokerChip.Red, 2 },    // $10
             { PokerChip.Brown, 1 }    // $10
@@ -46,7 +46,7 @@ public class BankTests
         ulong value = 55; // $55
 
         var chips = Bank.ConvertValueToChips(value);
-        
+
         Assert.Equal(1UL, chips[PokerChip.Blue]);   // $25
         Assert.Equal(1UL, chips[PokerChip.Red]);    // $30
         Assert.DoesNotContain(PokerChip.Black, chips.Keys);

@@ -1,7 +1,7 @@
 using Poker.Cards;
 using Poker.Tables;
 
-namespace Poker.Games;
+namespace Poker.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {
@@ -39,7 +39,7 @@ public partial class Game
     }
 
     /// <summary>
-    /// this function deals cards to the players and chooses the player with the highest rank as starting dealer
+    /// this function deals cards to the players and chooses the player with the highest CardRank as starting dealer
     /// </summary>
     private void DetermineStartingDealer()
     {
@@ -68,7 +68,7 @@ public partial class Game
                 this.GameTable.Seats[seatId].PlayerPocketCards.DealCard(this.GameTable.TableDeck);
             }
             // evaluate
-            Card highestCard = new Card(Rank.Two, Suit.Hearts);
+            Card highestCard = new Card(CardRank.Two, CardSuit.Hearts);
             // need two rounds. one for determining the highest card, and one to remove all players with a lower card
             for (int i = 0; i < 2; i++)
             {

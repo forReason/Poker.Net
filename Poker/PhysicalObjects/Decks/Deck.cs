@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using Poker.Cards;
 
-namespace Poker.Decks;
+namespace Poker.PhysicalObjects.Decks;
 
 /// <summary>
 /// Represents the Raw Deck with all 52 Cards. Primarily used for shuffling and drawing
@@ -41,8 +41,9 @@ public class Deck
     }
     
     /// <summary>
-    /// Shuffles all the cards in the Deck
+    /// Shuffles all the cards in the Deck by first washing the cards, then riffleshuffling and finally stripshuffling followed by a final cut
     /// </summary>
+    /// <remarks>Also resets the states of the deck so that cards can be drawn from again</remarks>
     public void ShuffleCards()
     {
         // shuffle randomly
@@ -68,7 +69,7 @@ public class Deck
     /// <summary>
     /// shuffles the deck randomly
     /// </summary>
-    public void WashDeck()
+    private void WashDeck()
     {
         byte[] randomBytes = new byte[4];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -84,11 +85,11 @@ public class Deck
 
         rng.Dispose();
     }
-    
+
     /// <summary>
     /// splits the deck in half and riffles the cards together randomly
     /// </summary>
-    public void RiffleShuffle()
+    private void RiffleShuffle()
     {
         Card[] shuffled = new Card[52];
         int middle = _shuffledCards.Length / 2;
@@ -110,7 +111,7 @@ public class Deck
     /// <summary>
     /// takes stacks of random amounts of cards and places them under
     /// </summary>
-    public void StripShuffle()
+    private void StripShuffle()
     {
         Card[] shuffled = new Card[52];
         List<Card> tempDeck = [.._shuffledCards];
@@ -136,7 +137,7 @@ public class Deck
     /// <summary>
     /// Cuts the deck at a random position, placing the top cards at the bottom
     /// </summary>
-    public void Cut()
+    private void Cut()
     {
         Random rnd = new Random();
         int cutPoint = rnd.Next(1, _shuffledCards.Length);
@@ -150,16 +151,16 @@ public class Deck
 
 
     /// <summary>
-    /// Generates the Deck of 52 Cards, one of each rank and suit combination
+    /// Generates the Deck of 52 Cards, one of each CardRank and suit combination
     /// </summary>
     private void GenerateDeck()
     {
         int i = 0;
-        foreach (Rank rank in Enum.GetValuesAsUnderlyingType<Rank>())
+        foreach (CardRank CardRank in Enum.GetValuesAsUnderlyingType<CardRank>())
         {
-            foreach (Suit suit in Enum.GetValuesAsUnderlyingType<Suit>())
+            foreach (CardSuit suit in Enum.GetValuesAsUnderlyingType<CardSuit>())
             {
-                _shuffledCards[i] = new Card(rank, suit);
+                _shuffledCards[i] = new Card(CardRank, suit);
                 i++;
             }
         }

@@ -1,6 +1,6 @@
 using Poker.Cards;
 
-namespace Poker.Decks;
+namespace Poker.PhysicalObjects.Decks;
 
 /// <summary>
 /// Manages the community cards (shared cards) on the table in a poker game.

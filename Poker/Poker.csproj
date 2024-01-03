@@ -11,8 +11,4 @@
       <PackageReference Include="QuickStatistics.Net" Version="2.4.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="PhysicalObjects\" />
-    </ItemGroup>
-
 </Project>

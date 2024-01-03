@@ -1,20 +1,20 @@
 using Poker.Cards;
 
-namespace Poker.Decks;
+namespace Poker.PhysicalObjects.Decks;
 /// <summary>
-/// raepresents the Rank of a hand an allows to compare twi hands against each other
+/// raepresents the CardRank of a hand an allows to compare twi hands against each other
 /// </summary>
 public class HandScore
 {
     /// <summary>
-    /// the primary rank of the hand
+    /// the primary CardRank of the hand
     /// </summary>
-    public HandRank Rank { get; set; }
+    public HandCardRank CardRank { get; set; }
     /// <summary>
     /// the score is used to evaluate the hand in a tie scenario for tie breaking.
     /// the comparer moves from the first element of the array to the last one, checking each card individually
     /// </summary>
-    public Rank[] Score { get; set; }
+    public CardRank[] Score { get; set; }
     /// <summary>
     /// score this hand against an enemy hand
     /// </summary>
@@ -24,9 +24,9 @@ public class HandScore
     /// 0 if both hands are equal<br/>
     /// -1 if the enemies hand is better</returns>
     public int CompareHand (HandScore? enemyHand) {
-        if (this.Rank > enemyHand.Rank)
+        if (this.CardRank > enemyHand.CardRank)
             return 1;
-        else if (this.Rank == enemyHand.Rank)
+        else if (this.CardRank == enemyHand.CardRank)
         {
             for (int i = 0; i < this.Score.Length; i++)
             {
@@ -119,7 +119,7 @@ public class HandScore
         {
             // note: add a prime number to reduce hash collisions
             int hash = 17;
-            hash = hash * 31 + Rank.GetHashCode();
+            hash = hash * 31 + CardRank.GetHashCode();
             foreach (var score in Score)
             {
                 hash = hash * 31 + score.GetHashCode();

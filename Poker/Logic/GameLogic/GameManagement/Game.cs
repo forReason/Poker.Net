@@ -7,7 +7,7 @@ using Poker.Logic.GameLogic.Rules;
 using Poker.Players;
 using Poker.Tables;
 
-namespace Poker.Games;
+namespace Poker.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

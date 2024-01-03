@@ -1,10 +1,10 @@
-namespace Poker.Cards;
+namespace Poker.PhysicalObjects.Cards;
 
 /// <summary>
-/// Individual cards are ranked, from highest to lowest: A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3 and 2.<br/>
-/// Aces have the highest rank under ace-to-five high or six-to-ace low rules, or under high rules as part of a five-high straight or straight flush.
+/// Individual cards are CardRanked, from highest to lowest: A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3 and 2.<br/>
+/// Aces have the highest CardRank under ace-to-five high or six-to-ace low rules, or under high rules as part of a five-high straight or straight flush.
 /// </summary>
-public enum Rank : ulong
+public enum CardRank : ulong
 {
     /// <summary>
     /// the highest card in value

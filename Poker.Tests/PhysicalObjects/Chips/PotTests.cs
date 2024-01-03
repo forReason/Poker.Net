@@ -1,7 +1,7 @@
 using Poker.Chips;
 using Poker.Players;
 
-namespace Poker.Tests.Chips;
+namespace Poker.Tests.PhysicalObjects.Chips;
 public class PotTests
 {
     [Fact]

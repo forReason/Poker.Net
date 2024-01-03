@@ -1,7 +1,7 @@
 using Poker.Decks;
 using Poker.Cards;
 
-namespace Poker.Tests
+namespace Poker.Tests.PhysicalObjects.Decks
 {
     public class SharedCardsTests
     {

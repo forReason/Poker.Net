@@ -1,6 +1,6 @@
 using Poker.Cards;
 
-namespace Poker.Decks;
+namespace Poker.PhysicalObjects.Decks;
 
 /// <summary>
 /// represents a players hand with a maximum of 2 Cards

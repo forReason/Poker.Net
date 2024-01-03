@@ -1,4 +1,4 @@
-namespace Poker.Chips;
+namespace Poker.PhysicalObjects.Chips;
 
 /// <summary>
 /// Provides utility methods for handling and distributing poker chips.
