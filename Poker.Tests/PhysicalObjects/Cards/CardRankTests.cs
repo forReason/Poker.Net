@@ -1,5 +1,6 @@
 ﻿using Poker.PhysicalObjects.Cards;
 
+namespace Poker.Tests.PhysicalObjects.Cards;
 public class CardRankTests
 {
     [Fact]

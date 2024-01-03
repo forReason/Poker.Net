@@ -2,24 +2,8 @@
 using Poker.PhysicalObjects.Chips;
 
 namespace Poker.Tests.PhysicalObjects.Chips;
-public class BankTests
+public class BankChipValueConversionTests
 {
-    [Fact]
-    public void TestRecolorize()
-    {
-        var chips = new Dictionary<PokerChip, ulong>
-        {
-            { PokerChip.White, 10 },  // $10
-            { PokerChip.Red, 3 },      // $15
-            { PokerChip.Pink , 1} // 1000
-        };
-        ulong originalValue = Bank.ConvertChipsToValue(chips);
-        var result = Bank.Recolorize(chips);
-        ulong recoloredValue = Bank.ConvertChipsToValue(result);
-        Assert.Equal(originalValue, recoloredValue);  // Expect to get the same amount back
-        Assert.True(result.Count > 5);
-    }
-
     [Fact]
     public void TestConvert0Value()
     {
@@ -52,13 +36,20 @@ public class BankTests
         Assert.Equal(1UL, chips[PokerChip.Red]);    // $30
         Assert.DoesNotContain(PokerChip.Black, chips.Keys);
     }
-
-    [Fact]
-    public void TestExchangeChipsForSmallerDenominations()
+    [Theory]
+    [InlineData(150, new[] { PokerChip.Black, PokerChip.Blue, PokerChip.White })]
+    [InlineData(75, new[] { PokerChip.Green, PokerChip.Red })]
+    public void DistributeValueForUse_DistributesCorrectly(ulong value, PokerChip[] expectedChips)
     {
-        var result = Bank.ExchangeChipsForSmallerDenominations(PokerChip.Black, 1); // $100
+        // Act
+        var result = Bank.DistributeValueForUse(value);
 
-        Assert.Equal(2UL, result[PokerChip.Blue]);  // $50
-        Assert.DoesNotContain(PokerChip.Black, result.Keys);
+        // Assert
+        Assert.Equal(expectedChips.Length, result.Count);
+        foreach (var chip in expectedChips)
+        {
+            Assert.True(result.ContainsKey(chip));
+            Assert.True(result[chip] > 0);
+        }
     }
 }
