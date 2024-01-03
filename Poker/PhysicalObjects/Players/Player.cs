@@ -1,16 +1,26 @@
-using Poker.Decks;
 using Poker.Tables;
-using System.Threading;
 
 namespace Poker.Players;
 
+/// <summary>
+/// represents a player character
+/// </summary>
 public class Player
 {
     private decimal _bank;
     private readonly object _bankLock = new object();
+    /// <summary>
+    /// the unique identifier of the player. In online games, this might be the name or an #ID
+    /// </summary>
     public string UniqueIdentifier = Guid.NewGuid().ToString();
+    /// <summary>
+    /// the seat on a table game which this player is part of
+    /// </summary>
     public Seat? Seat = null;
 
+    /// <summary>
+    /// The Funds which the player has available
+    /// </summary>
     public decimal Bank
     {
         get

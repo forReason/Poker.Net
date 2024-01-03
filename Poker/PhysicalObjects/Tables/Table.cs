@@ -3,6 +3,9 @@ using Poker.Decks;
 
 namespace Poker.Tables;
 
+/// <summary>
+/// table is the central hub for all physical game actions. It contains the cards, chips, seats and players
+/// </summary>
 public partial class Table
 {
     public Table(
@@ -17,7 +20,9 @@ public partial class Table
         }
         this.TableGame = game;
     }
-
+    /// <summary>
+    /// backreference to a running game on the table
+    /// </summary>
     public Games.Game? TableGame { get; set; } = null; 
 
     /// <summary>
@@ -38,6 +43,11 @@ public partial class Table
         }
         return value;
     }
+    /// <summary>
+    /// returns the next active player seat who can perform a bet
+    /// </summary>
+    /// <param name="seatID"></param>
+    /// <returns></returns>
     public int GetNextBettingSeat(int seatID)
     {
         if (PlayersInBettingRoundCount <= 1)
@@ -105,9 +115,25 @@ public partial class Table
             return -1;
         return seatID;
     }
-
+    /// <summary>
+    /// the seat which is currently set as the dealer
+    /// </summary>
     public int DealerSeat = -1;
+    /// <summary>
+    /// the seat which as currently the small blind
+    /// </summary>
+    /// <remarks>
+    /// the small blind is forced to make half a bet at the start of the round<br/>
+    /// when only 2 players are at the Table, the Dealer is the small Blind at the same Time. Otherwise, its the seat left of the dealer.
+    /// </remarks>
     public int SmallBlindSeat = 0;
+    /// <summary>
+    /// the seat which as currently the big blind
+    /// </summary>
+    /// <remarks>
+    /// the big blind is forced to make a full bet at the start of the round<br/>
+    /// it is the player left of the SmallBlind
+    /// </remarks>
     public int BigBlindSeat = 0;
     /// <summary>
     /// Moves the Dealer and blind buttons apropriately
@@ -141,7 +167,9 @@ public partial class Table
             seat.PlayerPocketCards.Clear();
         }
     }
-
+    /// <summary>
+    /// shuffles the deck according to official shuffling ruled and deals 2 cards to each player, one by one.
+    /// </summary>
     public void DealPlayerCards()
     {
         RevokePlayerCards();
@@ -156,6 +184,10 @@ public partial class Table
             }
         }
     }
+    /// <summary>
+    /// utility function to evaluate if evewry active player is all in
+    /// </summary>
+    /// <returns></returns>
     public bool CheckAllPlayersAllIn()
     {
         // precheck
@@ -169,6 +201,10 @@ public partial class Table
         }
         return true;
     }
+    /// <summary>
+    /// Utility function to verify that every active player has the same bet (or is all in if lower)
+    /// </summary>
+    /// <returns></returns>
     public bool CheckBetsAreAllEqual()
     {
         if (SeatsWithStakesCount <= 1)
@@ -189,8 +225,17 @@ public partial class Table
         return true;
     }
 
+    /// <summary>
+    /// the card deck of the table
+    /// </summary>
     public Deck TableDeck = new Deck();
+    /// <summary>
+    /// the middle 5 cards of the table shared by each player, including the burn cards
+    /// </summary>
     public CommunityCards CommunityCards = new CommunityCards();
+    /// <summary>
+    /// the table seats where players can sit
+    /// </summary>
     public Seat[] Seats;
 
     /// <summary>
@@ -201,5 +246,8 @@ public partial class Table
     /// while a player is not in his seat, the seats funds might still be at stake
     /// </summary>
     public int SeatsWithStakesCount = 0;
+    /// <summary>
+    /// the amount of players which are active in the current betting round
+    /// </summary>
     public int PlayersInBettingRoundCount = 0;
 }

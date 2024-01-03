@@ -1,9 +1,14 @@
 using Poker.Cards;
 
 namespace Poker.Decks;
-
+/// <summary>
+/// raepresents the Rank of a hand an allows to compare twi hands against each other
+/// </summary>
 public class HandScore
 {
+    /// <summary>
+    /// the primary rank of the hand
+    /// </summary>
     public HandRank Rank { get; set; }
     /// <summary>
     /// the score is used to evaluate the hand in a tie scenario for tie breaking.
@@ -36,6 +41,12 @@ public class HandScore
 
         return -1;
     }
+    /// <summary>
+    /// checks if the hand to the left of the comparison is better than the right one
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
     public static bool operator >(HandScore lhs, HandScore? rhs)
     {
         if (lhs is null)
@@ -46,6 +57,12 @@ public class HandScore
         return lhs.CompareHand(rhs) > 0;
     }
 
+    /// <summary>
+    /// checks if the hand to the left of the comparison is worse than the right one
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
     public static bool operator <(HandScore lhs, HandScore? rhs)
     {
         if (lhs is null)
@@ -56,6 +73,12 @@ public class HandScore
         return lhs.CompareHand(rhs) < 0;
     }
 
+    /// <summary>
+    /// checks if both cards are exactly as good as each other
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
     public static bool operator ==(HandScore lhs, HandScore? rhs)
     {
         if (lhs is null || rhs is null)
@@ -64,13 +87,23 @@ public class HandScore
         return lhs.CompareHand(rhs) == 0;
     }
 
+    /// <summary>
+    /// checks if both hands are not exactly as good as the other
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
     public static bool operator !=(HandScore lhs, HandScore? rhs)
     {
         return !(lhs == rhs);
     }
 
 
-    // Overriding Equals and GetHashCode is recommended when overloading == and !=
+    /// <summary>
+    /// Checks if both hands ar exactly as good as the other
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public override bool Equals(object obj)
     {
         if (obj is HandScore other)

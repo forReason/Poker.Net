@@ -308,6 +308,9 @@ namespace Poker.Chips
             PotValue = Bank.ConvertChipsToValue(_chips);
             return PotValue;
         }
+        /// <summary>
+        /// represents the current Value of the pot as ulong
+        /// </summary>
         public ulong PotValue { get; private set; } = 0;
 
         /// <summary>

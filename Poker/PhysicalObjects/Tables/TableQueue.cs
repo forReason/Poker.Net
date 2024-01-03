@@ -51,7 +51,10 @@ namespace Poker.Tables
             EnqueuedPlayers[player.UniqueIdentifier] = preferredSeat;
         }
 
-
+        /// <summary>
+        /// do not wait longer to join the game. Tote that you can re-enroll without loosing your position in the queue until it would be your place.
+        /// </summary>
+        /// <param name="player"></param>
         public void CancelEnrollment(Player player)
         {
             if (EnqueuedPlayers.ContainsKey(player.UniqueIdentifier))
@@ -59,6 +62,12 @@ namespace Poker.Tables
                 EnqueuedPlayers[player.UniqueIdentifier] = -1;
             }
         }
+        /// <summary>
+        /// seats a player to a specific seat (if it is free)
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
         private bool TryTakeSeat(Player player, int seatID)
         {
             if (Seats[seatID].Player == null)
@@ -72,6 +81,12 @@ namespace Poker.Tables
             }
             return false;
         }
+        /// <summary>
+        /// sits a player to any free seat (if one is free)
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private bool TryTakeAnySeat(Player player)
         {
             bool seatFound = false;

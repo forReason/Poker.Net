@@ -1,5 +1,7 @@
 namespace Poker.Chips;
-
+/// <summary>
+/// Pokerchips are used to bet at the game. they are of type enum : ulong
+/// </summary>
 public enum PokerChip : ulong
 {
     White = 1,

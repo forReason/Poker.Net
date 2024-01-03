@@ -17,9 +17,21 @@ public class PocketCards
     /// </summary>
     public Card?[] Cards => (Card?[])_cards.Clone()!;
 
+    /// <summary>
+    /// the current amount of cards in the player pocket
+    /// </summary>
     public int CardCount { get; private set; } = 0;
+    /// <summary>
+    /// returns true if the player has 2 hands
+    /// </summary>
     public bool HandIsFull => CardCount >= 2;
+    /// <summary>
+    /// checks if the player has at least 1 card
+    /// </summary>
     public bool HasCards => CardCount > 0;
+    /// <summary>
+    /// checks if the pleayer has no cards (fold)
+    /// </summary>
     public bool IsFold => CardCount == 0;
 
     /// <summary>

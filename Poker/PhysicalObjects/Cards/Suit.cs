@@ -5,8 +5,20 @@ namespace Poker.Cards;
 /// </summary>
 public enum Suit
 {
+    /// <summary>
+    /// a black leaf
+    /// </summary>
     Spades,
+    /// <summary>
+    /// a red heart
+    /// </summary>
     Hearts,
+    /// <summary>
+    /// a red Rhombus
+    /// </summary>
     Diamonds,
+    /// <summary>
+    /// a black cross
+    /// </summary>
     Clubs
 }

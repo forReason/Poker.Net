@@ -1,5 +1,8 @@
 namespace Poker.Tables;
 
+/// <summary>
+/// used to provide feedback when a player tries to sit in / buy into a table
+/// </summary>
 public enum SitInResult
 {
     Unknown,

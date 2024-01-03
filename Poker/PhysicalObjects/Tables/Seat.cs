@@ -112,10 +112,18 @@ namespace Poker.Tables
             }
             return temporaryPot.PerformBet(PendingBets, value, this.Player);
         }
+        /// <summary>
+        /// moves all uncomitted Chips to the player bet which is locked up
+        /// </summary>
         public void CommitUncalledPendingBets()
         {
             UncalledPendingBets.MoveAllChips(PendingBets, this.Player);
         }
+        /// <summary>
+        /// used by a player in order to wager a certain amount. At this point the money is not comitted yet
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public PerformBetResult MoveStackToUncalledPendingBets(ulong value)
         {
 
