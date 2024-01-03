@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using Poker.PhysicalObjects.Players;
+using Poker.PhysicalObjects.Tables;
 using System.Collections.ObjectModel;
-using Poker.Players;
-using Poker.Tables;
+
 
 namespace Poker.PhysicalObjects.Chips;
 

@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Poker.Cards;
+using Poker.PhysicalObjects.Cards;
 
 namespace Poker.PhysicalObjects.Decks;
 

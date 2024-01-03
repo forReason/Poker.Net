@@ -1,5 +1,5 @@
-using Poker.Games;
 using Poker.Logic.Blinds;
+using Poker.Logic.GameLogic.GameManagement;
 
 namespace Poker.Logic.GameLogic.BettingRounds;
 

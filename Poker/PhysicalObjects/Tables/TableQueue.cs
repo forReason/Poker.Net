@@ -1,5 +1,5 @@
 ﻿using Poker.Logic.GameLogic.Rules;
-using Poker.Players;
+using Poker.PhysicalObjects.Players;
 using System.Collections.Concurrent;
 
 namespace Poker.PhysicalObjects.Tables;

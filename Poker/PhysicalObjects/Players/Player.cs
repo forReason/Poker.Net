@@ -1,4 +1,4 @@
-using Poker.Tables;
+using Poker.PhysicalObjects.Tables;
 
 namespace Poker.PhysicalObjects.Players;
 

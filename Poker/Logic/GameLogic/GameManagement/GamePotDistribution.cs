@@ -1,6 +1,6 @@
-﻿using Poker.Chips;
-using Poker.Logic.Blinds;
-using Poker.Players;
+﻿using Poker.Logic.Blinds;
+using Poker.PhysicalObjects.Chips;
+using Poker.PhysicalObjects.Players;
 
 namespace Poker.Logic.GameLogic.GameManagement;
 

@@ -1,11 +1,8 @@
-using Poker.Phy.Cards;
-using Poker.Decks;
-
-namespace Poker.Tests.TestAssets;
-
-using Poker.Cards;
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 using System.Collections.Generic;
 
+namespace Poker.Tests.TestAssets;
 public class CardRankTestSamples
 {
     public static IEnumerable<object[]> GetSampleData()

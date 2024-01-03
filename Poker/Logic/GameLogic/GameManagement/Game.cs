@@ -1,11 +1,11 @@
-using System.Diagnostics;
-using Poker.Chips;
-using Poker.Decks;
 using Poker.Logic.Blinds;
 using Poker.Logic.GameLogic.BettingRounds;
 using Poker.Logic.GameLogic.Rules;
-using Poker.Players;
-using Poker.Tables;
+using Poker.PhysicalObjects.Chips;
+using Poker.PhysicalObjects.Decks;
+using Poker.PhysicalObjects.Players;
+using Poker.PhysicalObjects.Tables;
+using System.Diagnostics;
 
 namespace Poker.Logic.GameLogic.GameManagement;
 

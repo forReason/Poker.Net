@@ -1,10 +1,7 @@
 using System;
 using Xunit;
-using Poker.Blinds;
-using System.Linq;
-using Poker.Tables;
-using Poker.Games;
 using Poker.Logic.GameLogic.Rules;
+using Poker.Logic.Blinds;
 
 
 namespace Poker.Tests.Logic.Blinds;

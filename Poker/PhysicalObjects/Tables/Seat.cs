@@ -1,6 +1,7 @@
-﻿using Poker.Chips;
-using Poker.Decks;
-using Poker.Players;
+﻿
+using Poker.PhysicalObjects.Chips;
+using Poker.PhysicalObjects.Decks;
+using Poker.PhysicalObjects.Players;
 
 namespace Poker.PhysicalObjects.Tables;
 

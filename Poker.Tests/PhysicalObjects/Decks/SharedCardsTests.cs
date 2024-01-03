@@ -1,5 +1,5 @@
-using Poker.Decks;
-using Poker.Cards;
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 
 namespace Poker.Tests.PhysicalObjects.Decks
 {

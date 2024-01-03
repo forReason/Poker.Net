@@ -1,5 +1,7 @@
-using Poker.Cards;
-using Poker.Tables;
+
+
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Tables;
 
 namespace Poker.Logic.GameLogic.GameManagement;
 

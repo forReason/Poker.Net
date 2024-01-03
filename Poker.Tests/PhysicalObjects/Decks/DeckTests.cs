@@ -1,4 +1,6 @@
-using Poker.Decks;
+
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 
 namespace Poker.Tests.PhysicalObjects.Decks
 {
@@ -45,9 +47,9 @@ namespace Poker.Tests.PhysicalObjects.Decks
         {
             var deck = new Deck();
             deck.ShuffleCards();
-            Cards.Card firstCard = deck.DrawCard();
+            Card firstCard = deck.DrawCard();
             deck.ShuffleCards();
-            Cards.Card secondCard = deck.DrawCard();
+            Card secondCard = deck.DrawCard();
             Assert.NotEqual(firstCard, secondCard);
         }
     }

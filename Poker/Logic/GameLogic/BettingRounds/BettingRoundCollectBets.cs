@@ -1,4 +1,5 @@
-using Poker.Chips;
+
+using Poker.PhysicalObjects.Chips;
 
 namespace Poker.Logic.GameLogic.BettingRounds;
 

@@ -1,5 +1,5 @@
 using Poker.Logic.GameLogic.Rules;
-using Poker.Tables;
+using Poker.PhysicalObjects.Tables;
 
 namespace Poker.Logic.GameLogic.GameManagement;
 

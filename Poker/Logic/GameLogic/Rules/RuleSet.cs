@@ -1,6 +1,7 @@
-﻿using Poker.Chips;
+﻿
 using Poker.Logic.Blinds;
 using Poker.Logic.Fees;
+using Poker.PhysicalObjects.Chips;
 
 namespace Poker.Logic.GameLogic.Rules
 {

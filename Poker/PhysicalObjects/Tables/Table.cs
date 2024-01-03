@@ -1,5 +1,6 @@
-using Poker.Chips;
-using Poker.Decks;
+using Poker.Logic.GameLogic.GameManagement;
+using Poker.PhysicalObjects.Chips;
+using Poker.PhysicalObjects.Decks;
 
 namespace Poker.PhysicalObjects.Tables;
 
@@ -10,7 +11,7 @@ public partial class Table
 {
     public Table(
         uint seats,
-        Games.Game? game
+        Game? game
         )
     {
         Seats = new Seat[seats];
@@ -23,7 +24,7 @@ public partial class Table
     /// <summary>
     /// backreference to a running game on the table
     /// </summary>
-    public Games.Game? TableGame { get; set; } = null; 
+    public Game? TableGame { get; set; } = null; 
 
     /// <summary>
     /// the pots in the center which the players Bet into

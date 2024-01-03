@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using Poker.Cards;
-using Poker.Decks;
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 
 namespace Poker.Tests.PhysicalObjects.Cards;
 
@@ -10,14 +10,14 @@ public class CardTests
     public void Card_Constructor_SetsCardRankAndSuit()
     {
         // Arrange
-        var CardRank = CardRank.Ace;
+        var cardRank = CardRank.Ace;
         var suit = CardSuit.Hearts;
 
         // Act
-        var card = new Card(CardRank, suit);
+        var card = new Card(cardRank, suit);
 
         // Assert
-        Assert.Equal(CardRank, card.CardRank);
+        Assert.Equal(cardRank, card.CardRank);
         Assert.Equal(suit, card.Suit);
     }
 

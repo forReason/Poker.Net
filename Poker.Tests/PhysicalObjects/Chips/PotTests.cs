@@ -1,5 +1,6 @@
-using Poker.Chips;
-using Poker.Players;
+
+using Poker.PhysicalObjects.Chips;
+using Poker.PhysicalObjects.Players;
 
 namespace Poker.Tests.PhysicalObjects.Chips;
 public class PotTests

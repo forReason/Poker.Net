@@ -1,6 +1,5 @@
-using Poker.Games;
-using Poker.Tables;
-
+using Poker.Logic.GameLogic.GameManagement;
+using Poker.PhysicalObjects.Tables;
 namespace Poker.Logic.Blinds;
 
 /// <summary>

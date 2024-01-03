@@ -1,8 +1,8 @@
 using NuGet.Frameworks;
 using Xunit;
-using Poker.Cards;
-using Poker.Decks;
 using Poker.Tests.TestAssets;
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 
 namespace Poker.Tests.PhysicalObjects.Decks;
 
