@@ -139,23 +139,33 @@ public partial class Table
     /// <summary>
     /// Moves the Dealer and blind buttons apropriately
     /// </summary>
-    public void MoveButtons()
+    public MoveButtonsResult MoveButtons()
     {
         // Move Dealer
         Seats[DealerSeat].IsDealer = false;
         DealerSeat = GetNextActiveSeat(DealerSeat);
+        if (DealerSeat == -1)
+            return MoveButtonsResult.NoActivePlayers;
         Seats[DealerSeat].IsDealer = true;
         // Move smallBlind
         Seats[SmallBlindSeat].IsSmallBlind = false;
         if (SeatedPlayersCount < 2)
             SmallBlindSeat = DealerSeat;
         else
+        {
             SmallBlindSeat = GetNextActiveSeat(DealerSeat);
+            if (SmallBlindSeat == -1)
+                return MoveButtonsResult.NoActivePlayers;
+        }
+            
         Seats[SmallBlindSeat].IsSmallBlind = true;
         // Move BigBlind
         Seats[BigBlindSeat].IsBigBlind = false;
         BigBlindSeat = GetNextActiveSeat(SmallBlindSeat);
+        if (BigBlindSeat == -1)
+            return MoveButtonsResult.NoActivePlayers;
         Seats[BigBlindSeat].IsBigBlind = true;
+        return MoveButtonsResult.Success;
     }
 
     /// <summary>
@@ -171,22 +181,35 @@ public partial class Table
     /// <summary>
     /// shuffles the deck according to official shuffling ruled and deals 2 cards to each player, one by one.
     /// </summary>
+    /// <remarks>only deals cards to seats with stakes</remarks>
     public void DealPlayerCards()
     {
         RevokePlayerCards();
         TableDeck.ShuffleCards();
-        for (int card = 1; card == 2; card++)
+        for (int card = 1; card <= 2; card++)
         {
             int currentSeat = DealerSeat;
-            for (int activeSeat = 0; activeSeat < SeatsWithStakesCount; activeSeat++)
+            if (this.TableGame != null)
             {
-                currentSeat = GetNextActiveSeat(currentSeat);
-                Seats[currentSeat].PlayerPocketCards.DealCard(TableDeck);
+                for (int activeSeat = 0; activeSeat < SeatsWithStakesCount; activeSeat++)
+                {
+                    currentSeat = GetNextActiveSeat(currentSeat);
+                    Seats[currentSeat].PlayerPocketCards.DealCard(TableDeck);
+                }
+            }
+            else
+            {
+                for (int seat = 0; seat < this.Seats.Length; seat++)
+                {
+                    if (Seats[seat].Player == null)
+                        continue;
+                    Seats[seat].PlayerPocketCards.DealCard(TableDeck);
+                }
             }
         }
     }
     /// <summary>
-    /// utility function to evaluate if evewry active player is all in
+    /// utility function to evaluate if every active player is all in
     /// </summary>
     /// <returns></returns>
     public bool CheckAllPlayersAllIn()
@@ -242,7 +265,7 @@ public partial class Table
     /// <summary>
     /// the number of players sitting at the table
     /// </summary>
-    public int SeatedPlayersCount = 0;
+    public int SeatedPlayersCount => SeatedPlayers.Count;
     /// <summary>
     /// while a player is not in his seat, the seats funds might still be at stake
     /// </summary>

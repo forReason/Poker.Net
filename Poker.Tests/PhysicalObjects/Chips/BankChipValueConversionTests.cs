@@ -37,8 +37,9 @@ public class BankChipValueConversionTests
         Assert.DoesNotContain(PokerChip.Black, chips.Keys);
     }
     [Theory]
-    [InlineData(150, new[] { PokerChip.Black, PokerChip.Blue, PokerChip.White })]
-    [InlineData(75, new[] { PokerChip.Green, PokerChip.Red })]
+    [InlineData(1500, new[] {PokerChip.Blue, PokerChip.Black, PokerChip.Green, PokerChip.Brown, PokerChip.Red, PokerChip.White })]
+    [InlineData(150, new[] {PokerChip.Green, PokerChip.Brown, PokerChip.Red, PokerChip.White })]
+    [InlineData(75, new[] {PokerChip.Green, PokerChip.Brown, PokerChip.Red, PokerChip.White })]
     public void DistributeValueForUse_DistributesCorrectly(ulong value, PokerChip[] expectedChips)
     {
         // Act
@@ -52,4 +53,5 @@ public class BankChipValueConversionTests
             Assert.True(result[chip] > 0);
         }
     }
+    // TODO, add tests that check that these conversions actually do not add or remove chips (!)
 }

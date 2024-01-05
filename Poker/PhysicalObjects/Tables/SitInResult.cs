@@ -9,6 +9,7 @@ public enum SitInResult
     NotEnoughFunds,
     BuyinTooLow,
     BuyinToHigh,
+    // TODO: Implement according to GameRules
     MaxBuyinCounterReached,
     BuyinsCurrentlyNotAllowed,
     Sucess,

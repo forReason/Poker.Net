@@ -2,7 +2,8 @@ using System.Security.Cryptography;
 using Poker.PhysicalObjects.Cards;
 
 namespace Poker.PhysicalObjects.Decks;
-
+// TODO: Throughoutly check the shuffle Methods
+// TODO: Write Test Cases for the shuffle Methods
 /// <summary>
 /// Represents the Raw Deck with all 52 Cards. Primarily used for shuffling and drawing
 /// </summary>
@@ -77,10 +78,10 @@ public class Deck
         for (int i = 0; i < _shuffledCards.Length; i++)
         {
             rng.GetBytes(randomBytes);
-            int randomIndex = BitConverter.ToInt32(randomBytes, 0) % _shuffledCards.Length;
+            uint randomIndex = BitConverter.ToUInt32(randomBytes, 0) % (uint)_shuffledCards.Length;
         
             // Swap the cards
-            (_shuffledCards[i], _shuffledCards[randomIndex]) = (_shuffledCards[randomIndex], _shuffledCards[i]);
+                (_shuffledCards[i], _shuffledCards[randomIndex]) = (_shuffledCards[randomIndex], _shuffledCards[i]);
         }
 
         rng.Dispose();
@@ -101,42 +102,63 @@ public class Deck
             RandomNumberGenerator.Fill(randomNumber);
             bool takeFromLeft = randomNumber[0] % 2 == 0;
 
-            shuffled[i] = takeFromLeft ? _shuffledCards[leftIndex++] : _shuffledCards[rightIndex++];
-            if (leftIndex == middle) leftIndex = 0;
-            if (rightIndex == _shuffledCards.Length) rightIndex = middle;
+            if (takeFromLeft && leftIndex < middle)
+            {
+                shuffled[i] = _shuffledCards[leftIndex++];
+            }
+            else if (!takeFromLeft && rightIndex < _shuffledCards.Length)
+            {
+                shuffled[i] = _shuffledCards[rightIndex++];
+            }
+            else if (leftIndex < middle) // If rightIndex is exhausted
+            {
+                shuffled[i] = _shuffledCards[leftIndex++];
+            }
+            else // If leftIndex is exhausted
+            {
+                shuffled[i] = _shuffledCards[rightIndex++];
+            }
         }
 
         _shuffledCards = shuffled;
     }
+
     /// <summary>
     /// takes stacks of random amounts of cards and places them under
     /// </summary>
-    private void StripShuffle()
+    private void StripShuffle(uint shuffleRounds = 7)
     {
-        Card[] shuffled = new Card[52];
-        List<Card> tempDeck = [.._shuffledCards];
-    
-        for (int i = 0; i < shuffled.Length;)
+        Card[] leftStack = _shuffledCards;
+        Card[] rightStack = new Card[leftStack.Length];
+        
+        byte[] randomBytes = new byte[4];
+        uint shuffleIndex;
+        for (int i = 0; i < shuffleRounds; i++)
         {
-            byte[] randomBytes = new byte[4];
-            RandomNumberGenerator.Fill(randomBytes);
-            int chunkSize = BitConverter.ToInt32(randomBytes, 0) % 5 + 1; // 1 to 5 cards
-            RandomNumberGenerator.Fill(randomBytes);
-            int chunkStart = BitConverter.ToInt32(randomBytes, 0) % (tempDeck.Count - chunkSize);
-
-            for (int j = 0; j < chunkSize; j++)
+            shuffleIndex = 0;
+            do
             {
-                shuffled[i++] = tempDeck[chunkStart + j];
-            }
-            tempDeck.RemoveRange(chunkStart, chunkSize);
+                RandomNumberGenerator.Fill(randomBytes);
+                uint chunkSize = BitConverter.ToUInt32(randomBytes, 0) % 8 + 3; // 3 to 10 cards
+                if (shuffleIndex + chunkSize >= leftStack.Length)
+                {
+                    chunkSize = (uint)leftStack.Length - shuffleIndex;
+                }
+                // take chunk
+                Array.Copy(leftStack, shuffleIndex,rightStack,shuffleIndex,chunkSize);
+                shuffleIndex += chunkSize;
+            } while (shuffleIndex < leftStack.Length);
+            // swap arrays
+            (leftStack, rightStack) = (rightStack, leftStack); 
         }
 
-        _shuffledCards = shuffled;
+        _shuffledCards = leftStack;
     }
 
     /// <summary>
     /// Cuts the deck at a random position, placing the top cards at the bottom
     /// </summary>
+    /// <remarks>also resets the drawn count to finalize a shuffle and new cards can be drawn again</remarks>
     private void Cut()
     {
         Random rnd = new Random();
@@ -145,7 +167,7 @@ public class Deck
 
         Array.Copy(_shuffledCards, cutPoint, cutDeck, 0, _shuffledCards.Length - cutPoint);
         Array.Copy(_shuffledCards, 0, cutDeck, _shuffledCards.Length - cutPoint, cutPoint);
-
+        CardCount = cutDeck.Length;
         _shuffledCards = cutDeck;
     }
 

@@ -20,7 +20,7 @@ public enum HandCardRank
     /// a low hand
     /// </summary>
     /// <remarks>
-    /// winrate: Lower Winrate<br/>
+    /// win.rate: Lower Win.rate<br/>
     /// probability: 42.25%
     /// </remarks>
     OnePair,
@@ -28,7 +28,7 @@ public enum HandCardRank
     /// a medium hand
     /// </summary>
     /// <remarks>
-    /// winrate: Moderate Winrate<br/>
+    /// win.rate: Moderate Win.rate<br/>
     /// probability: 4.75%
     /// </remarks>
     TwoPairs,
@@ -36,7 +36,7 @@ public enum HandCardRank
     /// a medium-high hand
     /// </summary>
     /// <remarks>
-    /// winrate: Decent win rate<br/>
+    /// win-rate: Decent win rate<br/>
     /// probability: 2.11%
     /// </remarks>
     ThreeOfAKind,
@@ -44,15 +44,15 @@ public enum HandCardRank
     /// the sixth highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: Solid hand<br/>
+    /// win-rate: Solid hand<br/>
     /// probability: 0.3925%
     /// </remarks>
     Straight,
     /// <summary>
-    /// the fith highest CardRank
+    /// the fifth highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: Strong hand with a good win rate<br/>
+    /// win-rate: Strong hand with a good win rate<br/>
     /// probability: 0.197%
     /// </remarks>
     Flush,
@@ -60,7 +60,7 @@ public enum HandCardRank
     /// the fourth highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: High win rate<br/>
+    /// win-rate: High win rate<br/>
     /// probability: 0.144%
     /// </remarks>
     FullHouse,
@@ -68,7 +68,7 @@ public enum HandCardRank
     /// the third highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: Very high win rate, rarely beaten<br/>
+    /// win-rate: Very high win rate, rarely beaten<br/>
     /// probability: 0.024%
     /// </remarks>
     FourOfAKind,
@@ -76,7 +76,7 @@ public enum HandCardRank
     /// the second highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: Extremely high<br/>
+    /// win-rate: Extremely high<br/>
     /// probability: 0.00139%
     /// </remarks>
     StraightFlush,
@@ -84,7 +84,7 @@ public enum HandCardRank
     /// the highest CardRank
     /// </summary>
     /// <remarks>
-    /// winrate: 100%<br/>
+    /// win-rate: 100%<br/>
     /// probability: 0.000154%
     /// </remarks>
     RoyalFlush

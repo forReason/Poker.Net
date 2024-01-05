@@ -24,7 +24,7 @@ public partial class Game
     private async Task<bool> CheckStartGame()
     {
         // pre condition check
-        if (DateTime.Now < StartGameAfter || GameTable.TakenSeats < Rules.MinimumPlayerCount)
+        if (DateTime.Now < StartGameAfter || GameTable.TakenSeatsInternal.Count < Rules.MinimumPlayerCount)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
             return false;
@@ -37,7 +37,7 @@ public partial class Game
         }
         
         // final start condition check
-        return GameTable.TakenSeats >= Rules.MinimumPlayerCount;
+        return GameTable.TakenSeatsInternal.Count >= Rules.MinimumPlayerCount;
     }
 
     /// <summary>

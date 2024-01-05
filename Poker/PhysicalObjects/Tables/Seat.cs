@@ -1,4 +1,6 @@
 ﻿
+using Poker.Logic.GameLogic.GameManagement;
+using Poker.Logic.GameLogic.Rules;
 using Poker.PhysicalObjects.Chips;
 using Poker.PhysicalObjects.Decks;
 using Poker.PhysicalObjects.Players;
@@ -23,7 +25,9 @@ public class Seat
     /// <summary>
     /// The Player sitting on this Seat. If it's null, the seat is Free
     /// </summary>
-    public volatile Player? Player = null;
+
+    public Player? Player => _player;
+    private volatile Player? _player= null;
 
     /// <summary>
     /// checks wether a seat is still active or not. <br/>
@@ -35,11 +39,9 @@ public class Seat
     /// <returns></returns>
     public bool IsParticipatingGame()
     {
-        if (this.Stack != null && this.Stack.PotValue > 0)
+        if (this.Stack.PotValue > 0)
             return true;
-        if (this.UncalledPendingBets != null && this.UncalledPendingBets.PotValue > 0)
-            return true;
-        if (PlayerPocketCards != null && PlayerPocketCards.CardCount > 0)
+        if (PlayerPocketCards.CardCount > 0)
             return true;
         return false;
     }
@@ -87,16 +89,75 @@ public class Seat
     public Pot PendingBets = new();
 
     /// <summary>
-    /// the stack of chips a player may have reserved for calling and raising. Used to perform the bet according to player action
+    /// Represents a handler for player actions in a poker game. Assign an implementation of <see cref="IPlayerActionHandler"/> 
+    /// to manage player actions.
     /// </summary>
-    public Pot UncalledPendingBets = new();
+    /// <remarks>
+    /// Usage:
+    /// - Implement <see cref="IPlayerActionHandler"/> in a class with logic for handling player actions.
+    /// - Assign an instance of this class to the ActionHandler property of the Seat object.
+    /// - The TakeAction method in your class will be invoked to process player actions.
+    /// <br/>
+    /// Example:
+    /// <code>
+    /// class MyPlayerActionHandler : IPlayerActionHandler 
+    /// {
+    ///     public ulong TakeAction(ulong callValue, ulong minRaise, ulong maxRaise) 
+    ///     {
+    ///         // Implement action logic here
+    ///     }
+    /// }
+    /// // Assigning to a Seat object
+    /// seat.ActionHandler = new MyPlayerActionHandler();
+    /// </code>
+    /// This allows for flexible player action handling in different game environments like simulations or live games.
+    /// </remarks>
+    public IPlayerActionHandler ActionHandler { get; set; }
 
+    /// <summary>
+    /// this method is being used by the game engine to call the player for action
+    /// </summary>
+    /// <param name="callValue">the minimum bet to make a call</param>
+    /// <param name="minRaise">the minimum bet to make a raise</param>
+    /// <param name="maxRaise">the maximum bet (in limit games)</param>
+    /// <param name="isSimulationMode">if simulation is enabled, runs synchronously, for better performance</param>
+    /// <param name="timeout">the timeout after which to cancel player action when in live mode</param>
+    /// <returns></returns>
+    public ulong? CallForPlayerAction(ulong callValue, ulong minRaise, ulong maxRaise, GameTime isSimulationMode, TimeSpan? timeout = null)
+    {
+        if (isSimulationMode == GameTime.Simulated)
+        {
+            // Synchronous call for simulation
+            return ActionHandler.TakeAction(callValue, minRaise, maxRaise, CancellationToken.None);
+        }
+        else
+        {
+            // Asynchronous call for live game with timeout
+            return CallForPlayerAction(callValue, minRaise, maxRaise, timeout).Result;
+        }
+    }
+
+    private async Task<ulong?> CallForPlayerAction(ulong callValue, ulong minRaise, ulong maxRaise, TimeSpan? timeout)
+    {
+        CancellationTokenSource cts = timeout.HasValue ? new CancellationTokenSource(timeout.Value) : new CancellationTokenSource();
+        try
+        {
+            return await Task.Run(() => ActionHandler.TakeAction(callValue, minRaise, maxRaise, cts.Token), cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            cts.Cancel();
+            // Handle timeout or cancellation
+            return null;
+        }
+    }
+    
     /// <summary>
     /// The stack of Chips in reserve which the Player can use to Bet
     /// </summary>
     public Pot Stack = new();
     private readonly object _lock = new object();
-    public ulong StackValue => Stack.PotValue + UncalledPendingBets.PotValue;
+    public ulong StackValue => Stack.PotValue;
 
     /// <summary>
     /// this function is used to set the Blinds and Ante for examble and cannot be revoked
@@ -105,41 +166,18 @@ public class Seat
     /// <returns></returns>
     public PerformBetResult ForceBet(ulong value)
     {
-        Pot temporaryPot = new Pot();
-        PerformBetResult betResult = UncalledPendingBets.PerformBet(temporaryPot, value, this.Player);
-        if (betResult == PerformBetResult.PlayerHasNoFunds || betResult == PerformBetResult.AllIn)
-        {
-            PerformBetResult stackBetResult = Stack.PerformBet(temporaryPot, value - temporaryPot.PotValue, this.Player);
-        }
-        return temporaryPot.PerformBet(PendingBets, value, this.Player);
-    }
-    /// <summary>
-    /// moves all uncomitted Chips to the player bet which is locked up
-    /// </summary>
-    public void CommitUncalledPendingBets()
-    {
-        UncalledPendingBets.MoveAllChips(PendingBets, this.Player);
-    }
-    /// <summary>
-    /// used by a player in order to wager a certain amount. At this point the money is not comitted yet
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public PerformBetResult MoveStackToUncalledPendingBets(ulong value)
-    {
-
-        return Stack.PerformBet(UncalledPendingBets, value, this.Player);
+        return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, this.Player);
     }
 
-    public bool IsAllIn => (Stack.PotValue == 0 && PendingBets.PotValue > 0 && UncalledPendingBets.PotValue == 0 && !IsFold);
-    public bool IsAllInCall => (Stack.PotValue == 0 && (PendingBets.PotValue + UncalledPendingBets.PotValue) > 0 && !IsFold);
+    public bool IsAllIn => (Stack.PotValue == 0 && PendingBets.PotValue > 0 && !IsFold);
+    public bool IsAllInCall => (Stack.PotValue == 0 && PendingBets.PotValue  > 0 && !IsFold);
     public bool IsFold => PlayerPocketCards.IsFold;
 
     /// <summary>
     /// defines if and when the player chose to sit out.
     /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked fron the Table
     /// </summary>
-    public DateTime? SitOutTime { get; set; }
+    public DateTime? SitOutTime { get; set; } = null;
     /// <summary>
     /// sits out of the table
     /// </summary>
@@ -156,19 +194,46 @@ public class Seat
         if (SitOutTime != null)
             return;
         SitOutTime = DateTime.Now;
-        Interlocked.Decrement(ref Table.SeatedPlayersCount);
+        Table.SeatedPlayersInternal.Remove(this._player);
         if (!IsParticipatingGame())
             Interlocked.Decrement(ref Table.SeatsWithStakesCount);
+    }
 
+    public void Leave()
+    {
+        if (_player == null)
+            return;
+
+        if (this.Table.TableGame == null || this.Table.TableGame.Rules.GameMode == GameMode.Cash || !IsParticipatingGame())
+        {
+            Player.AddPlayerBank(Stack.Clear());
+            this.Table.SeatedPlayersInternal.Remove(_player);
+            this.Table.TakenSeatsInternal.Remove(this);
+            _player.Seat = null;
+            this._player = null;
+            this.Table.SeatPlayers();
+        }
+        else if (this.Table.TableGame.Rules.GameMode == GameMode.Tournament)
+        {
+            SitOut();
+        }
+        else
+        {
+            throw new NotImplementedException(
+                $"The behaviour on leaving a table under the ruleset {this.Table.TableGame.Rules.GameMode} is not defined!");
+        }
     }
     /// <summary>
     /// seats you back into the Table, actively participating in the game again
     /// </summary>
-    public SitInResult SitIn(decimal buyIn = 0)
+    /// <remarks>This can be used to perform a buyin as well and to sit onto the seat</remarks>
+    public SitInResult SitIn(Player player, decimal buyIn = 0)
     {
         // fast precheck
-        if (SitOutTime == null)
-            return SitInResult.Sucess;
+        if (this._player == null)
+            this._player = player;
+        else if (!this._player.Equals(player))
+            throw new InvalidOperationException("The Seat is already occupied by another player!");
 
         // buyin check
         if (!IsParticipatingGame()) // need to perform buyin
@@ -176,25 +241,26 @@ public class Seat
             // buyin prechecks
             if (buyIn == 0)
                 return SitInResult.BuyinTooLow;
-            if (this.Player.Bank < buyIn)
+            if (this._player.Bank < buyIn)
                 return SitInResult.NotEnoughFunds;
-            if (buyIn > this.Table.TableGame.Rules.MaxBuyIn)
+            if (this.Table.TableGame != null && buyIn > this.Table.TableGame.Rules.MaxBuyIn)
                 return SitInResult.BuyinToHigh;
-            if (buyIn < this.Table.TableGame.Rules.BuyIn)
+            if (this.Table.TableGame != null && buyIn < this.Table.TableGame.Rules.BuyIn)
                 return SitInResult.BuyinTooLow;
             // purchase chips
             ulong chipBuyInValue = (ulong)buyIn;
-            if (this.Table.TableGame.Rules.Micro)
+            if (this.Table.TableGame != null && this.Table.TableGame.Rules.Micro)
             {
                 chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
             }
-            this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), this.Player);
+            this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), this._player);
+            Interlocked.Increment(ref Table.SeatsWithStakesCount);
         }
 
         // activate
         SitOutTime = null;
-        Interlocked.Increment(ref Table.SeatedPlayersCount);
-        Interlocked.Increment(ref Table.SeatsWithStakesCount);
+        Table.SeatedPlayersInternal.Add(_player);
+        
         return SitInResult.Sucess;
     }
     /// <summary>

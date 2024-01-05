@@ -260,7 +260,9 @@ namespace Poker.Logic.GameLogic.Rules
                 smallBlindCalculated *= 100;
             }
             ulong smallBlind = (ulong)GetClosestChip(smallBlindCalculated);
-            decimal anteRatio = 1.0m / (decimal)Ante;
+            decimal anteRatio = 0;
+            if (Ante!= AnteToBigBlindRatio.None)
+                anteRatio = 1.0m / (decimal)Ante;
             if (GameMode == GameMode.Cash)
             {
                 ulong bigBlind = smallBlind * 2;

@@ -13,10 +13,10 @@ public struct Card : IEquatable<Card>, IComparable<Card>
     /// </summary>
     /// <param name="CardRank">The CardRank of the Card</param>
     /// <param name="suit">The color group of the Card</param>
-    public Card(CardRank CardRank, CardSuit suit)
+    public Card(CardRank cardRank, CardSuit suit)
     {
-        CardRank = CardRank;
-        Suit = suit;
+        this.CardRank = cardRank;
+        this.Suit = suit;
     }
     
     /// <summary>

@@ -23,7 +23,7 @@ public partial class Game
                 }
                 else if (Rules.GameMode == GameMode.Tournament)
                 {
-                    GameTable.LeaveTable(seat.SeatID);
+                    seat.Leave();
                 }
             }
         }

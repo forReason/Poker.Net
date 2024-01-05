@@ -8,8 +8,8 @@ namespace Poker.Tests.PhysicalObjects.Decks
         [Fact]
         public void CompareHand_HigherRank_Returns1()
         {
-            var hand1 = new HandScore { CardRank = HandCardRank.Straight, Score = new[] { CardRank.Ten } };
-            var hand2 = new HandScore { CardRank = HandCardRank.Flush, Score = new[] { CardRank.Jack } };
+            var hand1 = new HandScore { CardRank = HandCardRank.Flush, Score = new[] { CardRank.Ten } };
+            var hand2 = new HandScore { CardRank = HandCardRank.Straight, Score = new[] { CardRank.Jack } };
 
             var result = hand1.CompareHand(hand2);
 

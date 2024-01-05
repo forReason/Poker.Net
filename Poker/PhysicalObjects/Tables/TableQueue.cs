@@ -1,6 +1,7 @@
 ﻿using Poker.Logic.GameLogic.Rules;
 using Poker.PhysicalObjects.Players;
 using System.Collections.Concurrent;
+using Multithreading_Library.DataTransfer;
 
 namespace Poker.PhysicalObjects.Tables;
 
@@ -9,21 +10,24 @@ public partial class Table
     /// <summary>
     /// the Count of Seats taken
     /// </summary>
-    public int TakenSeats = 0;
+    public IReadOnlyCollection<Seat> TakenSeats => TakenSeatsInternal;
+
+    internal ConcurrentHashSet<Seat> TakenSeatsInternal = new();
 
     /// <summary>
     /// the count of Seats which are still Free
     /// </summary>
-    public int FreeSeats => Seats.Length - TakenSeats;
+    public int FreeSeats => Seats.Length - TakenSeats.Count;
 
     private ConcurrentQueue<Player> _EnrollmentQueue = new();
     /// <summary>
-    /// -1: cancle queue<br/>
+    /// -1: cancel queue<br/>
     ///  0: ANY Seat<br/>
     /// >0: SelectedSeat
     /// </summary>
-    private ConcurrentDictionary<string, int> EnqueuedPlayers = new ConcurrentDictionary<string, int>();
-    private ConcurrentDictionary<string, bool> SeatedPlayers = new ConcurrentDictionary<string, bool>();
+    public ConcurrentDictionary<string, int> EnqueuedPlayers = new ();
+    internal ConcurrentHashSet<Player> SeatedPlayersInternal = new ();
+    public IReadOnlyCollection<Player> SeatedPlayers => SeatedPlayersInternal;
 
     private ConcurrentQueue<Player> _SeatReservations = new();
     /// <summary>
@@ -39,16 +43,15 @@ public partial class Table
         if (preferredSeat > Seats.Length)
             throw new Exception($"The table only has {Seats.Length} Seats!");
 
-        if (SeatedPlayers.ContainsKey(player.UniqueIdentifier))
+        if (SeatedPlayers.Contains(player))
             throw new Exception("You are already playing at this table!");
-
+        
         if (!EnqueuedPlayers.ContainsKey(player.UniqueIdentifier))
         {
             _EnrollmentQueue.Enqueue(player);
-            SeatPlayers();
         }
-
         EnqueuedPlayers[player.UniqueIdentifier] = preferredSeat;
+        SeatPlayers();
     }
 
     /// <summary>
@@ -72,11 +75,8 @@ public partial class Table
     {
         if (Seats[seatID].Player == null)
         {
-            Seats[seatID].Player = player;
+            Seats[seatID].SitIn(player);
             player.Seat = Seats[seatID];
-            Interlocked.Increment(ref TakenSeats);
-            SeatedPlayers[player.UniqueIdentifier] = true;
-            Interlocked.Increment(ref SeatedPlayersCount);
             return true;
         }
         return false;
@@ -104,39 +104,9 @@ public partial class Table
         }
         return seatFound;
     }
-    /// <summary>
-    /// Leaves the Table, Collecting the total seat bank value into the player Bank. The current Bet cannot be claimed back.
-    /// </summary>
-    public void LeaveTable(int seatID)
-    {
-        if (Seats[seatID].Player == null)
-            return;
-
-        if (TableGame.Rules.GameMode == GameMode.Cash)
-        {
-            Seats[seatID].Player.AddPlayerBank(Seats[seatID].Stack.Clear());
-            Seats[seatID].Player.AddPlayerBank(Seats[seatID].UncalledPendingBets.Clear());
-            SeatedPlayers.Remove(Seats[seatID].Player.UniqueIdentifier, out _);
-            if (Seats[seatID].SitOutTime == null)
-                Interlocked.Decrement(ref SeatedPlayersCount);
-            Seats[seatID].Player.Seat = null;
-            Seats[seatID].Player = null;
-            Interlocked.Decrement(ref TakenSeats);
-            SeatPlayers();
-        }
-        else if (TableGame.Rules.GameMode == GameMode.Tournament)
-        {
-            Seats[seatID].SitOut();
-        }
-        else
-        {
-            throw new NotImplementedException(
-                $"The behaviour on leaving a table under the ruleset {TableGame.Rules.GameMode} is not defined!");
-        }
-    }
 
     private object _SeatingLock = new object();
-    private void SeatPlayers()
+    internal void SeatPlayers()
     {
         if (!Monitor.TryEnter(_SeatingLock))
             return; // Another thread is already executing SeatPlayers

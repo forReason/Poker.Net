@@ -90,26 +90,31 @@ public partial class BettingRound
     private void HandlePlayerAction(Seat actionSeat, ulong minRaise, ulong maxRaise, ref int lastRaisedSeatId)
     {
         // TODO: is minRaise applied correctly?
-        ulong betValue = actionSeat.PendingBets.PotValue + actionSeat.UncalledPendingBets.PotValue;
+        ulong? betValue = actionSeat.CallForPlayerAction(CallValue, minRaise, maxRaise, this._game.Rules.GameTimeStructure, TimeSpan.FromSeconds(20));
+        if (betValue == null || betValue == 0)
+        {
+            actionSeat.Fold();
+            return;
+        }
         if (betValue >= CallValue || actionSeat.IsAllInCall)
         {
             if (betValue > CallValue) // raise
             {
-                ulong limitedBetValue = Math.Min(betValue, maxRaise);
+                ulong limitedBetValue = Math.Min(betValue.Value, maxRaise);
                 if (limitedBetValue- actionSeat.PendingBets.PotValue > 0)
                 {
                     CallValue = limitedBetValue;
                     lastRaisedSeatId = actionSeat.SeatID;
                     BetsReceived++;
                 }
-                actionSeat.UncalledPendingBets.MoveValue(actionSeat.PendingBets, limitedBetValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
+                actionSeat.Stack.MoveValue(actionSeat.PendingBets, limitedBetValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
             }
             else // call
             {
-                actionSeat.UncalledPendingBets.MoveValue(actionSeat.PendingBets, CallValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
+                actionSeat.Stack.MoveValue(actionSeat.PendingBets, CallValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
             }
             // move leftover chips back to the player stack
-            actionSeat.UncalledPendingBets.MoveAllChips(actionSeat.Stack, actionSeat.Player);
+            actionSeat.Stack.MoveAllChips(actionSeat.Stack, actionSeat.Player);
         }
         // fold the player if he does not want to contribute enough
         else if (!actionSeat.IsAllIn && !actionSeat.IsAllInCall)

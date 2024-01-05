@@ -68,9 +68,29 @@ public class Player
             return false;
         }
     }
-    public void CallForAction(ulong callValue, ulong minRaise, ulong maxRaise)
+    public override bool Equals(object obj)
     {
-        // TODO: implement playerAction
-        throw new NotImplementedException("player action mechanic is not yet implemented");
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        if (obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        Player player = obj as Player;
+        return UniqueIdentifier == player.UniqueIdentifier;
+    }
+
+    public override int GetHashCode()
+    {
+        return UniqueIdentifier.GetHashCode();
     }
 }

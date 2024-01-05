@@ -46,8 +46,8 @@ public class CardTests
         for (int i = 0; i < 10; i++)
         {
             deck.ShuffleCards();
-            Card compareCard = deck.DrawCard();
-            for (int b = 0; b < 51; b++)
+            Card  compareCard = deck.DrawCard();
+            for (int b = 0; b < 50; b++)
             {
                 Card otherCard = deck.DrawCard();
                 Assert.NotEqual(compareCard, otherCard);

@@ -30,12 +30,12 @@ public class PocketCards
     /// </summary>
     public bool HasCards => CardCount > 0;
     /// <summary>
-    /// checks if the pleayer has no cards (fold)
+    /// checks if the player has no cards (fold)
     /// </summary>
     public bool IsFold => CardCount == 0;
 
     /// <summary>
-    /// override method to set a new hand. When simulating a Game, you should draw apropriately
+    /// override method to set a new hand. When simulating a Game, you should draw appropriately
     /// </summary>
     public void SetHand(Card? card1, Card? card2)
     {

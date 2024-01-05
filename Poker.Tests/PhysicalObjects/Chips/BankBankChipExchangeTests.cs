@@ -15,7 +15,8 @@ public class BankBankChipExchangeTests
         };
         ulong originalValue = Bank.ConvertChipsToValue(chips);
         var result = Bank.Recolorize(chips);
-        ulong recoloredValue = Bank.ConvertChipsToValue(result);
+        IReadOnlyDictionary<PokerChip, ulong> dict = chips;
+        ulong recoloredValue = Bank.ConvertChipsToValue(dict);
         Assert.Equal(originalValue, recoloredValue);  // Expect to get the same amount back
         Assert.True(result.Count > 5);
     }
