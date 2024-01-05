@@ -31,6 +31,19 @@ public class CardTests
         // Act & Assert
         Assert.True(card1.Equals(card2));
     }
+    [Fact]
+    public void Equals_ReturnsTrueForNullComparisons()
+    {
+        // Arrange
+        Card? card1 = null;
+        Card? card2 = null;
+
+        // Act & Assert
+        Assert.True(card1.Equals(null));
+        Assert.True(card1.Equals(card2));
+        Assert.True(card1 == null);
+        Assert.True(card2 == null);
+    }
 
     [Fact]
     public void Equals_ReturnsFalseForDifferentCards()
@@ -41,7 +54,26 @@ public class CardTests
 
         // Act & Assert
         Assert.False(card1.Equals(card2));
-
+    }
+    [Fact]
+    public void Equals_ReturnsFalseForComparisonWithNull()
+    {
+        // Arrange
+        var card1 = new Card(CardRank.King, CardSuit.Clubs);
+        // Arrange
+        Card? nullCard = null; 
+        
+        // Assert
+        Assert.False(card1.Equals(null));
+        Assert.False(nullCard.Equals(card1));
+        Assert.False(nullCard == card1);
+        Assert.False(null == card1);
+        Assert.False(card1== null);
+        Assert.False(card1 == nullCard);
+    }
+    [Fact]
+    public void Equals_ReturnsFalseForOtherCardsInDeck()
+    {
         Deck deck = new Deck();
         for (int i = 0; i < 10; i++)
         {
@@ -53,6 +85,18 @@ public class CardTests
                 Assert.NotEqual(compareCard, otherCard);
             }
         }
+    }
+    [Fact]
+    public void HashesAreDifferentForEachCard()
+    {
+        Deck deck = new Deck();
+        int cardCount = deck.CardCount;
+        HashSet<int> hashes = new HashSet<int>();
+        do
+        {
+            hashes.Add(deck.DrawCard().GetHashCode());
+        } while (deck.CardCount > 0);
+        Assert.Equal(52, cardCount);
     }
 
     [Theory]
