@@ -8,6 +8,27 @@ namespace Poker.PhysicalObjects.Decks;
 /// </summary>
 public class CommunityCards
 {
+    public CommunityCards(){}
+
+    /// <summary>
+    /// Sets custom community cards for the game. This method is primarily used for testing or specific game scenarios.
+    /// </summary>
+    /// <param name="cards">The array of cards to set as community cards, ordered from left to right.</param>
+    /// <exception cref="InvalidOperationException">Thrown if the array length is not within 3 to 5 cards.</exception>
+    public CommunityCards(Card[] cards)
+    {
+        if (cards.Length > 5)
+            throw new InvalidOperationException("You cannot set more than 5 Cards!");
+        if (cards.Length < 3)
+            throw new InvalidOperationException("The Minimum Amount of Cards is 3! Use Clea() to empty!");
+        Clear();
+        for (int i = 0; i < cards.Length; i++)
+        {
+            _tableCards[i] = cards[i];
+        }
+
+        Stage = (CommunityCardStage)(cards.Length - 2);
+    }
     /// <summary>
     /// the 5 Slots on the Table
     /// </summary>
@@ -35,26 +56,6 @@ public class CommunityCards
     /// the current Stage we are in
     /// </summary>
     public CommunityCardStage Stage { get; private set; }
-
-    /// <summary>
-    /// Sets custom community cards for the game. This method is primarily used for testing or specific game scenarios.
-    /// </summary>
-    /// <param name="cards">The array of cards to set as community cards, ordered from left to right.</param>
-    /// <exception cref="InvalidOperationException">Thrown if the array length is not within 3 to 5 cards.</exception>
-    public void Set(Card[] cards)
-    {
-        if (cards.Length > 5)
-            throw new InvalidOperationException("You cannot set more than 5 Cards!");
-        if (cards.Length < 3)
-            throw new InvalidOperationException("The Minimum Amount of Cards is 3! Use Clea() to empty!");
-        Clear();
-        for (int i = 0; i < cards.Length; i++)
-        {
-            _tableCards[i] = cards[i];
-        }
-
-        Stage = (CommunityCardStage)(cards.Length - 2);
-    }
     
     /// <summary>
     /// Advances the game to the next stage by revealing community cards and burning one card.

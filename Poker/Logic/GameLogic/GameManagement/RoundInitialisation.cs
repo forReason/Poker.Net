@@ -14,7 +14,7 @@ public partial class Game
         // clean up players without cash from the table
         foreach (Seat seat in GameTable.Seats)
         {
-            if (seat.IsParticipatingGame())
+            if (seat.IsParticipatingGame)
             {
                 // player is out of chips
                 if (Rules.GameMode == GameMode.Cash)

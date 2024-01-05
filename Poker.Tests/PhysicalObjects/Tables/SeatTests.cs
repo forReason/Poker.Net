@@ -6,6 +6,8 @@ using Xunit;
 using Poker.PhysicalObjects.Tables;
 using Poker.PhysicalObjects.Players;
 
+namespace Poker.Tests.PhysicalObjects.Seats;
+
 public class SeatTests
 {
     [Fact]
@@ -19,7 +21,7 @@ public class SeatTests
         seat.SitIn(player, 10);
 
         // Act
-        bool result = seat.IsParticipatingGame();
+        bool result = seat.IsParticipatingGame;
 
         // Assert
         Assert.True(result);
@@ -86,7 +88,7 @@ public class SeatTests
         SitInResult result = seat.SitIn(player, 100); // Assuming player has sufficient bank for buy-in
 
         // Assert
-        Assert.Equal(result, SitInResult.Sucess);
+        Assert.Equal(result, SitInResult.Success);
         Assert.Null(seat.SitOutTime);
         Assert.Equal(initialPlayerCount+1, table.SeatedPlayersCount);
     }

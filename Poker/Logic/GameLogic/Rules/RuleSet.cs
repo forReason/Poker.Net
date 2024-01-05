@@ -23,7 +23,7 @@ namespace Poker.Logic.GameLogic.Rules
         /// <param name="ante">The ante amount in relation to the big blind.</param>
         /// <param name="limit">The type of limit applied to the game (e.g., No Limit, Pot Limit).</param>
         /// <param name="capBlindRatio">The ratio of the cap to the small blind.</param>
-        /// <param name="timeMode">Wether we are in a simulated or live environment</param>
+        /// <param name="timeMode">Whether we are in a simulated or live environment</param>
         /// <param name="levelTime">The duration of each level in the game.</param>
         /// <param name="targetTotalTime">The estimated total duration of the game.</param>
         /// <param name="registrationGracePeriod">The grace period for late registration in tournament games.</param>
@@ -35,8 +35,10 @@ namespace Poker.Logic.GameLogic.Rules
         public RuleSet(
             GameMode ruleSet,
             ulong buyIn,
-            BlindToBuyInRatio blindtoByinRatio,
-            ulong maxBuyInRatio,
+            BlindToBuyInRatio blindToByinRatio,
+            decimal maxBuyInRatio = 2,
+            ulong maxBuyInCount = 0,
+            TimeSpan? latestAllowedBuyIn = null,
             uint maxPlayerCount = 6,
             uint minPlayerCount = 2,
             AnteToBigBlindRatio ante = AnteToBigBlindRatio.None,
@@ -54,8 +56,10 @@ namespace Poker.Logic.GameLogic.Rules
             GameMode = ruleSet;
             GameTimeStructure = timeMode;
             BuyIn = buyIn;
-            BlindRatio = blindtoByinRatio;
+            BlindRatio = blindToByinRatio;
             MaxBuyinRatio = maxBuyInRatio;
+            MaxBuyInCount = maxBuyInCount;
+            LatestAllowedBuyIn = latestAllowedBuyIn;
             Ante = ante;
             Limit = limit;
             CapXSmallBlind = capBlindRatio;
@@ -151,9 +155,16 @@ namespace Poker.Logic.GameLogic.Rules
         public BlindToBuyInRatio BlindRatio { get; private set; }
 
         /// <summary>
-        /// defines how much larger the maxumum buyin can be. for tournaments, this is usually the same as buin, so a ratio of 1;
+        /// defines how much larger the maximum buyin can be. for tournaments, this is usually the same as buyin, so a ratio of 1;
         /// </summary>
-        public ulong MaxBuyinRatio { get; private set; } = 2;
+        public decimal MaxBuyinRatio { get; private set; } = 2;
+
+        /// <summary>
+        /// the maximum count of buyins allowed. 0 means infinity
+        /// </summary>
+        public ulong MaxBuyInCount { get; private set; } = 0;
+
+        public TimeSpan? LatestAllowedBuyIn { get; private set; }
 
         /// <summary>
         /// defines the minimum chip size (defaults to 2 units under small blind. EG SB = 50, min chip size = 10

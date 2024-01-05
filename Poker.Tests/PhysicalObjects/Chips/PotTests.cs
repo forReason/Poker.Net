@@ -150,7 +150,7 @@ public class PotTests
         var sourcePot = new Pot();
         var targetPot = new Pot();
         var player = new Player();
-        sourcePot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player);
+        sourcePot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Brown, 1 } }, player); // 10
         ulong valueToMove = 5; // Assuming Blue chip is worth 1 each
 
         // Act
@@ -168,17 +168,17 @@ public class PotTests
         // Arrange
         var pot = new Pot();
         var player = new Player();
-        pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player);
-        // Assuming RecolorizeInternal modifies the chips somehow
+        pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player); // 10 cips * 50 = 500
 
+        ulong valueBefore = pot.PotValue;
         // Act
         pot.Recolorize();
         var chipsAfterRecolor = pot.GetChips();
 
         // Assert
-        throw new NotImplementedException("need to add assertions");
-        // Assertions depend on how RecolorizeInternal changes the chips
-        // Example: Assert.NotEqual(initialChips, chipsAfterRecolor);
+        Assert.Equal(valueBefore, pot.PotValue);
+        Assert.True(pot.GetChips().Count > 1);
+
     }
 
     [Fact]
@@ -193,8 +193,8 @@ public class PotTests
         var removedValue = pot.RemoveChips(chipsToRemove);
 
         // Assert
-        Assert.Equal(5UL, removedValue); // Assuming Blue chip is worth 1 each
-        Assert.Equal(5UL, pot.PotValue); // Remaining value in the pot
+        Assert.Equal(250UL, removedValue); // Blue chip is worth 50 each
+        Assert.Equal(250UL, pot.PotValue); // Remaining value in the pot
     }
 
 
@@ -205,7 +205,6 @@ public class PotTests
         var pot = new Pot();
         var player = new Player();
         pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player);
-        pot.
 
         ulong clearedValue = pot.Clear();
 

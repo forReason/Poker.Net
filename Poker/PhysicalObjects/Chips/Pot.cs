@@ -20,7 +20,7 @@ public class Pot
     /// </summary>
     private readonly object _lock = new object();
     /// <summary>
-    /// all players afiliated with this pot
+    /// all players affiliated with this pot
     /// </summary>
     private HashSet<Player> _players;
 

@@ -95,7 +95,7 @@ public partial class BettingRound
             actionSeat.Fold();
             return;
         }
-        if (betValue >= CallValue || actionSeat.IsAllInCall)
+        if (betValue >= CallValue || actionSeat.IsAllIn)
         {
             if (betValue > CallValue) // raise
             {
@@ -116,7 +116,7 @@ public partial class BettingRound
             actionSeat.Stack.MoveAllChips(actionSeat.Stack, actionSeat.Player);
         }
         // fold the player if he does not want to contribute enough
-        else if (!actionSeat.IsAllIn && !actionSeat.IsAllInCall)
+        else if (!actionSeat.IsAllIn && !actionSeat.IsAllIn)
         {
             actionSeat.Fold();
         }

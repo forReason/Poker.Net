@@ -19,8 +19,7 @@ public class CardEvaluationTests
             new Card(CardRank.Two, CardSuit.Spades),
             new Card(CardRank.Three, CardSuit.Spades)
         };
-        var playerPocketCards = new PocketCards();
-        playerPocketCards.SetHand(new Card(CardRank.Three, CardSuit.Hearts), new Card(CardRank.Two, CardSuit.Clubs));
+        var playerPocketCards = new PocketCards(new Card(CardRank.Three, CardSuit.Hearts), new Card(CardRank.Two, CardSuit.Clubs));
 
         var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
@@ -35,7 +34,7 @@ public class CardEvaluationTests
         var playerPocketCards = new PocketCards();
         if (pocketCards.Length > 0)
         {
-            playerPocketCards.SetHand(pocketCards[0], pocketCards[1]);
+            playerPocketCards = new PocketCards(pocketCards[0], pocketCards[1]);
         }
 
 
@@ -55,7 +54,7 @@ public class CardEvaluationTests
         var sample1PocketCards = new PocketCards();
         if (sample1.PocketCards.Length > 0)
         {
-            sample1PocketCards.SetHand(sample1.PocketCards[0], sample1.PocketCards[1]);
+            sample1PocketCards = new PocketCards(sample1.PocketCards[0], sample1.PocketCards[1]);
         }
         var sample1Score = CardEvaluation.ScoreCards(sample1.CommunityCards, sample1PocketCards);
         foreach (var sample in samples)
@@ -63,7 +62,7 @@ public class CardEvaluationTests
             var pocketCards = new PocketCards();
             if (sample.PocketCards.Length > 0)
             {
-                pocketCards.SetHand(sample.PocketCards[0], sample.PocketCards[1]);
+                pocketCards = new PocketCards(sample.PocketCards[0], sample.PocketCards[1]);
             }
             var sampleScore = CardEvaluation.ScoreCards(sample.CommunityCards, pocketCards);
             Assert.Equal(sample1Score, sampleScore);
@@ -79,7 +78,7 @@ public class CardEvaluationTests
             var royalFlushPocketCards = new PocketCards();
             if (royalFlush.PocketCards.Length > 0)
             {
-                royalFlushPocketCards.SetHand(royalFlush.PocketCards[0], royalFlush.PocketCards[1]);
+                royalFlushPocketCards = new PocketCards(royalFlush.PocketCards[0], royalFlush.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(royalFlush.CommunityCards, royalFlushPocketCards);
             foreach (var straightFlush in straightFlushes)
@@ -87,7 +86,7 @@ public class CardEvaluationTests
                 var straightFlushPocketCards = new PocketCards();
                 if (straightFlush.PocketCards.Length > 0)
                 {
-                    straightFlushPocketCards.SetHand(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
+                    straightFlushPocketCards = new PocketCards(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -107,7 +106,7 @@ public class CardEvaluationTests
             var straightFlushPocketCards = new PocketCards();
             if (straightFlush.PocketCards.Length > 0)
             {
-                straightFlushPocketCards.SetHand(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
+                straightFlushPocketCards = new PocketCards(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
             foreach (var fourOfAkind in fourOfAkinds)
@@ -115,7 +114,7 @@ public class CardEvaluationTests
                 var fourOfAkindPocketCards = new PocketCards();
                 if (fourOfAkind.PocketCards.Length > 0)
                 {
-                    fourOfAkindPocketCards.SetHand(fourOfAkind.PocketCards[0], fourOfAkind.PocketCards[1]);
+                    fourOfAkindPocketCards = new PocketCards(fourOfAkind.PocketCards[0], fourOfAkind.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(fourOfAkind.CommunityCards, fourOfAkindPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -135,7 +134,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in fullHouses)
@@ -143,7 +142,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -162,7 +161,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in flush)
@@ -170,7 +169,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -189,7 +188,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in straight)
@@ -197,7 +196,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -216,7 +215,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in threeOfaKind)
@@ -224,7 +223,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -243,7 +242,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in twoPairs)
@@ -251,7 +250,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -269,7 +268,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in onePair)
@@ -277,7 +276,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -295,7 +294,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in highCard)
@@ -303,7 +302,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
@@ -322,7 +321,7 @@ public class CardEvaluationTests
             var higherPocketCards = new PocketCards();
             if (higherCards.PocketCards.Length > 0)
             {
-                higherPocketCards.SetHand(higherCards.PocketCards[0], higherCards.PocketCards[1]);
+                higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
             var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in highCard)
@@ -330,7 +329,7 @@ public class CardEvaluationTests
                 var lowerCardsPocketCards = new PocketCards();
                 if (lowerCards.PocketCards.Length > 0)
                 {
-                    lowerCardsPocketCards.SetHand(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
+                    lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
                 var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(lowerScore < higherScore);
@@ -351,7 +350,7 @@ public class CardEvaluationTests
             new Card(CardRank.Nine, CardSuit.Hearts)
         };
         var playerPocketCards = new PocketCards();
-        playerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
+        playerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
@@ -370,7 +369,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Hearts));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -383,7 +382,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -403,7 +402,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -416,7 +415,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Queen, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Queen, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -436,7 +435,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -449,7 +448,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -469,7 +468,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -482,7 +481,7 @@ public class CardEvaluationTests
             new Card(CardRank.Ace, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -502,7 +501,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Hearts));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -515,7 +514,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Hearts));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Hearts));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -535,7 +534,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -548,7 +547,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -568,7 +567,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -581,7 +580,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Ace, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -601,7 +600,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -614,7 +613,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -634,7 +633,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -647,7 +646,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -667,7 +666,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -680,7 +679,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -700,7 +699,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -713,7 +712,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -733,7 +732,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Eight, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -746,7 +745,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -766,7 +765,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.King, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -779,7 +778,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Eight, CardSuit.Hearts), new Card(CardRank.Queen, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
@@ -799,7 +798,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var higherPocketCards = new PocketCards();
-        higherPocketCards.SetHand(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
+        higherPocketCards = new PocketCards(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Nine, CardSuit.Spades));
 
         var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
@@ -812,7 +811,7 @@ public class CardEvaluationTests
             new Card(CardRank.Six, CardSuit.Hearts)
         };
         var lowerPocketCards = new PocketCards();
-        lowerPocketCards.SetHand(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Seven, CardSuit.Diamonds));
+        lowerPocketCards = new PocketCards(new Card(CardRank.Two, CardSuit.Hearts), new Card(CardRank.Seven, CardSuit.Diamonds));
 
         var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 

@@ -3,7 +3,7 @@ namespace Poker.PhysicalObjects.Chips;
 /// <summary>
 /// Provides utility methods for handling and distributing poker chips.
 /// </summary>
-public partial class Bank
+public static partial class Bank
 {
     /// <summary>
     /// converts a chip to micro value. EG 1 chip -> 0.01$ 

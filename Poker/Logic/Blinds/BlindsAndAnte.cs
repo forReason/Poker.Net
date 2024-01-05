@@ -38,7 +38,7 @@ public static class BlindsAndAnte
         // set ante
         foreach(Seat seat in game.GameTable.Seats)
         {
-            if (seat.IsParticipatingGame())
+            if (seat.IsParticipatingGame)
             {
                 seat.ForceBet(game.CurrentBlindLevel.Ante);
             }

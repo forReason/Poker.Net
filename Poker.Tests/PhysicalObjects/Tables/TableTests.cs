@@ -7,6 +7,7 @@ using Poker.PhysicalObjects.Tables;
 using Poker.PhysicalObjects.Players;
 using Poker.PhysicalObjects.Chips;
 
+namespace Poker.Tests.PhysicalObjects.Tables;
 public class TableTests2
 {
     [Fact]
@@ -68,7 +69,7 @@ public class TableTests2
             var player = new Player();
             player.AddPlayerBank(100);
             SitInResult sitInResult = table.Seats[i].SitIn(player, 100);
-            Assert.Equal(sitInResult, SitInResult.Sucess);
+            Assert.Equal(sitInResult, SitInResult.Success);
             table.Seats[i].SitIn(player);
         }
         // Deal player Cards

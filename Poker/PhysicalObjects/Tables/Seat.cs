@@ -30,21 +30,16 @@ public class Seat
     private volatile Player? _player= null;
 
     /// <summary>
-    /// checks wether a seat is still active or not. <br/>
-    /// This is the case when the player still has funds or still has cards to participate
+    /// Checks whether a seat is still active in the game. <br/>
+    /// A seat is considered active if the player still has funds or cards to participate.
     /// </summary>
     /// <remarks>
-    /// relevant for several actions in tournament rule games
+    /// This property is relevant for determining active participants in tournament rule games.
     /// </remarks>
-    /// <returns></returns>
-    public bool IsParticipatingGame()
-    {
-        if (this.Stack.PotValue > 0)
-            return true;
-        if (PlayerPocketCards.CardCount > 0)
-            return true;
-        return false;
-    }
+    /// <returns>
+    /// Returns true if the player's stack has a positive pot value or if the player has more than zero pocket cards.
+    /// </returns>
+    public bool IsParticipatingGame => this.Stack.PotValue > 0 || PlayerPocketCards.CardCount > 0;
 
     /// <summary>
     /// The SeatID is used as a Reference of the Tables Seat Position 
@@ -169,13 +164,15 @@ public class Seat
         return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, this.Player);
     }
 
-    public bool IsAllIn => (Stack.PotValue == 0 && PendingBets.PotValue > 0 && !IsFold);
-    public bool IsAllInCall => (Stack.PotValue == 0 && PendingBets.PotValue  > 0 && !IsFold);
-    public bool IsFold => PlayerPocketCards.IsFold;
+    /// <summary>
+    /// returns true if the player has no funds left but has cards on hand
+    /// </summary>
+    /// <remarks>returns false if the player has no funds an no cards (in which case the player is game over)</remarks>
+    public bool IsAllIn => (Stack.PotValue == 0 && this.PlayerPocketCards.HasCards);
 
     /// <summary>
     /// defines if and when the player chose to sit out.
-    /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked fron the Table
+    /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked from the Table
     /// </summary>
     public DateTime? SitOutTime { get; set; } = null;
     /// <summary>
@@ -195,16 +192,25 @@ public class Seat
             return;
         SitOutTime = DateTime.Now;
         Table.SeatedPlayersInternal.Remove(this._player);
-        if (!IsParticipatingGame())
+        if (!IsParticipatingGame)
             Interlocked.Decrement(ref Table.SeatsWithStakesCount);
     }
 
+    /// <summary>
+    /// Leaves the game table
+    /// </summary>
+    /// <remarks>
+    /// in a cash game, withdraws all funds from the stash into the player bank and leaves the table<br/>
+    /// in a tournament game, leaves all funds at the table and sits out, unless the player has no funds, in which case
+    /// the player Leaves the Table
+    /// </remarks>
+    /// <exception cref="NotImplementedException"></exception>
     public void Leave()
     {
         if (_player == null)
             return;
 
-        if (this.Table.TableGame == null || this.Table.TableGame.Rules.GameMode == GameMode.Cash || !IsParticipatingGame())
+        if (this.Table.TableGame == null || this.Table.TableGame.Rules.GameMode == GameMode.Cash || !IsParticipatingGame)
         {
             Player.AddPlayerBank(Stack.Clear());
             this.Table.SeatedPlayersInternal.Remove(_player);
@@ -212,6 +218,7 @@ public class Seat
             _player.Seat = null;
             this._player = null;
             this.Table.SeatPlayers();
+            this.BuyInCount = 0;
         }
         else if (this.Table.TableGame.Rules.GameMode == GameMode.Tournament)
         {
@@ -235,34 +242,72 @@ public class Seat
         else if (!this._player.Equals(player))
             throw new InvalidOperationException("The Seat is already occupied by another player!");
 
-        // buyin check
-        if (!IsParticipatingGame()) // need to perform buyin
+        // Perform buyin if not participating
+        if (!IsParticipatingGame)
         {
-            // buyin prechecks
-            if (buyIn == 0)
-                return SitInResult.BuyinTooLow;
-            if (this._player.Bank < buyIn)
-                return SitInResult.NotEnoughFunds;
-            if (this.Table.TableGame != null && buyIn > this.Table.TableGame.Rules.MaxBuyIn)
-                return SitInResult.BuyinToHigh;
-            if (this.Table.TableGame != null && buyIn < this.Table.TableGame.Rules.BuyIn)
-                return SitInResult.BuyinTooLow;
-            // purchase chips
-            ulong chipBuyInValue = (ulong)buyIn;
-            if (this.Table.TableGame != null && this.Table.TableGame.Rules.Micro)
-            {
-                chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
-            }
-            this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), this._player);
-            Interlocked.Increment(ref Table.SeatsWithStakesCount);
+            var buyInResult = PerformBuyIn(buyIn);
+            if (buyInResult != SitInResult.Success)
+                return buyInResult;
         }
 
         // activate
         SitOutTime = null;
         Table.SeatedPlayersInternal.Add(_player);
-        
-        return SitInResult.Sucess;
+
+        return SitInResult.Success;
     }
+
+    /// <summary>
+    /// Performs a buyin
+    /// </summary>
+    /// <remarks>The player Needs to sit on the Table first. It's recommended to use <see cref="SitIn"/> as it performs
+    /// a buyin as well if a buyin amount is set.
+    /// </remarks>
+    /// <param name="player"></param>
+    /// <param name="buyIn"></param>
+    /// <returns></returns>
+    private SitInResult PerformBuyIn(decimal buyIn)
+    {
+        // buyin prechecks
+        if (buyIn == 0)
+            return SitInResult.BuyinTooLow;
+        if (_player == null)
+            throw new InvalidOperationException("A Player needs to be sitting in order to perform a buyin! Use SitIn() instead please!");
+        if (_player.Bank < buyIn)
+            return SitInResult.NotEnoughFunds;
+        if (this.Table.TableGame != null)
+        {
+            // checks which can only be performed on an active game
+            if (buyIn > this.Table.TableGame.Rules.MaxBuyIn)
+                return SitInResult.BuyinToHigh;
+            if (buyIn < this.Table.TableGame.Rules.BuyIn)
+                return SitInResult.BuyinTooLow;
+            if (this.Table.TableGame.Rules.MaxBuyInCount > 0 && BuyInCount >= this.Table.TableGame.Rules.MaxBuyInCount)
+                return SitInResult.MaxBuyinCounterReached;
+            if (this.Table.TableGame.Rules.LatestAllowedBuyIn != null && this.Table.TableGame.GameLength != null &&
+                this.Table.TableGame.GameLength > this.Table.TableGame.Rules.LatestAllowedBuyIn)
+                return SitInResult.BuyinIsCurrentlyNotAllowed;
+        }
+        
+
+        // purchase chips
+        ulong chipBuyInValue = (ulong)buyIn;
+        if (this.Table.TableGame != null && this.Table.TableGame.Rules.Micro)
+        {
+            chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
+        }
+        this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), _player);
+        Interlocked.Increment(ref Table.SeatsWithStakesCount);
+
+        BuyInCount++;
+        return SitInResult.Success;
+    }
+
+    /// <summary>
+    /// the number of buyins performed by the player. This is mostly used for Tournament rules or analysis
+    /// </summary>
+    public ulong BuyInCount { get; private set; } = 0;
+
     /// <summary>
     /// Discards the player's hand, essentially skipping the round.
     /// </summary>

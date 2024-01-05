@@ -1,6 +1,7 @@
 using Xunit;
 using Poker.PhysicalObjects.Players;
 
+namespace Poker.Tests.PhysicalObjects.Players;
 public class PlayerTests
 {
     [Fact]

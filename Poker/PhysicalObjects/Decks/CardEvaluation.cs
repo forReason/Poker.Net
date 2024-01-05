@@ -68,11 +68,7 @@ public class CardEvaluation
         // leftover: High Card
         List<CardRank> list = new List<CardRank>();
         foreach (var c in allCards.Take(5)) list.Add(c.CardRank);
-        HandScore hand = new HandScore()
-        {
-            CardRank = HandCardRank.HighCard,
-            Score = list.ToArray()
-        };
+        HandScore hand = new HandScore(HandCardRank.HighCard, list.ToArray());
         return hand;
     }
 
@@ -147,13 +143,12 @@ public class CardEvaluation
                 HandScore? straight = IsStraight(cardList);
                 if (straight != null)
                 {
-                    HandScore hand = new HandScore()
-                    {
-                        CardRank = HandCardRank.StraightFlush,
-                        Score = straight.Score
-                    };
+                    HandCardRank rank = HandCardRank.StraightFlush;
+                    
                     if (straight.Score[0] == CardRank.Ace)
-                        hand.CardRank = HandCardRank.RoyalFlush;
+                        rank = HandCardRank.RoyalFlush;
+                    
+                    HandScore hand = new HandScore(rank, straight.Score);
                     return hand;
                 }
 
@@ -194,11 +189,7 @@ public class CardEvaluation
 
         if (pairCardRank == null)
             return null;
-        HandScore hand = new HandScore()
-        {
-            CardRank = HandCardRank.FourOfAKind,
-            Score = [pairCardRank.Value, kicker!.Value]
-        };
+        HandScore hand = new HandScore(HandCardRank.FourOfAKind, [pairCardRank.Value, kicker!.Value]);
         return hand;
     }
 
@@ -241,11 +232,8 @@ public class CardEvaluation
 
         if (highestThreePairCardRank != null && highestTwoPairCardRank != null)
         {
-            HandScore hand = new HandScore()
-            {
-                CardRank = HandCardRank.FullHouse,
-                Score = [highestThreePairCardRank.Value, highestTwoPairCardRank.Value]
-            };
+            HandScore hand = new HandScore(HandCardRank.FullHouse,
+                [highestThreePairCardRank.Value, highestTwoPairCardRank.Value]);
             return hand;
         }
 
@@ -270,11 +258,7 @@ public class CardEvaluation
             List<CardRank> list = [];
             list.AddRange(cardList.Take(5).Select(c => c.CardRank));
 
-            HandScore hand = new HandScore()
-            {
-                CardRank = HandCardRank.Flush,
-                Score = list.ToArray()
-            };
+            HandScore hand = new HandScore(HandCardRank.Flush, list.ToArray());
             return hand;
         }
 
@@ -309,11 +293,7 @@ public class CardEvaluation
                 connectedCards++;
                 if (connectedCards == 5)
                 {
-                    HandScore hand = new HandScore()
-                    {
-                        CardRank = HandCardRank.Straight,
-                        Score = [highestConnectedCard.CardRank]
-                    };
+                    HandScore hand = new HandScore(HandCardRank.Straight, [highestConnectedCard.CardRank]);
                     return hand;
                 }
             }
@@ -344,11 +324,7 @@ public class CardEvaluation
         connectedCards += wheelPossible;
         if (connectedCards == 5)
         {
-            HandScore hand = new HandScore()
-            {
-                CardRank = HandCardRank.Straight,
-                Score = [highestConnectedCard.CardRank]
-            };
+            HandScore hand = new HandScore(HandCardRank.Straight, [highestConnectedCard.CardRank]);
             return hand;
         }
 
@@ -385,11 +361,7 @@ public class CardEvaluation
 
         if (pairCardRank == null)
             return null;
-        HandScore hand = new HandScore()
-        {
-            CardRank = HandCardRank.ThreeOfAKind,
-            Score = [pairCardRank.Value, kickers[0], kickers[1]]
-        };
+        HandScore hand = new HandScore(HandCardRank.ThreeOfAKind, [pairCardRank.Value, kickers[0], kickers[1]]);
         return hand;
     }
 
@@ -429,11 +401,7 @@ public class CardEvaluation
 
         if (lowerPair == null || higherPair == null)
             return null;
-        HandScore hand = new HandScore()
-        {
-            CardRank = HandCardRank.TwoPairs,
-            Score = [higherPair.Value, lowerPair.Value, kicker!.Value]
-        };
+        HandScore hand = new HandScore(HandCardRank.TwoPairs, [higherPair.Value, lowerPair.Value, kicker!.Value]);
         return hand;
     }
 
@@ -449,11 +417,7 @@ public class CardEvaluation
     {
         if (cards.Count == 1)
         {
-            HandScore pocketCards = new HandScore()
-            {
-                CardRank = HandCardRank.OnePair,
-                Score = [cards.First().Key]
-            };
+            HandScore pocketCards = new HandScore(HandCardRank.OnePair, [cards.First().Key]);
             return pocketCards;
         }
 
@@ -477,11 +441,7 @@ public class CardEvaluation
 
         if (pairCardRank == null)
             return null;
-        HandScore hand = new HandScore()
-        {
-            CardRank = HandCardRank.OnePair,
-            Score = [pairCardRank.Value, kickers[0], kickers[1], kickers[2]]
-        };
+        HandScore hand = new HandScore(HandCardRank.OnePair, [pairCardRank.Value, kickers[0], kickers[1], kickers[2]]);
         return hand;
     }
 }

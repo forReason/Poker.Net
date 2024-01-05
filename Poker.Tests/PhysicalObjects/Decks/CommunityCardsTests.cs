@@ -10,11 +10,10 @@ namespace Poker.Tests.PhysicalObjects.Decks
         public void Set_CommunityCards_SetsCorrectStageAndCards()
         {
             // Arrange
-            var communityCards = new CommunityCards();
+            
             var cards = new Card[] { new Card(CardRank.Ace, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds), new Card(CardRank.Queen, CardSuit.Clubs) };
+            var communityCards = new CommunityCards(cards);
 
-            // Act
-            communityCards.Set(cards);
 
             // Assert
             Assert.Equal(CommunityCardStage.Flop, communityCards.Stage);

@@ -37,7 +37,7 @@ public partial class BettingRound
         ulong max = 0;
 
         foreach (var seat in _game.GameTable.Seats)
-            if (!seat.IsFold)
+            if (seat.PlayerPocketCards.HasCards)
             {
                 ulong potValue = seat.PendingBets.PotValue;
                 if (potValue > max) max = potValue;

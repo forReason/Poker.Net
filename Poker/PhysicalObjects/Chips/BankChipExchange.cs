@@ -3,7 +3,7 @@ namespace Poker.PhysicalObjects.Chips;
 /// <summary>
 /// Provides utility methods for handling and distributing poker chips.
 /// </summary>
-public partial class Bank
+public static partial class Bank
 {
     /// <summary>
     /// Recalculates and redistributes the given chips into a more usable denomination spread.

@@ -27,10 +27,4 @@
       <ProjectReference Include="..\Poker\Poker.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Logic\GameLogic\BettingRounds\" />
-      <Folder Include="Logic\GameLogic\GameManagement\" />
-      <Folder Include="Logic\GameLogic\Rules\" />
-    </ItemGroup>
-
 </Project>

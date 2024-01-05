@@ -59,7 +59,7 @@ public partial class Table
             seatID = (seatID + 1) % Seats.Length;
             counter++;
         }
-        while ((!Seats[seatID].IsParticipatingGame() || Seats[seatID].IsFold || Seats[seatID].IsAllIn) && counter < Seats.Length);
+        while ((!Seats[seatID].IsParticipatingGame || !Seats[seatID].PlayerPocketCards.HasCards || Seats[seatID].IsAllIn) && counter < Seats.Length);
 
         if (counter >= Seats.Length)
             return -1;
@@ -67,11 +67,6 @@ public partial class Table
     }
     /// <summary>
     /// returns the next active seat on the Table
-    /// </summary>
-    /// <param name="seatID"></param>
-    /// <returns>-1 if no active Seat was found</returns>
-    /// <summary>
-    /// Returns the next active seat on the Table
     /// </summary>
     /// <param name="seatID"></param>
     /// <returns>-1 if no active Seat was found</returns>
@@ -83,18 +78,13 @@ public partial class Table
             seatID = (seatID + 1) % Seats.Length;
             counter++;
         } 
-        while (!Seats[seatID].IsParticipatingGame() && counter < Seats.Length);
+        while (!Seats[seatID].IsParticipatingGame && counter < Seats.Length);
 
         if (counter >= Seats.Length)
             return -1;
         return seatID;
     }
-
-    /// <summary>
-    /// returns the next active seat on the Table
-    /// </summary>
-    /// <param name="seatID"></param>
-    /// <returns>-1 if no active Seat was found</returns>
+    
     /// <summary>
     /// Returns the previous active seat on the Table
     /// </summary>
@@ -110,7 +100,7 @@ public partial class Table
                 seatID = Seats.Length - 1;
             counter++;
         } 
-        while (!Seats[seatID].IsParticipatingGame() && counter < Seats.Length);
+        while (!Seats[seatID].IsParticipatingGame && counter < Seats.Length);
 
         if (counter >= Seats.Length)
             return -1;
@@ -220,7 +210,7 @@ public partial class Table
         // go through seats
         for (int i = 0; i < Seats.Length; i++)
         {
-            if (Seats[i].IsParticipatingGame() && !Seats[i].PlayerPocketCards.IsFold && !Seats[i].IsAllIn)
+            if (Seats[i].IsParticipatingGame && Seats[i].PlayerPocketCards.HasCards && !Seats[i].IsAllIn)
                 return false;
         }
         return true;
@@ -237,7 +227,7 @@ public partial class Table
         ulong? betValue = null;
         for (int i = 0; i < Seats.Length; i++)
         {
-            if (Seats[i].IsParticipatingGame() && !Seats[i].IsFold && !Seats[i].IsAllIn)
+            if (Seats[i].IsParticipatingGame && Seats[i].PlayerPocketCards.HasCards && !Seats[i].IsAllIn)
             {
                 // seat is in the game! compare Bet
                 if (betValue == null) // betvalue is uninitialized

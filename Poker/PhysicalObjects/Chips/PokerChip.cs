@@ -1,6 +1,6 @@
 namespace Poker.PhysicalObjects.Chips;
 /// <summary>
-/// Pokerchips are used to bet at the game. they are of type enum : ulong
+/// Poker chips are used to bet at the game. they are of type enum : ulong
 /// </summary>
 public enum PokerChip : ulong
 {

@@ -2,6 +2,7 @@ using Xunit;
 using Poker.PhysicalObjects.Players;
 using Poker.PhysicalObjects.Tables;
 
+namespace Poker.Tests.PhysicalObjects.Tables;
 public class TableTests
 {
     [Fact]
