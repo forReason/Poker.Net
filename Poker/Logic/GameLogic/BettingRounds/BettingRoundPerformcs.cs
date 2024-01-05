@@ -89,7 +89,6 @@ public partial class BettingRound
     /// <param name="lastRaisedSeatId">Reference to the ID of the last seat that raised.</param>
     private void HandlePlayerAction(Seat actionSeat, ulong minRaise, ulong maxRaise, ref int lastRaisedSeatId)
     {
-        // TODO: is minRaise applied correctly?
         ulong? betValue = actionSeat.CallForPlayerAction(CallValue, minRaise, maxRaise, this._game.Rules.GameTimeStructure, TimeSpan.FromSeconds(20));
         if (betValue == null || betValue == 0)
         {

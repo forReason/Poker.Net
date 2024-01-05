@@ -10,6 +10,7 @@ namespace Poker.Logic.GameLogic.Rules
     /// </summary>
     public class RuleSet
     {
+        // TODO: test correct implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="RuleSet"/> class.
         /// </summary>
