@@ -40,11 +40,13 @@ public class Deck
         CardCount--;
         return selectedCard;
     }
-    
+
     /// <summary>
     /// Shuffles all the cards in the Deck by first washing the cards, then riffleshuffling and finally stripshuffling followed by a final cut
     /// </summary>
-    /// <remarks>Also resets the states of the deck so that cards can be drawn from again</remarks>
+    /// <remarks>Also resets the states of the deck so that cards can be drawn from again<br/><br/>
+    /// verifies the Deck integrity after Data Generation</remarks>
+    /// <exception cref="InvalidOperationException">The Deck sees to be corrupted</exception>
     public void ShuffleCards()
     {
         // shuffle randomly
@@ -70,7 +72,7 @@ public class Deck
     /// <summary>
     /// shuffles the deck randomly
     /// </summary>
-    private void WashDeck()
+    internal void WashDeck()
     {
         byte[] randomBytes = new byte[4];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -90,7 +92,7 @@ public class Deck
     /// <summary>
     /// splits the deck in half and riffles the cards together randomly
     /// </summary>
-    private void RiffleShuffle()
+    internal void RiffleShuffle()
     {
         Card[] shuffled = new Card[52];
         int middle = _shuffledCards.Length / 2;
@@ -126,7 +128,7 @@ public class Deck
     /// <summary>
     /// takes stacks of random amounts of cards and places them under
     /// </summary>
-    private void StripShuffle(uint shuffleRounds = 7)
+    internal void StripShuffle(uint shuffleRounds = 7)
     {
         Card[] leftStack = _shuffledCards;
         Card[] rightStack = new Card[leftStack.Length];
@@ -156,10 +158,12 @@ public class Deck
     }
 
     /// <summary>
-    /// Cuts the deck at a random position, placing the top cards at the bottom
+    /// Cuts the deck at a random position, placing the top cards at the bottom<br/>
+    /// finalizes the shuffling process andverifies the Deck integrity to allow drawing cards again
     /// </summary>
-    /// <remarks>also resets the drawn count to finalize a shuffle and new cards can be drawn again</remarks>
-    private void Cut()
+    /// <remarks>verifies the Deck integrity after Data Generation</remarks>
+    /// <exception cref="InvalidOperationException">The Deck sees to be corrupted</exception>
+    internal void Cut()
     {
         Random rnd = new Random();
         int cutPoint = rnd.Next(1, _shuffledCards.Length);
@@ -167,8 +171,12 @@ public class Deck
 
         Array.Copy(_shuffledCards, cutPoint, cutDeck, 0, _shuffledCards.Length - cutPoint);
         Array.Copy(_shuffledCards, 0, cutDeck, _shuffledCards.Length - cutPoint, cutPoint);
-        CardCount = cutDeck.Length;
         _shuffledCards = cutDeck;
+        if (!ConfirmDeckIntegrity())
+        {
+            throw new InvalidOperationException("the deck integrity could not be confirmed!");
+        }
+        CardCount = cutDeck.Length;
     }
 
 
@@ -186,7 +194,15 @@ public class Deck
                 i++;
             }
         }
+    }
 
-        ShuffleCards();
+    /// <summary>
+    /// this method validates the integrity of the Deck by verifying that it contains exactly 52 Cards and no Duplicates
+    /// </summary>
+    /// <returns>true if deck is integer and false if it is corrupted</returns>
+    public bool ConfirmDeckIntegrity()
+    {
+        HashSet<Card> cards = new HashSet<Card>(_shuffledCards);
+        return cards.Count == 52;
     }
 }

@@ -18,7 +18,8 @@ public class CommunityCards
     /// This prevents external modification of the cards array.
     /// </summary>
     public Card?[] TableCards => (Card?[])_tableCards.Clone();
-    
+
+
     /// <summary>
     /// the burn cards which are put before each stage reveal
     /// </summary>
@@ -93,6 +94,7 @@ public class CommunityCards
         }
     }
 
+    
     /// <summary>
     /// Clears all community and burn cards from the table and resets the game stage.
     /// This method is used for resetting the community cards at the end of a hand or when starting a new game.

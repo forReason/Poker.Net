@@ -210,8 +210,13 @@ public class Pot
         return true;
     }
     /// <summary>
-    /// moves a requested value to a pot, according to betting rules (if not enough balance, still perform)
+    /// moves a requested value to a betting pot, according to betting rules (if not enough balance, still perform)
     /// </summary>
+    /// <remarks>
+    /// please note that this function fills the target pot to the desired value.<br/>
+    /// Example: target por is worth 10. You call PerformBet(target, 50)<br/>
+    /// this means the remainder (40) is moved to the target pot so that its final Value is 50 as requested
+    /// </remarks>
     /// <param name="target"></param>
     /// <param name="value"></param>
     /// <param name="owner"></param>
@@ -224,15 +229,14 @@ public class Pot
             {
                 return PerformBetResult.PlayerHasNoFunds;
             }
-            if (PotValue < value)
+            if (PotValue + target.PotValue < value)
             {
                 MoveAllChips(target, owner);
                 return PerformBetResult.AllIn;
             }
-            MoveValueInternal(target, value, owner);
+            MoveValueInternal(target, value - target.PotValue, owner);
             return PerformBetResult.Success;
         }
-
     }
 
     /// <summary>
@@ -294,20 +298,6 @@ public class Pot
         return totalRemovedValue;
     }
 
-
-    /// <returns>The total value of the chips in the pot.</returns>
-    public ulong RecalculatePotValue()
-    {
-        lock (_lock)
-        {
-            return RecalculatePotValueInternal();
-        }
-    }
-    private ulong RecalculatePotValueInternal()
-    {
-        PotValue = Bank.ConvertChipsToValue(_chips);
-        return PotValue;
-    }
     /// <summary>
     /// represents the current Value of the pot as ulong
     /// </summary>

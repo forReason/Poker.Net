@@ -7,6 +7,22 @@ namespace Poker.PhysicalObjects.Decks;
 /// </summary>
 public class PocketCards
 {
+    public PocketCards() { }
+    /// <summary>
+    /// override method to set a new hand for testing purposes only. <br/>
+    /// When playing or simulating a Game, you should draw from deck with <see cref="DealCard"/> appropriately
+    /// </summary>
+    public PocketCards(Card? card1, Card? card2)
+    {
+        int count = 0;
+        _cards[0] = card1;
+        if (card1 != null)
+            count++;
+        _cards[1] = card2;
+        if (card2 != null)
+            count++;
+        CardCount = count;
+    }
     // <summary>
     /// the 5 Slots on the Table
     /// </summary>
@@ -29,25 +45,6 @@ public class PocketCards
     /// checks if the player has at least 1 card
     /// </summary>
     public bool HasCards => CardCount > 0;
-    /// <summary>
-    /// checks if the player has no cards (fold)
-    /// </summary>
-    public bool IsFold => CardCount == 0;
-
-    /// <summary>
-    /// override method to set a new hand. When simulating a Game, you should draw appropriately
-    /// </summary>
-    public void SetHand(Card? card1, Card? card2)
-    {
-        int count = 0;
-        _cards[0] = card1;
-        if (card1 != null)
-            count++;
-        _cards[1] = card2;
-        if (card2 != null)
-            count++;
-        CardCount = count;
-    }
 
     /// <summary>
     /// Draws the Next Card

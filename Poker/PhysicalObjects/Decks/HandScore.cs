@@ -6,15 +6,22 @@ namespace Poker.PhysicalObjects.Decks;
 /// </summary>
 public class HandScore
 {
+    public HandScore(HandCardRank cardRank, CardRank[] score)
+    {
+        CardRank = cardRank;
+        Score = score;
+    }
+
+
     /// <summary>
     /// the primary CardRank of the hand
     /// </summary>
-    public HandCardRank CardRank { get; set; }
+    public HandCardRank CardRank { get; private set; }
     /// <summary>
     /// the score is used to evaluate the hand in a tie scenario for tie breaking.
     /// the comparer moves from the first element of the array to the last one, checking each card individually
     /// </summary>
-    public CardRank[] Score { get; set; }
+    public CardRank[] Score { get; private set; }
     /// <summary>
     /// score this hand against an enemy hand
     /// </summary>
@@ -47,7 +54,7 @@ public class HandScore
     /// <param name="lhs"></param>
     /// <param name="rhs"></param>
     /// <returns></returns>
-    public static bool operator >(HandScore lhs, HandScore? rhs)
+    public static bool operator >(HandScore? lhs, HandScore? rhs)
     {
         if (lhs is null)
             return false; // null is not greater than anything
@@ -63,7 +70,7 @@ public class HandScore
     /// <param name="lhs"></param>
     /// <param name="rhs"></param>
     /// <returns></returns>
-    public static bool operator <(HandScore lhs, HandScore? rhs)
+    public static bool operator <(HandScore? lhs, HandScore? rhs)
     {
         if (lhs is null)
             return rhs is not null; // null is less than anything except null
@@ -79,7 +86,7 @@ public class HandScore
     /// <param name="lhs"></param>
     /// <param name="rhs"></param>
     /// <returns></returns>
-    public static bool operator ==(HandScore lhs, HandScore? rhs)
+    public static bool operator ==(HandScore? lhs, HandScore? rhs)
     {
         if (lhs is null || rhs is null)
             return lhs is null && rhs is null; // true if both are null, otherwise false
@@ -93,7 +100,7 @@ public class HandScore
     /// <param name="lhs"></param>
     /// <param name="rhs"></param>
     /// <returns></returns>
-    public static bool operator !=(HandScore lhs, HandScore? rhs)
+    public static bool operator !=(HandScore? lhs, HandScore? rhs)
     {
         return !(lhs == rhs);
     }

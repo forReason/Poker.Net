@@ -25,12 +25,12 @@ public struct Card : IEquatable<Card>, IComparable<Card>
     /// <remarks>
     /// Example: A king is of CardRank 13 and thus higher than a Jack with CardRank 11
     /// </remarks>
-    public CardRank CardRank { get; set; }
+    public CardRank CardRank { get; private set; }
     
     /// <summary>
     /// The Suit defines the Group or Kind a card belongs to. 
     /// </summary>
-    public CardSuit Suit { get; set; }
+    public CardSuit Suit { get; private set; }
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.

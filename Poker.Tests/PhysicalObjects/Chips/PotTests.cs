@@ -197,19 +197,6 @@ public class PotTests
         Assert.Equal(5UL, pot.PotValue); // Remaining value in the pot
     }
 
-    [Fact]
-    public void RecalculatePotValue_ReturnsCorrectTotalValue()
-    {
-        // Arrange
-        var pot = new Pot();
-        pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 }, { PokerChip.Red, 5 } }, new Player());
-
-        // Act
-        var recalculatedValue = pot.RecalculatePotValue();
-
-        // Assert
-        Assert.Equal(15UL, recalculatedValue); // Assuming Blue and Red chips are worth 1 each
-    }
 
 
     [Fact]
@@ -218,6 +205,7 @@ public class PotTests
         var pot = new Pot();
         var player = new Player();
         pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player);
+        pot.
 
         ulong clearedValue = pot.Clear();
 
