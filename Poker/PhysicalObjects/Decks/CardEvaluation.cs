@@ -2,7 +2,10 @@ using Poker.PhysicalObjects.Cards;
 
 namespace Poker.PhysicalObjects.Decks;
 
-public class CardEvaluation
+/// <summary>
+/// the CardEvaluation class is used to score hand against each other and determining the winner
+/// </summary>
+public static class CardEvaluation
 {
     /// <summary>
     /// takes the community cards and player pocket in order to generate a HandScore which can easily be compared to each other with (==) operators
@@ -20,23 +23,22 @@ public class CardEvaluation
         allCards = allCards.OrderByDescending(c => c.CardRank).ToList();
 
         // Score Cards
-        HandScore? scoredCards = null;
         Dictionary<CardSuit, List<Card>> suitList = BuildSuitDictionary(allCards);
         // royal flush or straight flush
-        scoredCards = IsStraightFlush(suitList);
+        HandScore? scoredCards = IsStraightFlush(suitList);
         if (scoredCards != null)
             return scoredCards;
 
         // build CardRank dictionary after straight flush for the minority of cases where we have a straight flush (minor performance improvement)
-        var CardRankList = BuildCardRankDictionary(allCards);
+        SortedDictionary<CardRank, ulong> cardRankList = BuildCardRankDictionary(allCards);
 
         // four of a kind
-        scoredCards = IsFourOfAKind(CardRankList);
+        scoredCards = IsFourOfAKind(cardRankList);
         if (scoredCards != null)
             return scoredCards;
 
         // Full House
-        scoredCards = IsFullHouse(CardRankList);
+        scoredCards = IsFullHouse(cardRankList);
         if (scoredCards != null)
             return scoredCards;
 
@@ -51,23 +53,27 @@ public class CardEvaluation
             return scoredCards;
 
         // Three of a kind
-        scoredCards = IsThreeOfAKind(CardRankList);
+        scoredCards = IsThreeOfAKind(cardRankList);
         if (scoredCards != null)
             return scoredCards;
 
         // two pair
-        scoredCards = IsTwoPair(CardRankList);
+        scoredCards = IsTwoPair(cardRankList);
         if (scoredCards != null)
             return scoredCards;
 
         // one pair
-        scoredCards = IsPair(CardRankList);
+        scoredCards = IsPair(cardRankList);
         if (scoredCards != null)
             return scoredCards;
 
         // leftover: High Card
-        List<CardRank> list = new List<CardRank>();
-        foreach (var c in allCards.Take(5)) list.Add(c.CardRank);
+        List<CardRank> list = [];
+        foreach (var c in allCards.Take(5))
+        {
+            list.Add(c.CardRank);
+        }
+
         HandScore hand = new HandScore(HandCardRank.HighCard, list.ToArray());
         return hand;
     }

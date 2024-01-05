@@ -32,7 +32,7 @@ public partial class BettingRound
 
         do 
         {
-            var (minRaise, maxRaise) = DetermineBettingLimits(currentSeat);
+            var (minRaise, maxRaise) = DetermineBettingLimits();
 
             Seat actionSeat = _game.GameTable.Seats[currentSeat];
             HandlePlayerAction(actionSeat, minRaise, maxRaise, ref lastRaisedSeatId);
@@ -44,9 +44,8 @@ public partial class BettingRound
     /// <summary>
     /// Determines the minimum and maximum raise amounts for the current betting round.
     /// </summary>
-    /// <param name="currentSeat">The current seat being evaluated.</param>
     /// <returns>Tuple containing the minimum and maximum raise values.</returns>
-    private (ulong minRaise, ulong maxRaise) DetermineBettingLimits(int currentSeat)
+    private (ulong minRaise, ulong maxRaise) DetermineBettingLimits()
     {
         ulong minRaise = CallValue * 2;
         ulong maxRaise = ulong.MaxValue;
@@ -106,14 +105,13 @@ public partial class BettingRound
                     lastRaisedSeatId = actionSeat.SeatID;
                     BetsReceived++;
                 }
-                actionSeat.Stack.MoveValue(actionSeat.PendingBets, limitedBetValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
+
+                actionSeat.ForceBet(limitedBetValue - actionSeat.PendingBets.PotValue);
             }
             else // call
             {
-                actionSeat.Stack.MoveValue(actionSeat.PendingBets, CallValue - actionSeat.PendingBets.PotValue, actionSeat.Player);
+                actionSeat.ForceBet(CallValue - actionSeat.PendingBets.PotValue);
             }
-            // move leftover chips back to the player stack
-            actionSeat.Stack.MoveAllChips(actionSeat.Stack, actionSeat.Player);
         }
         // fold the player if he does not want to contribute enough
         else if (!actionSeat.IsAllIn && !actionSeat.IsAllIn)

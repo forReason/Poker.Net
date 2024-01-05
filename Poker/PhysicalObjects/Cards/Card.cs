@@ -11,7 +11,7 @@ public struct Card : IEquatable<Card>, IComparable<Card>
     /// <summary>
     /// Creates a new card with a given CardRank and suit
     /// </summary>
-    /// <param name="CardRank">The CardRank of the Card</param>
+    /// <param name="cardRank">The CardRank of the Card</param>
     /// <param name="suit">The color group of the Card</param>
     public Card(CardRank cardRank, CardSuit suit)
     {
@@ -38,7 +38,7 @@ public struct Card : IEquatable<Card>, IComparable<Card>
     /// <remarks>Use operators such as == to compare the CardRanks of two cards</remarks>
     /// <param name="obj">The object to compare with the current object.</param>
     /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj == null)
         {
@@ -51,7 +51,7 @@ public struct Card : IEquatable<Card>, IComparable<Card>
     /// <summary>
     /// Determines whether the specified Card is equal to the current Card.
     /// </summary>
-    /// <remarks>Use operators such as <see cref="=="/> to compare the CardRanks of two cards</remarks>
+    /// <remarks>Use operators such as == to compare the CardRanks of two cards</remarks>
     /// <param name="other">The Card to compare with the current Card.</param>
     /// <returns>true if the specified Card is equal to the curre/nt Card; otherwise, false.</returns>
     public bool Equals(Card other)
@@ -97,7 +97,7 @@ public struct Card : IEquatable<Card>, IComparable<Card>
         return left.CompareTo(right) > 0;
     }
 
-    //// <summary>
+    /// <summary>
     /// Determines if the Card on the Left has a lower CardRank than the Card on the Right
     /// </summary>
     /// <param name="left"></param>
@@ -146,6 +146,10 @@ public struct Card : IEquatable<Card>, IComparable<Card>
         return 0;
     }
 
+    /// <summary>
+    /// converts the card to string in the format of "Suit-Rank"
+    /// </summary>
+    /// <returns>the string representation of the card</returns>
     public override string ToString()
     {
         return $"[{Suit}-{CardRank}]";

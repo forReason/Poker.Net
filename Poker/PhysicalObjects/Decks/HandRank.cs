@@ -1,7 +1,7 @@
 namespace Poker.PhysicalObjects.Decks;
 
 /// <summary>
-/// defines the primary score of a hand which can be compared to eachother
+/// defines the primary score of a hand which can be compared to each other
 /// </summary>
 /// <remarks>
 /// within each handCardRank, the hands have to be compared further
@@ -12,7 +12,7 @@ public enum HandCardRank
     /// the lowest CardRank out there
     /// </summary>
     /// <remarks>
-    /// winrate: Better Fold<br/>
+    /// win-rate: Better Fold<br/>
     /// probability: 50.11%
     /// </remarks>
     HighCard,
@@ -20,7 +20,7 @@ public enum HandCardRank
     /// a low hand
     /// </summary>
     /// <remarks>
-    /// win.rate: Lower Win.rate<br/>
+    /// win-rate: Lower Win.rate<br/>
     /// probability: 42.25%
     /// </remarks>
     OnePair,
@@ -28,7 +28,7 @@ public enum HandCardRank
     /// a medium hand
     /// </summary>
     /// <remarks>
-    /// win.rate: Moderate Win.rate<br/>
+    /// win-rate: Moderate Win.rate<br/>
     /// probability: 4.75%
     /// </remarks>
     TwoPairs,

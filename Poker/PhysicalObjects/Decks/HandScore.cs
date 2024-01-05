@@ -2,26 +2,21 @@ using Poker.PhysicalObjects.Cards;
 
 namespace Poker.PhysicalObjects.Decks;
 /// <summary>
-/// raepresents the CardRank of a hand an allows to compare twi hands against each other
+/// represents the CardRank of a hand an allows to compare twi hands against each other
 /// </summary>
-public class HandScore
+public class HandScore(HandCardRank cardRank, CardRank[] score)
 {
-    public HandScore(HandCardRank cardRank, CardRank[] score)
-    {
-        CardRank = cardRank;
-        Score = score;
-    }
-
-
     /// <summary>
     /// the primary CardRank of the hand
     /// </summary>
-    public HandCardRank CardRank { get; private set; }
+    public HandCardRank CardRank { get; } = cardRank;
+
     /// <summary>
     /// the score is used to evaluate the hand in a tie scenario for tie breaking.
     /// the comparer moves from the first element of the array to the last one, checking each card individually
     /// </summary>
-    public CardRank[] Score { get; private set; }
+    public CardRank[] Score { get; } = score;
+
     /// <summary>
     /// score this hand against an enemy hand
     /// </summary>
@@ -30,7 +25,10 @@ public class HandScore
     /// 1 if this hand id better<br/>
     /// 0 if both hands are equal<br/>
     /// -1 if the enemies hand is better</returns>
-    public int CompareHand (HandScore? enemyHand) {
+    public int CompareHand (HandScore? enemyHand)
+    {
+        if (enemyHand == null)
+            return 1;
         if (this.CardRank > enemyHand.CardRank)
             return 1;
         else if (this.CardRank == enemyHand.CardRank)
@@ -111,7 +109,7 @@ public class HandScore
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is HandScore other)
         {

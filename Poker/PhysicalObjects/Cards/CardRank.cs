@@ -20,7 +20,7 @@ public enum CardRank : ulong
     /// </summary>
     Three = 3,
     /// <summary>
-    /// the tird lowest card in the game
+    /// the third lowest card in the game
     /// </summary>
     Four = 4,
     /// <summary>

@@ -42,7 +42,7 @@ public class Deck
     }
 
     /// <summary>
-    /// Shuffles all the cards in the Deck by first washing the cards, then riffleshuffling and finally stripshuffling followed by a final cut
+    /// Shuffles all the cards in the Deck by first washing the cards, then riffle shuffling and finally strip shuffling followed by a final cut
     /// </summary>
     /// <remarks>Also resets the states of the deck so that cards can be drawn from again<br/><br/>
     /// verifies the Deck integrity after Data Generation</remarks>
@@ -159,7 +159,7 @@ public class Deck
 
     /// <summary>
     /// Cuts the deck at a random position, placing the top cards at the bottom<br/>
-    /// finalizes the shuffling process andverifies the Deck integrity to allow drawing cards again
+    /// finalizes the shuffling process and verifies the Deck integrity to allow drawing cards again
     /// </summary>
     /// <remarks>verifies the Deck integrity after Data Generation</remarks>
     /// <exception cref="InvalidOperationException">The Deck sees to be corrupted</exception>
@@ -186,11 +186,11 @@ public class Deck
     private void GenerateDeck()
     {
         int i = 0;
-        foreach (CardRank CardRank in Enum.GetValuesAsUnderlyingType<CardRank>())
+        foreach (CardRank cardRank in Enum.GetValuesAsUnderlyingType<CardRank>())
         {
             foreach (CardSuit suit in Enum.GetValuesAsUnderlyingType<CardSuit>())
             {
-                _shuffledCards[i] = new Card(CardRank, suit);
+                _shuffledCards[i] = new Card(cardRank, suit);
                 i++;
             }
         }
@@ -202,7 +202,7 @@ public class Deck
     /// <returns>true if deck is integer and false if it is corrupted</returns>
     public bool ConfirmDeckIntegrity()
     {
-        HashSet<Card> cards = new HashSet<Card>(_shuffledCards);
+        HashSet<Card> cards = [.._shuffledCards];
         return cards.Count == 52;
     }
 }

@@ -7,12 +7,23 @@ namespace Poker.PhysicalObjects.Players;
 /// </summary>
 public class Player
 {
+    /// <summary>
+    /// creates a new player instance with this chosen unique identifier
+    /// </summary>
+    /// <remarks>if not UniqueIdentifier is set, generates a uuid for the player</remarks>
+    /// <param name="uniqueIdentifier"></param>
+    public Player(string? uniqueIdentifier = null)
+    {
+        UniqueIdentifier = string.IsNullOrEmpty(uniqueIdentifier) ? Guid.NewGuid().ToString() : uniqueIdentifier;
+    }
     private decimal _bank;
     private readonly object _bankLock = new object();
+
     /// <summary>
     /// the unique identifier of the player. In online games, this might be the name or an #ID
     /// </summary>
-    public string UniqueIdentifier = Guid.NewGuid().ToString();
+    public string UniqueIdentifier { get; }
+
     /// <summary>
     /// the seat on a table game which this player is part of
     /// </summary>
@@ -28,13 +39,6 @@ public class Player
             lock (_bankLock)
             {
                 return _bank;
-            }
-        }
-        private set
-        {
-            lock (_bankLock)
-            {
-                _bank = value;
             }
         }
     }
@@ -68,7 +72,7 @@ public class Player
             return false;
         }
     }
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj == null)
         {
@@ -85,7 +89,7 @@ public class Player
             return false;
         }
 
-        Player player = obj as Player;
+        Player player = (obj as Player)!;
         return UniqueIdentifier == player.UniqueIdentifier;
     }
 

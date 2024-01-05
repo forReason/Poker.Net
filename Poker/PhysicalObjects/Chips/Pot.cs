@@ -22,7 +22,7 @@ public class Pot
     /// <summary>
     /// all players affiliated with this pot
     /// </summary>
-    private HashSet<Player> _players;
+    private readonly HashSet<Player> _players;
 
     /// <summary>
     /// Initializes a new instance of the Pot class.
@@ -55,25 +55,21 @@ public class Pot
         {
             if (!reverse)
             {
-                if (_sortedChipsDecending == null)
-                {
-                    var sortedChips = _chips.OrderByDescending(chip => chip.Key).ToList();
-                    _sortedChipsDecending = new ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>(sortedChips);
-                }
-                return _sortedChipsDecending;
+                if (_sortedChipsDescending != null) return _sortedChipsDescending;
+                List<KeyValuePair<PokerChip, ulong>> sortedChips = _chips.OrderByDescending(chip => chip.Key).ToList();
+                _sortedChipsDescending = new ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>(sortedChips);
+                return _sortedChipsDescending;
             }
             else
             {
-                if (_sortedChipsAscending == null)
-                {
-                    var sortedChipsReverse = _chips.OrderBy(chip => chip.Key).ToList();
-                    _sortedChipsAscending = new ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>(sortedChipsReverse);
-                }
+                if (_sortedChipsAscending != null) return _sortedChipsAscending;
+                var sortedChipsReverse = _chips.OrderBy(chip => chip.Key).ToList();
+                _sortedChipsAscending = new ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>(sortedChipsReverse);
                 return _sortedChipsAscending;
             }
         }
     }
-    private IEnumerable<KeyValuePair<PokerChip, ulong>>? _sortedChipsDecending;
+    private IEnumerable<KeyValuePair<PokerChip, ulong>>? _sortedChipsDescending;
     private IEnumerable<KeyValuePair<PokerChip, ulong>>? _sortedChipsAscending;
 
     /// <summary>
@@ -85,6 +81,7 @@ public class Pot
     /// Adds chips to the pot. This operation is thread-safe.
     /// </summary>
     /// <param name="chips">The chips to add to the pot.</param>
+    /// <param name="player">The player which is being added to the Pots player list, meaning he has skin in the game.</param>
     public void AddChips(IDictionary<PokerChip, ulong> chips, Player player)
     {
         lock (_lock)
@@ -96,7 +93,7 @@ public class Pot
     {
         _players.Add(player);
         _sortedChipsAscending = null;
-        _sortedChipsDecending = null;
+        _sortedChipsDescending = null;
         foreach (var chip in chips)
         {
             this.PotValue += ((ulong)chip.Key) * chip.Value;
@@ -256,12 +253,12 @@ public class Pot
     private void RecolorizeInternal()
     {
         // Assuming Bank.Recolorize returns IDictionary<PokerChip, ulong>
-        var recolorizedChips = Bank.Recolorize(this._chips);
+        IDictionary<PokerChip, ulong> recolorizedChips = Bank.Recolorize(this._chips);
 
         // Convert IDictionary to Dictionary
         this._chips = new Dictionary<PokerChip, ulong>(recolorizedChips);
         _sortedChipsAscending = null;
-        _sortedChipsDecending = null;
+        _sortedChipsDescending = null;
     }
 
     /// <summary>
@@ -279,7 +276,7 @@ public class Pot
     private ulong RemoveChipsInternal(IDictionary<PokerChip, ulong> chips)
     {
         _sortedChipsAscending = null;
-        _sortedChipsDecending = null;
+        _sortedChipsDescending = null;
         ulong totalRemovedValue = 0;
         foreach (var chip in chips)
         {
@@ -301,7 +298,7 @@ public class Pot
     /// <summary>
     /// represents the current Value of the pot as ulong
     /// </summary>
-    public ulong PotValue { get; private set; } = 0;
+    public ulong PotValue { get; private set; } 
 
     /// <summary>
     /// Clears all chips from the pot. This operation is thread-safe.
@@ -321,7 +318,7 @@ public class Pot
         _chips.Clear();
         _players.Clear();
         _sortedChipsAscending = null;
-        _sortedChipsDecending = null;
+        _sortedChipsDescending = null;
         return totalValue;
     }
 }

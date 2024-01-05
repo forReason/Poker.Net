@@ -24,12 +24,12 @@ public partial class Table
     /// <summary>
     /// backreference to a running game on the table
     /// </summary>
-    public Game? TableGame { get; set; } = null; 
+    public Game? TableGame { get; set; }  
 
     /// <summary>
     /// the pots in the center which the players Bet into
     /// </summary>
-    public readonly List<Pot> CenterPots = new List<Pot>();
+    public readonly List<Pot> CenterPots = [];
 
     /// <summary>
     /// Calculates the total value of the center pots
@@ -117,7 +117,7 @@ public partial class Table
     /// the small blind is forced to make half a bet at the start of the round<br/>
     /// when only 2 players are at the Table, the Dealer is the small Blind at the same Time. Otherwise, its the seat left of the dealer.
     /// </remarks>
-    public int SmallBlindSeat = 0;
+    public int SmallBlindSeat;
     /// <summary>
     /// the seat which as currently the big blind
     /// </summary>
@@ -125,9 +125,9 @@ public partial class Table
     /// the big blind is forced to make a full bet at the start of the round<br/>
     /// it is the player left of the SmallBlind
     /// </remarks>
-    public int BigBlindSeat = 0;
+    public int BigBlindSeat;
     /// <summary>
-    /// Moves the Dealer and blind buttons apropriately
+    /// Moves the Dealer and blind buttons appropriately
     /// </summary>
     public MoveButtonsResult MoveButtons()
     {
@@ -159,7 +159,7 @@ public partial class Table
     }
 
     /// <summary>
-    /// clears all playerhands, preparing for a new round or anything
+    /// clears all player hands, preparing for a new round or anything
     /// </summary>
     public void RevokePlayerCards()
     {
@@ -208,9 +208,9 @@ public partial class Table
         if (SeatsWithStakesCount == 0)
             return false;
         // go through seats
-        for (int i = 0; i < Seats.Length; i++)
+        foreach (var seat in Seats)
         {
-            if (Seats[i].IsParticipatingGame && Seats[i].PlayerPocketCards.HasCards && !Seats[i].IsAllIn)
+            if (seat.IsParticipatingGame && seat.PlayerPocketCards.HasCards && !seat.IsAllIn)
                 return false;
         }
         return true;
@@ -225,16 +225,13 @@ public partial class Table
             return true; // only 1 player left
         // go through seats
         ulong? betValue = null;
-        for (int i = 0; i < Seats.Length; i++)
+        foreach (var seat in Seats)
         {
-            if (Seats[i].IsParticipatingGame && Seats[i].PlayerPocketCards.HasCards && !Seats[i].IsAllIn)
-            {
-                // seat is in the game! compare Bet
-                if (betValue == null) // betvalue is uninitialized
-                    betValue = Seats[i].PendingBets.PotValue;
-                if (betValue != Seats[i].PendingBets.PotValue)
-                    return false;
-            }
+            if (!seat.IsParticipatingGame || !seat.PlayerPocketCards.HasCards || seat.IsAllIn) continue;
+            // seat is in the game! compare Bet
+            betValue ??= seat.PendingBets.PotValue;
+            if (betValue != seat.PendingBets.PotValue)
+                return false;
         }
         return true;
     }
@@ -242,15 +239,15 @@ public partial class Table
     /// <summary>
     /// the card deck of the table
     /// </summary>
-    public Deck TableDeck = new Deck();
+    public readonly Deck TableDeck = new ();
     /// <summary>
     /// the middle 5 cards of the table shared by each player, including the burn cards
     /// </summary>
-    public CommunityCards CommunityCards = new CommunityCards();
+    public readonly CommunityCards CommunityCards = new ();
     /// <summary>
     /// the table seats where players can sit
     /// </summary>
-    public Seat[] Seats;
+    public readonly Seat[] Seats;
 
     /// <summary>
     /// the number of players sitting at the table

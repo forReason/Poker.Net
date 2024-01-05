@@ -15,7 +15,8 @@ public class Seat
     /// <summary>
     /// Creates a Seat attached to a Table.
     /// </summary>
-    /// <param name="seatID"></param>
+    /// <param name="seatID">the seat number at the table</param>
+    /// <param name="table">the table where this seat belongs to for backreference</param>
     public Seat(int seatID, Table table)
     {
         SeatID = seatID;
@@ -27,7 +28,7 @@ public class Seat
     /// </summary>
 
     public Player? Player => _player;
-    private volatile Player? _player= null;
+    private volatile Player? _player;
 
     /// <summary>
     /// Checks whether a seat is still active in the game. <br/>
@@ -54,7 +55,7 @@ public class Seat
     /// <summary>
     /// The hand of Cards of the player
     /// </summary>
-    public PocketCards PlayerPocketCards = new PocketCards();
+    public readonly PocketCards PlayerPocketCards = new PocketCards();
 
     /// <summary>
     /// The SmallBlind must reserve half the minimum bet, even before seeing his Cards
@@ -63,20 +64,23 @@ public class Seat
     /// the SmallBlind is the Player left of the Dealer. If only 2 players are on the table, the Dealer himself is the smallBlind.
     /// The dealer is always the Master
     /// </remarks>
-    public bool IsSmallBlind { get; set; } = false;
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public bool IsSmallBlind { get; set; }
 
     /// <summary>
     /// The SmallBlind must reserve the minimum bet, even before seeing his Cards
     /// </summary>
     /// <remarks>The BigBlind is always the person sitting left of the SmallBlind</remarks>
-    public bool IsBigBlind { get; set; } = false;
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public bool IsBigBlind { get; set; }
 
     /// <summary>
     /// The Dealer starts giving Cards beginning with the Person left of the dealer (The Small Blind).<br/>
     /// If the Table only has 2 active players, the Dealer is at the Same Time the Small Blind ad starts dealing cards to the other player (BigBlind)
     /// </summary>
     /// <remarks>In Casinos, the Dealer does not Handle the Cards but the Casinos Croupier.</remarks>
-    public bool IsDealer { get; set; } = false;
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public bool IsDealer { get; set; }
 
     /// <summary>
     /// The stack of Chips in front of the player representing the bet (but not yet added to the tablePot)
@@ -107,7 +111,8 @@ public class Seat
     /// </code>
     /// This allows for flexible player action handling in different game environments like simulations or live games.
     /// </remarks>
-    public IPlayerActionHandler ActionHandler { get; set; }
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public IPlayerActionHandler? ActionHandler { get; set; }
 
     /// <summary>
     /// this method is being used by the game engine to call the player for action
@@ -120,6 +125,8 @@ public class Seat
     /// <returns></returns>
     public ulong? CallForPlayerAction(ulong callValue, ulong minRaise, ulong maxRaise, GameTime isSimulationMode, TimeSpan? timeout = null)
     {
+        if (ActionHandler == null)
+            return 0;
         if (isSimulationMode == GameTime.Simulated)
         {
             // Synchronous call for simulation
@@ -134,6 +141,8 @@ public class Seat
 
     private async Task<ulong?> CallForPlayerAction(ulong callValue, ulong minRaise, ulong maxRaise, TimeSpan? timeout)
     {
+        if (ActionHandler == null)
+            return 0;
         CancellationTokenSource cts = timeout.HasValue ? new CancellationTokenSource(timeout.Value) : new CancellationTokenSource();
         try
         {
@@ -141,7 +150,7 @@ public class Seat
         }
         catch (OperationCanceledException)
         {
-            cts.Cancel();
+            await cts.CancelAsync();
             // Handle timeout or cancellation
             return null;
         }
@@ -150,18 +159,23 @@ public class Seat
     /// <summary>
     /// The stack of Chips in reserve which the Player can use to Bet
     /// </summary>
-    public Pot Stack = new();
-    private readonly object _lock = new object();
+    public readonly Pot Stack = new();
     public ulong StackValue => Stack.PotValue;
 
     /// <summary>
-    /// this function is used to set the Blinds and Ante for examble and cannot be revoked
+    /// this function is used to set the Blinds and Ante for example and cannot be revoked
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     public PerformBetResult ForceBet(ulong value)
     {
-        return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, this.Player);
+        if (this._player == null && PendingBets.Players.Count > 0)
+        {
+            return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, PendingBets.Players.First());
+        }
+        else if (this._player == null)
+            return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, new Player());
+        return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, this.Player!);
     }
 
     /// <summary>
@@ -174,23 +188,24 @@ public class Seat
     /// defines if and when the player chose to sit out.
     /// this is used for allowing sitting out in cash and Tournament games and for deciding if a player is to be kicked from the Table
     /// </summary>
-    public DateTime? SitOutTime { get; set; } = null;
+    public DateTime? SitOutTime { get; set; } 
     /// <summary>
     /// sits out of the table
     /// </summary>
     /// <remarks>
     /// in cash games this will reserve the seat for you without significant penalties<br/>
-    /// - after a certain time treshold, You might be kicked out from the Table<br/>
-    /// - after Big Blind Passed you, you may have to Bet Big Blind whein returning
+    /// - after a certain time threshold, You might be kicked out from the Table<br/>
+    /// - after Big Blind Passed you, you may have to Bet Big Blind when returning
     /// <br/><br/>
-    /// in tournement games you do not get dealt cards but you continuely have to set blinds and ante until you are eliminated from the tournament<br/>
+    /// in tournament games you do not get dealt cards but you continually have to set blinds and ante until you are eliminated from the tournament<br/>
     /// Staying away for too long does not get you Kicked
     /// </remarks>
     public void SitOut()
     {
-        if (SitOutTime != null)
+        if (this._player == null || SitOutTime != null)
             return;
         SitOutTime = DateTime.Now;
+        
         Table.SeatedPlayersInternal.Remove(this._player);
         if (!IsParticipatingGame)
             Interlocked.Decrement(ref Table.SeatsWithStakesCount);
@@ -212,7 +227,7 @@ public class Seat
 
         if (this.Table.TableGame == null || this.Table.TableGame.Rules.GameMode == GameMode.Cash || !IsParticipatingGame)
         {
-            Player.AddPlayerBank(Stack.Clear());
+            _player.AddPlayerBank(Stack.Clear());
             this.Table.SeatedPlayersInternal.Remove(_player);
             this.Table.TakenSeatsInternal.Remove(this);
             _player.Seat = null;
@@ -263,7 +278,6 @@ public class Seat
     /// <remarks>The player Needs to sit on the Table first. It's recommended to use <see cref="SitIn"/> as it performs
     /// a buyin as well if a buyin amount is set.
     /// </remarks>
-    /// <param name="player"></param>
     /// <param name="buyIn"></param>
     /// <returns></returns>
     private SitInResult PerformBuyIn(decimal buyIn)
@@ -296,7 +310,7 @@ public class Seat
         {
             chipBuyInValue = Bank.ConvertMicroToMacro(buyIn);
         }
-        this.Stack.AddChips(Chips.Bank.DistributeValueForUse(chipBuyInValue), _player);
+        this.Stack.AddChips(Bank.DistributeValueForUse(chipBuyInValue), _player);
         Interlocked.Increment(ref Table.SeatsWithStakesCount);
 
         BuyInCount++;
@@ -306,7 +320,7 @@ public class Seat
     /// <summary>
     /// the number of buyins performed by the player. This is mostly used for Tournament rules or analysis
     /// </summary>
-    public ulong BuyInCount { get; private set; } = 0;
+    public ulong BuyInCount { get; private set; } 
 
     /// <summary>
     /// Discards the player's hand, essentially skipping the round.

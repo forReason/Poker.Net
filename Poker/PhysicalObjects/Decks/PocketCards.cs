@@ -23,20 +23,20 @@ public class PocketCards
             count++;
         CardCount = count;
     }
-    // <summary>
+    /// <summary>
     /// the 5 Slots on the Table
     /// </summary>
-    private Card?[] _cards = new Card?[2];
+    private readonly Card?[] _cards = new Card?[2];
 
     /// <summary>
     /// Returns a shallow Copy of the current Slots, preventing external modifications
     /// </summary>
-    public Card?[] Cards => (Card?[])_cards.Clone()!;
+    public Card?[] Cards => (Card?[])_cards.Clone();
 
     /// <summary>
     /// the current amount of cards in the player pocket
     /// </summary>
-    public int CardCount { get; private set; } = 0;
+    public int CardCount { get; private set; }
     /// <summary>
     /// returns true if the player has 2 hands
     /// </summary>
