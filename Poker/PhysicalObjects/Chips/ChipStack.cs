@@ -1,10 +1,9 @@
 using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Players;
 using System.Collections.ObjectModel;
 
 public class ChipStack
 {
-    private readonly Dictionary<PokerChip, ulong> _chips;
+    protected readonly Dictionary<PokerChip, ulong> _chips;
     /// <summary>
     /// represents the current Value of the pot as ulong
     /// </summary>
@@ -35,8 +34,8 @@ public class ChipStack
             return _sortedChipsAscending;
         }
     }
-    private ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>? _sortedChipsDescending;
-    private ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>? _sortedChipsAscending;
+    protected ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>? _sortedChipsDescending;
+    protected ReadOnlyCollection<KeyValuePair<PokerChip, ulong>>? _sortedChipsAscending;
     /// <summary>
     /// Gets a read-only snapshot of the chips in the pot.
     /// </summary>
@@ -60,6 +59,35 @@ public class ChipStack
         }
         otherStack._chips.Clear();
     }
+
+    public void AddValue(ulong value)
+    {
+        Dictionary<PokerChip, ulong> exchangedChips = new Dictionary<PokerChip, ulong>(Bank.ConvertValueToChips(value));
+        AddChips(exchangedChips);
+    }
+
+    public void AddChips(IReadOnlyDictionary<PokerChip, ulong> chipsToAdd)
+    {
+        ulong value;
+        ulong chipCount;
+        foreach (var chip in chipsToAdd)
+        {
+            chipCount = chip.Value;
+            value = (ulong)chip.Key * chipCount;
+            PokerChip chipType = chip.Key;
+
+            if (_chips.TryGetValue(chipType, out ulong currentCount))
+            {
+                _chips[chipType] = currentCount + chipCount;
+            }
+            else
+            {
+                _chips[chipType] = chipCount;
+            }
+
+            StackValue += value;
+        }
+    }
     /// <summary>
     /// Removes chips equivalent to the specified value from the pot.
     /// </summary>
@@ -68,7 +96,7 @@ public class ChipStack
     /// </remarks>
     /// <param name="value">The monetary value to remove.</param>
     /// <returns>The actual chips removed from the pot.</returns>
-    private ChipStack RemoveValue(ulong value)
+    public ChipStack RemoveValue(ulong value)
     {
         // Step 1: Calculate total value in the pot before removal
         if (value > StackValue)
@@ -105,7 +133,7 @@ public class ChipStack
     /// <summary>
     /// Recolorizes the chips.
     /// </summary>
-    private void Recolorize()
+    public void Recolorize()
     {
         // Assuming Bank.Recolorize returns IDictionary<PokerChip, ulong>
         IDictionary<PokerChip, ulong> recolorizedChips = Bank.Recolorize(this._chips);
@@ -126,7 +154,7 @@ public class ChipStack
     /// </summary>
     /// <param name="chipsToRemove">Dictionary of chips to remove, with PokerChip as key and quantity as value.</param>
     /// <returns>A ChipStack representing the removed chips.</returns>
-    private ChipStack RemoveChips(IReadOnlyDictionary<PokerChip, ulong> chipsToRemove)
+    public ChipStack RemoveChips(IReadOnlyDictionary<PokerChip, ulong> chipsToRemove)
     {
         ChipStack removedChips = new ChipStack();
         Dictionary<PokerChip, ulong> remainingChips = new Dictionary<PokerChip, ulong>(chipsToRemove);
@@ -187,7 +215,12 @@ public class ChipStack
 
         return removedChips;
     }
-    private ulong Clear()
+    protected void UpdateStackValue(ulong newValue)
+    {
+        StackValue = newValue;
+    }
+
+    public virtual ulong Clear()
     {
         ulong totalValue = StackValue;
         StackValue = 0;

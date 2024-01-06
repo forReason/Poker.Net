@@ -8,16 +8,8 @@ namespace Poker.PhysicalObjects.Chips;
 /// Represents the pot in a poker game, holding the chips bet by players.
 /// This class provides thread-safe operations to manage and distribute chips.
 /// </summary>
-public class Pot
+public class Pot : ChipStack
 {
-    /// <summary>
-    /// represents all individual chips in the pot
-    /// </summary>
-    private Dictionary<PokerChip, ulong> _chips;
-    /// <summary>
-    /// lock to make sure interactions cannot cross each other
-    /// </summary>
-    private readonly object _lock = new object();
     /// <summary>
     /// all players affiliated with this pot
     /// </summary>
@@ -28,46 +20,28 @@ public class Pot
     /// </summary>
     public Pot()
     {
-        _chips = new Dictionary<PokerChip, ulong>();
         _players = new HashSet<Player>();
     }
     
-    
-
     /// <summary>
     /// returns the current instance of attached players to the Pot
     /// </summary>
     public ReadOnlyHashSet<Player> Players => new ReadOnlyHashSet<Player>(_players);
-
-    /// <summary>
-    /// Adds chips to the pot. This operation is thread-safe.
-    /// </summary>
-    /// <param name="chips">The chips to add to the pot.</param>
-    /// <param name="player">The player which is being added to the Pots player list, meaning he has skin in the game.</param>
-    public void AddChips(IDictionary<PokerChip, ulong> chips, Player player)
-    {
-        lock (_lock)
-        {
-            AddChipsInternal(chips, player);
-        }
-    }
-    private void AddChipsInternal(IDictionary<PokerChip, ulong> chips, Player player)
+    
+    private void AddChips(IReadOnlyDictionary<PokerChip, ulong> chips, Player player)
     {
         _players.Add(player);
-        _sortedChipsAscending = null;
-        _sortedChipsDescending = null;
-        foreach (var chip in chips)
-        {
-            this.PotValue += ((ulong)chip.Key) * chip.Value;
-            if (_chips.ContainsKey(chip.Key))
-            {
-                _chips[chip.Key] += chip.Value;
-            }
-            else
-            {
-                _chips.Add(chip.Key, chip.Value);
-            }
-        }
+        AddChips(chips);
+    }
+    /// <summary>
+    /// add chips to this pot
+    /// </summary>
+    /// <param name="chips"></param>
+    /// <param name="player"></param>
+    private void AddChips(ChipStack chips, Player player)
+    {
+        _players.Add(player);
+        Merge(chips);
     }
 
     /// <summary>
@@ -77,19 +51,10 @@ public class Pot
     /// <param name="owner"></param>
     public void MoveAllChips(Pot target, Player owner)
     {
-        lock (_lock)
-        {
-            target.AddChips(RemoveValueInternal(PotValue), owner);
-        }
+        target._players.Add(owner);
+        target.Merge(this);
     }
-
-    private bool MoveValueInternal(Pot target, ulong value, Player owner)
-    {
-        if (PotValue < value)
-            return false;
-        target.AddChips(RemoveValueInternal(value), owner);
-        return true;
-    }
+    
     /// <summary>
     /// moves a requested value to a betting pot, according to betting rules (if not enough balance, still perform)
     /// </summary>
@@ -104,19 +69,44 @@ public class Pot
     /// <returns></returns>
     public PerformBetResult PerformBet(Pot target, ulong value, Player owner)
     {
-        lock (_lock)
-        {
-            if (PotValue == 0)
+            if (StackValue == 0)
             {
                 return PerformBetResult.PlayerHasNoFunds;
             }
-            if (PotValue + target.PotValue < value)
+            if (StackValue + target.StackValue < value)
             {
                 MoveAllChips(target, owner);
                 return PerformBetResult.AllIn;
             }
-            MoveValueInternal(target, value - target.PotValue, owner);
+            MoveValue(target, value - target.StackValue, owner);
             return PerformBetResult.Success;
-        }
+    }
+    /// <summary>
+    /// moves a certain value to another pot
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="value"></param>
+    /// <param name="owner"></param>
+    /// <returns></returns>
+    private bool MoveValue(Pot target, ulong value, Player owner)
+    {
+        if (StackValue < value)
+            return false;
+        target.AddChips(RemoveValue(value), owner);
+        return true;
+    }
+    /// <summary>
+    /// clears the pot and cleans it returning its value
+    /// </summary>
+    /// <returns></returns>
+    public override ulong Clear()
+    {
+        ulong totalValue = StackValue;
+        UpdateStackValue(0);
+        _chips.Clear();
+        _players.Clear();
+        _sortedChipsAscending = null;
+        _sortedChipsDescending = null;
+        return totalValue;
     }
 }

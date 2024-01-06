@@ -82,7 +82,7 @@ public static partial class Bank
     /// <remarks>this method is not thread safe, please ensure locking or similar methods</remarks>
     /// <param name="value">The monetary value to distribute.</param>
     /// <returns>A dictionary of PokerChips distributed into a usable set for gameplay.</returns>
-    public static IDictionary<PokerChip, ulong> DistributeValueForUse(ulong value)
+    public static ChipStack DistributeValueForUse(ulong value)
     {
         ulong originalValue = value;
         var distributedChips = new Dictionary<PokerChip, ulong>();
@@ -102,6 +102,7 @@ public static partial class Bank
             if (value == 0) break;
         }
 
+        ChipStack result = new ChipStack(distributedChips);
         // Handling any leftover value
         if (value > 0)
         {
