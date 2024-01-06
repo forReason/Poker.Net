@@ -37,6 +37,16 @@ namespace Poker.Tests.PhysicalObjects.Decks
             Assert.Equal(CommunityCardStage.River, communityCards.Stage);
             Assert.NotNull(communityCards.TableCards[4]);
         }
+        [Fact]
+        public void CommunityCardStage_ClearResetsStage()
+        {
+            // Arrange
+            var communityCards = new CommunityCards();
+            var deck = new Deck(); // Assuming a Deck class exists
+            communityCards.OpenNextStage(deck);
+            communityCards.Clear();
+            Assert.Equal(CommunityCardStage.PreFlop, communityCards.Stage);
+        }
 
     }
 }

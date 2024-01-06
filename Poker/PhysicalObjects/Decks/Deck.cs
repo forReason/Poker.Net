@@ -2,8 +2,6 @@ using System.Security.Cryptography;
 using Poker.PhysicalObjects.Cards;
 
 namespace Poker.PhysicalObjects.Decks;
-// TODO: Throughoutly check the shuffle Methods
-// TODO: Write Test Cases for the shuffle Methods
 /// <summary>
 /// Represents the Raw Deck with all 52 Cards. Primarily used for shuffling and drawing
 /// </summary>
@@ -39,6 +37,16 @@ public class Deck
         Card selectedCard = _shuffledCards[CardCount-1];
         CardCount--;
         return selectedCard;
+    }
+    /// <summary>
+    /// Provides a secure snapshot of the current state of the deck.
+    /// </summary>
+    /// <returns>A new array containing a snapshot of the deck's current state.</returns>
+    internal Card[] GetDeckSnapshot()
+    {
+        Card[] snapshot = new Card[_shuffledCards.Length];
+        Array.Copy(_shuffledCards, snapshot, _shuffledCards.Length);
+        return snapshot;
     }
 
     /// <summary>
@@ -76,18 +84,20 @@ public class Deck
     {
         byte[] randomBytes = new byte[4];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
-    
-        for (int i = 0; i < _shuffledCards.Length; i++)
+
+        for (int i = _shuffledCards.Length - 1; i > 0; i--)
         {
             rng.GetBytes(randomBytes);
-            uint randomIndex = BitConverter.ToUInt32(randomBytes, 0) % (uint)_shuffledCards.Length;
-        
+            uint randomIndex = BitConverter.ToUInt32(randomBytes, 0) % (uint)i;
+
             // Swap the cards
-                (_shuffledCards[i], _shuffledCards[randomIndex]) = (_shuffledCards[randomIndex], _shuffledCards[i]);
+            (_shuffledCards[i], _shuffledCards[randomIndex]) = (_shuffledCards[randomIndex], _shuffledCards[i]);
         }
 
         rng.Dispose();
     }
+
+
 
     /// <summary>
     /// splits the deck in half and riffles the cards together randomly
@@ -142,12 +152,13 @@ public class Deck
             {
                 RandomNumberGenerator.Fill(randomBytes);
                 uint chunkSize = BitConverter.ToUInt32(randomBytes, 0) % 8 + 3; // 3 to 10 cards
-                if (shuffleIndex + chunkSize >= leftStack.Length)
+                if (shuffleIndex + chunkSize >= leftStack.Length) //reduce chunk size if larger than rest of cards
                 {
                     chunkSize = (uint)leftStack.Length - shuffleIndex;
                 }
                 // take chunk
-                Array.Copy(leftStack, shuffleIndex,rightStack,shuffleIndex,chunkSize);
+                uint leftStackStartIndex = (uint)leftStack.Length - (shuffleIndex + chunkSize);
+                Array.Copy(leftStack, leftStackStartIndex,rightStack,shuffleIndex,chunkSize);
                 shuffleIndex += chunkSize;
             } while (shuffleIndex < leftStack.Length);
             // swap arrays
@@ -204,5 +215,24 @@ public class Deck
     {
         HashSet<Card> cards = [.._shuffledCards];
         return cards.Count == 52;
+    }
+    /// <summary>
+    /// this function may be used to see how well the deck is shuffled.
+    /// </summary>
+    /// <returns></returns>
+    public double CalculateAverageDisplacement()
+    {
+        // Generate a sorted deck for comparison
+        Deck sortedDeck = new Deck();
+        Card[] sortedCards = sortedDeck.GetDeckSnapshot();
+
+        double totalDisplacement = 0;
+        for (int i = 0; i < _shuffledCards.Length; i++)
+        {
+            int sortedPosition = Array.IndexOf(sortedCards, _shuffledCards[i]);
+            totalDisplacement += Math.Abs(sortedPosition - i);
+        }
+
+        return totalDisplacement / _shuffledCards.Length;
     }
 }
