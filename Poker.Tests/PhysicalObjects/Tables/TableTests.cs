@@ -8,7 +8,7 @@ using Poker.PhysicalObjects.Players;
 using Poker.PhysicalObjects.Chips;
 
 namespace Poker.Tests.PhysicalObjects.Tables;
-public class TableTests2
+public class TableQueueTests
 {
     [Fact]
     public void MoveButtons_MovesDealerSmallBlindBigBlind_Successfully()
