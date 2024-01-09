@@ -50,23 +50,6 @@ public static partial class Bank
 
         return exchangedChips;
     }
-
-    /// <summary>
-    /// Merges two sets of poker chips into one.
-    /// </summary>
-    /// <remarks>this method is not thread safe, please ensure locking or similar methods</remarks>
-    /// <param name="mainStack">The main set of chips to merge into (modified in-place).</param>
-    /// <param name="valuesToAdd">The set of chips to add to the main stack.</param>
-    public static void MergeStacks(IDictionary<PokerChip, ulong> mainStack, IDictionary<PokerChip, ulong> valuesToAdd)
-    {
-        foreach (var stack in valuesToAdd)
-        {
-            if (!mainStack.ContainsKey(stack.Key))
-                mainStack[stack.Key] = stack.Value;
-            else
-                mainStack[stack.Key] += stack.Value;
-        }
-    }
     
     /// <summary>
     /// Determines the maximum count for a denomination of chip based on the remaining value and total value.
