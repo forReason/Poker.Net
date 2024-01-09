@@ -144,7 +144,7 @@ namespace Poker.Tests.PhysicalObjects.Decks
             sharedCards.OpenNextStage(deck);
 
             var slotsCopy = sharedCards.TableCards;
-            slotsCopy[0] = new Card(); // Modify the copy
+            slotsCopy[0] = new Card(CardRank.Ace, CardSuit.Diamonds); // Modify the copy
 
             Assert.NotEqual(slotsCopy[0], sharedCards.TableCards[0]);
         }
