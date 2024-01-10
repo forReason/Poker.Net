@@ -284,7 +284,7 @@ public class Seat
     /// </remarks>
     /// <param name="buyIn"></param>
     /// <returns></returns>
-    private SitInResult PerformBuyIn(decimal buyIn)
+    public SitInResult PerformBuyIn(decimal buyIn)
     {
         // buyin prechecks
         if (buyIn == 0)
