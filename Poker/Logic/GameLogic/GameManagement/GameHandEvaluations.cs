@@ -14,7 +14,7 @@ public partial class Game
         List<Card> communitsCards = new List<Card>();
         foreach (Card? card in GameTable.CommunityCards.TableCards)
             if (card != null)
-                communitsCards.Add(card.Value);
+                communitsCards.Add(card);
         foreach (Player player in pot.Players)
         {
             HandScore playerHandScore =

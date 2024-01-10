@@ -51,7 +51,7 @@ public static partial class Bank
     /// <remarks>this method is not thread safe, please ensure locking or similar methods</remarks>
     /// <param name="value">The monetary value to convert.</param>
     /// <returns>A dictionary of PokerChips equivalent to the given value.</returns>
-    public static IDictionary<PokerChip, ulong> ConvertValueToChips(ulong value)
+    public static ChipStack ConvertValueToChips(ulong value)
     {
         var chipsToAdd = new Dictionary<PokerChip, ulong>();
     
@@ -73,7 +73,7 @@ public static partial class Bank
             if (value == 0) break;
         }
 
-        return chipsToAdd;
+        return new ChipStack(chipsToAdd);
     }
     
     /// <summary>
@@ -107,9 +107,9 @@ public static partial class Bank
         if (value > 0)
         {
             var leftover = ConvertValueToChips(value);
-            MergeStacks(distributedChips, leftover);
+            result.Merge(leftover);
         }
         
-        return distributedChips; // Returning as IDictionary
+        return result; // Returning as IDictionary
     }
 }

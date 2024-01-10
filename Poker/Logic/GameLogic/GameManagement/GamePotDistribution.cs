@@ -26,7 +26,7 @@ public partial class Game
             rake = this.Rules.RakeStructure.CalculateRake(pot, level.SmallBlind, this.Rules.Micro);
 
         }
-        ulong leftover = pot.PotValue - rake;
+        ulong leftover = pot.StackValue - rake;
         ulong winPerPlayer = leftover / (ulong)winners.Length;
         // split pots
         foreach (Player player in winners)

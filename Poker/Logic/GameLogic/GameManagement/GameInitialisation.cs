@@ -83,7 +83,7 @@ public partial class Game
                         continue;
                     }
                     else if (this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0] > highestCard)
-                        highestCard = this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0].Value;
+                        highestCard = this.GameTable.Seats[seatId].PlayerPocketCards.Cards[0];
                     remainingSeats.Add(seatId);
                 }
                 ActiveSeats = remainingSeats;

@@ -35,12 +35,12 @@ public partial class Table
     /// Calculates the total value of the center pots
     /// </summary>
     /// <returns></returns>
-    public ulong GetTotalPotValue()
+    public ulong GetTotalStackValue()
     {
         ulong value = 0;
         foreach (Pot pot in CenterPots)
         {
-            value += pot.PotValue;
+            value += pot.StackValue;
         }
         return value;
     }
@@ -229,8 +229,8 @@ public partial class Table
         {
             if (!seat.IsParticipatingGame || !seat.PlayerPocketCards.HasCards || seat.IsAllIn) continue;
             // seat is in the game! compare Bet
-            betValue ??= seat.PendingBets.PotValue;
-            if (betValue != seat.PendingBets.PotValue)
+            betValue ??= seat.PendingBets.StackValue;
+            if (betValue != seat.PendingBets.StackValue)
                 return false;
         }
         return true;

@@ -80,7 +80,7 @@ public class PotTests
 
         pot.AddChips(chipsToAdd, player);
 
-        Assert.Equal(500UL, pot.PotValue); // Blue chips are worth 50 each
+        Assert.Equal(500UL, pot.StackValue); // Blue chips are worth 50 each
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class PotTests
 
         pot.RemoveValue(76);
 
-        Assert.Equal(424UL, pot.PotValue); // 509 - 76
+        Assert.Equal(424UL, pot.StackValue); // 509 - 76
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class PotTests
 
         var removedChips = pot.RemoveValue(100);
 
-        Assert.True(removedChips.ContainsKey(PokerChip.Blue) && removedChips[PokerChip.Blue] == 2);
+        Assert.True(removedChips.GetChips().ContainsKey(PokerChip.Blue) && removedChips.GetChips()[PokerChip.Blue] == 2);
     }
 
     [Fact]
@@ -120,9 +120,9 @@ public class PotTests
         var removedChips = pot.RemoveAllChips();
 
         // Assert
-        Assert.Equal(chipsToAdd, removedChips); // Check if all chips were correctly returned
+        Assert.Equal(chipsToAdd, removedChips.GetChips()); // Check if all chips were correctly returned
         Assert.Empty(pot.GetChips()); // Ensure the pot is empty
-        Assert.Equal(0UL, pot.PotValue); // Ensure the pot value is zero
+        Assert.Equal(0UL, pot.StackValue); // Ensure the pot value is zero
     }
 
     [Fact]
@@ -158,8 +158,8 @@ public class PotTests
 
         // Assert
         Assert.True(result);
-        Assert.Equal(5UL, sourcePot.PotValue); // Check remaining value in source
-        Assert.Equal(valueToMove, targetPot.PotValue); // Check value moved to target
+        Assert.Equal(5UL, sourcePot.StackValue); // Check remaining value in source
+        Assert.Equal(valueToMove, targetPot.StackValue); // Check value moved to target
     }
 
     [Fact]
@@ -170,13 +170,13 @@ public class PotTests
         var player = new Player();
         pot.AddChips(new Dictionary<PokerChip, ulong> { { PokerChip.Blue, 10 } }, player); // 10 cips * 50 = 500
 
-        ulong valueBefore = pot.PotValue;
+        ulong valueBefore = pot.StackValue;
         // Act
         pot.Recolorize();
         var chipsAfterRecolor = pot.GetChips();
 
         // Assert
-        Assert.Equal(valueBefore, pot.PotValue);
+        Assert.Equal(valueBefore, pot.StackValue);
         Assert.True(pot.GetChips().Count > 1);
 
     }
@@ -193,8 +193,8 @@ public class PotTests
         var removedValue = pot.RemoveChips(chipsToRemove);
 
         // Assert
-        Assert.Equal(250UL, removedValue); // Blue chip is worth 50 each
-        Assert.Equal(250UL, pot.PotValue); // Remaining value in the pot
+        Assert.Equal(250UL, removedValue.StackValue); // Blue chip is worth 50 each
+        Assert.Equal(250UL, pot.StackValue); // Remaining value in the pot
     }
 
 

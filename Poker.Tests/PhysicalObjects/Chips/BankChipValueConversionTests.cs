@@ -8,7 +8,7 @@ public class BankChipValueConversionTests
     public void TestConvert0Value()
     {
         var result = Bank.ConvertValueToChips(0);
-        Assert.Empty(result);
+        Assert.Empty(result.GetChips());
     }
 
     [Fact]
@@ -32,9 +32,9 @@ public class BankChipValueConversionTests
 
         var chips = Bank.ConvertValueToChips(value);
 
-        Assert.Equal(1UL, chips[PokerChip.Blue]);   // $25
-        Assert.Equal(1UL, chips[PokerChip.Red]);    // $30
-        Assert.DoesNotContain(PokerChip.Black, chips.Keys);
+        Assert.Equal(1UL, chips.GetChips()[PokerChip.Blue]);   // $25
+        Assert.Equal(1UL, chips.GetChips()[PokerChip.Red]);    // $30
+        Assert.DoesNotContain(PokerChip.Black, chips.GetChips().Keys);
     }
     [Theory]
     [InlineData(1500, new[] {PokerChip.Blue, PokerChip.Black, PokerChip.Green, PokerChip.Brown, PokerChip.Red, PokerChip.White })]
@@ -46,11 +46,11 @@ public class BankChipValueConversionTests
         var result = Bank.DistributeValueForUse(value);
 
         // Assert
-        Assert.Equal(expectedChips.Length, result.Count);
+        Assert.Equal(expectedChips.Length, result.GetChips().Count);
         foreach (var chip in expectedChips)
         {
-            Assert.True(result.ContainsKey(chip));
-            Assert.True(result[chip] > 0);
+            Assert.True(result.GetChips().ContainsKey(chip));
+            Assert.True(result.GetChips()[chip] > 0);
         }
     }
     // TODO, add tests that check that these conversions actually do not add or remove chips (!)

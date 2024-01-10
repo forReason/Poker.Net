@@ -43,7 +43,7 @@ public class SeatTests
 
         // Assert
         Assert.Equal(initialStackValue - 5, seat.StackValue);
-        Assert.Equal(5UL, seat.PendingBets.PotValue);
+        Assert.Equal(5UL, seat.PendingBets.StackValue);
     }
 
     [Fact]

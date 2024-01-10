@@ -28,7 +28,7 @@ public class Pot : ChipStack
     /// </summary>
     public ReadOnlyHashSet<Player> Players => new ReadOnlyHashSet<Player>(_players);
     
-    private void AddChips(IReadOnlyDictionary<PokerChip, ulong> chips, Player player)
+    public void AddChips(IReadOnlyDictionary<PokerChip, ulong> chips, Player player)
     {
         _players.Add(player);
         AddChips(chips);
@@ -38,7 +38,7 @@ public class Pot : ChipStack
     /// </summary>
     /// <param name="chips"></param>
     /// <param name="player"></param>
-    private void AddChips(ChipStack chips, Player player)
+    public void AddChips(ChipStack chips, Player player)
     {
         _players.Add(player);
         Merge(chips);
@@ -54,7 +54,16 @@ public class Pot : ChipStack
         target._players.Add(owner);
         target.Merge(this);
     }
-    
+    /// <summary>
+    /// removes all chips from this pot and return the chips in a stack
+    /// </summary>
+    public ChipStack RemoveAllChips()
+    {
+        ChipStack chips = new ChipStack(_chips);
+        Clear();
+        return chips;
+    }
+
     /// <summary>
     /// moves a requested value to a betting pot, according to betting rules (if not enough balance, still perform)
     /// </summary>
@@ -88,7 +97,7 @@ public class Pot : ChipStack
     /// <param name="value"></param>
     /// <param name="owner"></param>
     /// <returns></returns>
-    private bool MoveValue(Pot target, ulong value, Player owner)
+    public bool MoveValue(Pot target, ulong value, Player owner)
     {
         if (StackValue < value)
             return false;

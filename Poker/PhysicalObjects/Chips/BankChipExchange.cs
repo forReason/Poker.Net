@@ -11,7 +11,7 @@ public static partial class Bank
     /// <remarks>this method is not thread safe, please ensure locking or similar methods</remarks>
     /// <param name="chips">A dictionary of PokerChips and their quantities to be recolored.</param>
     /// <returns>A dictionary of PokerChips redistributed into a more practical denomination spread.</returns>
-    public static IDictionary<PokerChip, ulong> Recolorize(IReadOnlyDictionary<PokerChip, ulong> chips)
+    public static ChipStack Recolorize(IReadOnlyDictionary<PokerChip, ulong> chips)
     {
         ulong totalValue = ConvertChipsToValue(chips);
         return DistributeValueForUse(totalValue);
@@ -24,7 +24,7 @@ public static partial class Bank
     /// <param name="chip">The chip denomination to exchange.</param>
     /// <param name="amount">The amount of the specified chip to exchange.</param>
     /// <returns>A dictionary of smaller denomination PokerChips equivalent to the exchanged amount.</returns>
-    public static IDictionary<PokerChip, ulong> ExchangeChipsForSmallerDenominations(PokerChip chip, ulong amount)
+    public static ChipStack ExchangeChipsForSmallerDenominations(PokerChip chip, ulong amount)
     {
         ulong totalValueToExchange = (ulong)chip * amount;
         var exchangedChips = new Dictionary<PokerChip, ulong>();
@@ -48,7 +48,7 @@ public static partial class Bank
             if (totalValueToExchange == 0) break;
         }
 
-        return exchangedChips;
+        return new ChipStack(exchangedChips);
     }
     
     /// <summary>

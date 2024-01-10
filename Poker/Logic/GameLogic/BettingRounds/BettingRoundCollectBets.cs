@@ -39,9 +39,9 @@ public partial class BettingRound
         foreach (var seat in _game.GameTable.Seats)
             if (seat.PlayerPocketCards.HasCards)
             {
-                ulong potValue = seat.PendingBets.PotValue;
-                if (potValue > max) max = potValue;
-                if (potValue < min) min = potValue;
+                ulong StackValue = seat.PendingBets.StackValue;
+                if (StackValue > max) max = StackValue;
+                if (StackValue < min) min = StackValue;
             }
 
         return (min, max);
@@ -56,7 +56,7 @@ public partial class BettingRound
     {
         Pot newCenterPot = new();
         foreach (var seat in _game.GameTable.Seats)
-            if (seat.PendingBets.PotValue > 0)
+            if (seat.PendingBets.StackValue > 0)
                 // Check if player is not null before accessing
                 seat.PendingBets.MoveValue(newCenterPot, minBet, seat.Player ??
                                                                  // Move the bet to the center pot even if the player is null

@@ -54,9 +54,9 @@ public partial class BettingRound
             ulong playerBets = 0;
             foreach (Seat seat in _game.GameTable.Seats)
             {
-                playerBets += seat.PendingBets.PotValue;
+                playerBets += seat.PendingBets.StackValue;
             }
-            maxRaise = _game.GameTable.GetTotalPotValue() + CallValue + playerBets;
+            maxRaise = _game.GameTable.GetTotalStackValue() + CallValue + playerBets;
         }
         else if(_game.Rules.Limit == LimitType.FixedLimit)
         {
@@ -99,18 +99,18 @@ public partial class BettingRound
             if (betValue > CallValue) // raise
             {
                 ulong limitedBetValue = Math.Min(betValue.Value, maxRaise);
-                if (limitedBetValue- actionSeat.PendingBets.PotValue > 0)
+                if (limitedBetValue- actionSeat.PendingBets.StackValue > 0)
                 {
                     CallValue = limitedBetValue;
                     lastRaisedSeatId = actionSeat.SeatID;
                     BetsReceived++;
                 }
 
-                actionSeat.ForceBet(limitedBetValue - actionSeat.PendingBets.PotValue);
+                actionSeat.ForceBet(limitedBetValue - actionSeat.PendingBets.StackValue);
             }
             else // call
             {
-                actionSeat.ForceBet(CallValue - actionSeat.PendingBets.PotValue);
+                actionSeat.ForceBet(CallValue - actionSeat.PendingBets.StackValue);
             }
         }
         // fold the player if he does not want to contribute enough

@@ -95,7 +95,7 @@ public class RakeStructure
     {
 
         RakeLevel level = GetRakeLevelBasedOnSmallBlind(smallBlind, micro);
-        decimal rake = pot.PotValue * level.PercentageRake;
+        decimal rake = pot.StackValue * level.PercentageRake;
         decimal cap = level.GetCapBasedOnPlayerCount(pot.Players.Count);
         if (micro)
         {

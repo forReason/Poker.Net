@@ -40,7 +40,7 @@ public class Seat
     /// <returns>
     /// Returns true if the player's stack has a positive pot value or if the player has more than zero pocket cards.
     /// </returns>
-    public bool IsParticipatingGame => this.Stack.PotValue > 0 || PlayerPocketCards.CardCount > 0;
+    public bool IsParticipatingGame => this.Stack.StackValue > 0 || PlayerPocketCards.CardCount > 0;
 
     /// <summary>
     /// The SeatID is used as a Reference of the Tables Seat Position 
@@ -160,7 +160,7 @@ public class Seat
     /// The stack of Chips in reserve which the Player can use to Bet
     /// </summary>
     public readonly Pot Stack = new();
-    public ulong StackValue => Stack.PotValue;
+    public ulong StackValue => Stack.StackValue;
 
     /// <summary>
     /// this function is used to set the Blinds and Ante for example and cannot be revoked
@@ -171,18 +171,18 @@ public class Seat
     {
         if (this._player == null && PendingBets.Players.Count > 0)
         {
-            return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, PendingBets.Players.First());
+            return Stack.PerformBet(PendingBets, value - PendingBets.StackValue, PendingBets.Players.First());
         }
         else if (this._player == null)
-            return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, new Player());
-        return Stack.PerformBet(PendingBets, value - PendingBets.PotValue, this.Player!);
+            return Stack.PerformBet(PendingBets, value - PendingBets.StackValue, new Player());
+        return Stack.PerformBet(PendingBets, value - PendingBets.StackValue, this.Player!);
     }
 
     /// <summary>
     /// returns true if the player has no funds left but has cards on hand
     /// </summary>
     /// <remarks>returns false if the player has no funds an no cards (in which case the player is game over)</remarks>
-    public bool IsAllIn => (Stack.PotValue == 0 && this.PlayerPocketCards.HasCards);
+    public bool IsAllIn => (Stack.StackValue == 0 && this.PlayerPocketCards.HasCards);
 
     /// <summary>
     /// defines if and when the player chose to sit out.

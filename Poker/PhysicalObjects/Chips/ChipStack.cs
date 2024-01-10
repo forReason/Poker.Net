@@ -12,6 +12,11 @@ public class ChipStack
     {
         _chips = new Dictionary<PokerChip, ulong>();
     }
+    public ChipStack(IReadOnlyDictionary<PokerChip, ulong> chips)
+    {
+        _chips = new Dictionary<PokerChip, ulong>();
+        AddChips(chips);
+    }
     /// <summary>
     /// returns the current poker chips of the pot in descending individual chipValue
     /// </summary>
@@ -62,8 +67,8 @@ public class ChipStack
 
     public void AddValue(ulong value)
     {
-        Dictionary<PokerChip, ulong> exchangedChips = new Dictionary<PokerChip, ulong>(Bank.ConvertValueToChips(value));
-        AddChips(exchangedChips);
+        ChipStack exchangedChips = Bank.ConvertValueToChips(value);
+        Merge(exchangedChips);
     }
 
     public void AddChips(IReadOnlyDictionary<PokerChip, ulong> chipsToAdd)
@@ -136,16 +141,13 @@ public class ChipStack
     public void Recolorize()
     {
         // Assuming Bank.Recolorize returns IDictionary<PokerChip, ulong>
-        IDictionary<PokerChip, ulong> recolorizedChips = Bank.Recolorize(this._chips);
+        ChipStack recolorizedChips = Bank.Recolorize(this._chips);
 
         // Clear the current contents of _chips
         this._chips.Clear();
 
         // Add the recolorized chips back into _chips
-        foreach (var chip in recolorizedChips)
-        {
-            this._chips.Add(chip.Key, chip.Value);
-        }
+        Merge(recolorizedChips);
         _sortedChipsAscending = null;
         _sortedChipsDescending = null;
     }
@@ -196,20 +198,7 @@ public class ChipStack
         {
             RemoveValue(totalRemainingValue); // Assuming this method adjusts StackValue and _chips accordingly
             var remainder = Bank.ConvertValueToChips(totalRemainingValue);
-            foreach (var chip in remainder)
-            {
-                ulong chipCount = chip.Value;
-                PokerChip chipType = chip.Key;
-
-                if (removedChips._chips.TryGetValue(chipType, out ulong currentCount))
-                {
-                    removedChips._chips[chipType] = currentCount + chipCount;
-                }
-                else
-                {
-                    removedChips._chips[chipType] = chipCount;
-                }
-            }
+            removedChips.Merge(remainder);
             this.Clear();
         }
 
