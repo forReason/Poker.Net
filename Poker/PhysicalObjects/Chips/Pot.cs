@@ -101,7 +101,8 @@ public class Pot : ChipStack
     {
         if (StackValue < value)
             return false;
-        target.AddChips(RemoveValue(value), owner);
+        ChipStack removed = RemoveValue(value);
+        target.AddChips(removed, owner);
         return true;
     }
     /// <summary>

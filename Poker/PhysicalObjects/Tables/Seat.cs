@@ -253,7 +253,11 @@ public class Seat
     {
         // fast precheck
         if (this._player == null)
+        {
             this._player = player;
+            this.Player.Seat = this;
+        }
+            
         else if (!this._player.Equals(player))
             throw new InvalidOperationException("The Seat is already occupied by another player!");
 

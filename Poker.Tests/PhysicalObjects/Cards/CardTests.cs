@@ -39,8 +39,6 @@ public class CardTests
         Card? card2 = null;
 
         // Act & Assert
-        Assert.True(card1.Equals(null));
-        Assert.True(card1.Equals(card2));
         Assert.True(card1 == null);
         Assert.True(card2 == null);
     }
@@ -65,7 +63,6 @@ public class CardTests
         
         // Assert
         Assert.False(card1.Equals(null));
-        Assert.False(nullCard.Equals(card1));
         Assert.False(nullCard == card1);
         Assert.False(null == card1);
         Assert.False(card1== null);

@@ -57,16 +57,19 @@ public class Card : IEquatable<Card>, IComparable<Card>
 
         return obj is Card card && Equals(card);
     }
-    
+
     /// <summary>
     /// Determines whether the current card is equal to another card in terms of both rank and suit.
     /// </summary>
     /// <remarks>
     /// This method checks for equality by comparing both the rank and the suit of the cards. It first checks for reference equality, 
-    /// which handles cases where both cards are the same instance or both are null. If they are not the same instance, it compares 
+    /// which handles cases where both cards are the same instance. If they are not the same instance, it compares 
     /// their ranks and suits for equality.
     /// <para>
     /// Use this method when you need to determine if two cards are exactly the same in every aspect (both rank and suit).
+    /// </para>
+    ///  <para>
+    /// Use == for nullcheck.
     /// </para>
     /// </remarks>
     /// <param name="otherCard">The card to compare with the current card.</param>

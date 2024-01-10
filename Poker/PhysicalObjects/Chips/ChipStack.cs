@@ -54,15 +54,18 @@ public class ChipStack
     {
         if (otherStack == null)
             throw new ArgumentNullException(nameof(otherStack));
-
+        ulong value = 0;
         foreach (var pair in otherStack._chips)
         {
             if (_chips.ContainsKey(pair.Key))
                 _chips[pair.Key] += pair.Value;
             else
                 _chips.Add(pair.Key, pair.Value);
+            value = (ulong)pair.Key * pair.Value;
+            StackValue += value;
         }
-        otherStack._chips.Clear();
+
+        otherStack.Clear();
     }
 
     public void AddValue(ulong value)
@@ -145,6 +148,7 @@ public class ChipStack
 
         // Clear the current contents of _chips
         this._chips.Clear();
+        StackValue = 0;
 
         // Add the recolorized chips back into _chips
         Merge(recolorizedChips);
@@ -181,7 +185,10 @@ public class ChipStack
                 removedChips.StackValue += removedValue;
 
                 if (_chips[chipType] == 0)
+                { // clear empty chip types
                     _chips.Remove(chipType);
+                }
+                    
             }
         }
 

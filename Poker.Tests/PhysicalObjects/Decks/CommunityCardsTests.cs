@@ -140,6 +140,7 @@ namespace Poker.Tests.PhysicalObjects.Decks
         public void Slots_ReturnsCopy_NotOriginalArray()
         {
             var deck = new Deck();
+            deck.ShuffleCards();
             var sharedCards = new CommunityCards();
             sharedCards.OpenNextStage(deck);
 
