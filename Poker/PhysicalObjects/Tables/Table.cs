@@ -76,6 +76,8 @@ public partial class Table
         do
         {
             seatID = (seatID + 1) % Seats.Length;
+            if (seatID > Seats.Length)
+                seatID = 0;
             counter++;
         } 
         while (!Seats[seatID].IsParticipatingGame && counter < Seats.Length);
