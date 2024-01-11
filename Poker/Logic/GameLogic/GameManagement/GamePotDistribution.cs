@@ -16,7 +16,7 @@ public partial class Game
     /// The rake is then deducted from the total pot value, and the remainder is evenly distributed among the winners. 
     /// Any leftover due to division rounding, along with the rake, is added to the house's bank.
     /// </remarks>
-    public void DistributePot(Pot pot, Player[] winners)
+    public void DistributePot(Pot pot, HashSet<Player> winners)
     {
         // calculate rake and win per player
         ulong rake = 0;
@@ -27,7 +27,7 @@ public partial class Game
 
         }
         ulong leftover = pot.StackValue - rake;
-        ulong winPerPlayer = leftover / (ulong)winners.Length;
+        ulong winPerPlayer = leftover / (ulong)winners.Count;
         // split pots
         foreach (Player player in winners)
         {

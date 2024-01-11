@@ -2,14 +2,15 @@ using Poker.PhysicalObjects.Cards;
 using Poker.PhysicalObjects.Chips;
 using Poker.PhysicalObjects.Decks;
 using Poker.PhysicalObjects.Players;
+using System.Collections.Generic;
 
 namespace Poker.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {
-    public Player[] EvaluateWinners(Pot pot)
+    public HashSet<Player> EvaluateWinners(Pot pot)
     {
-        List<Player> winners = new List<Player>();
+        HashSet<Player> winners = new HashSet<Player>();
         HandScore? highScore = null;
         List<Card> communitsCards = new List<Card>();
         foreach (Card? card in GameTable.CommunityCards.TableCards)
@@ -31,7 +32,7 @@ public partial class Game
             }
         }
 
-        return winners.ToArray();
+        return winners;
     }
 
 }

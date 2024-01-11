@@ -147,7 +147,7 @@ public partial class Game
                 // Evaluate Winner(s) and distribute wins
                 foreach (Pot pot in GameTable.CenterPots)
                 {
-                    Player[] winners = EvaluateWinners(pot);
+                    HashSet<Player> winners = EvaluateWinners(pot);
                     DistributePot(pot, winners);
                 }
 

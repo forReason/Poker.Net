@@ -1,3 +1,5 @@
+using Poker.PhysicalObjects.Chips;
+
 namespace Poker.PhysicalObjects.Cards;
 
 /// <summary>
@@ -309,6 +311,27 @@ public class Card : IEquatable<Card>, IComparable<Card>
     /// <returns>A string representation of the card, showing its suit and rank.</returns>
     public override string ToString()
     {
-        return $"[{Suit}-{CardRank}]";
+        return $"{Suit}-{CardRank}";
     }
+    public static Card Deserialize(string cardString)
+    {
+        var parts = cardString.Split('-');
+        if (parts.Length != 2)
+        {
+            throw new ArgumentException("Invalid card string format.", nameof(cardString));
+        }
+
+        if (!Enum.TryParse(parts[0], out CardSuit suit))
+        {
+            throw new ArgumentException("Invalid suit in card string.", nameof(cardString));
+        }
+
+        if (!Enum.TryParse(parts[1], out CardRank rank))
+        {
+            throw new ArgumentException("Invalid rank in card string.", nameof(cardString));
+        }
+
+        return new Card(rank, suit);
+    }
+
 }
