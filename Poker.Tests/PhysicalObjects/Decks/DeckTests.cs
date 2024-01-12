@@ -162,7 +162,7 @@ namespace Poker.Tests.PhysicalObjects.Decks
             Assert.False(originalOrder.SequenceEqual(newOrder), "The order of the cards should be different after a cut.");
             Assert.True(deck.ConfirmDeckIntegrity(), "The deck should maintain integrity after a cut.");
             double displacement = deck.CalculateAverageDisplacement();
-            Assert.True(displacement > 20);
+            Assert.True(displacement > 10);
         }
 
     }

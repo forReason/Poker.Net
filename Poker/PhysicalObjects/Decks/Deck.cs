@@ -147,31 +147,33 @@ public class Deck
     {
         Card[] leftStack = _shuffledCards;
         Card[] rightStack = new Card[leftStack.Length];
-        
-        byte[] randomBytes = new byte[4];
-        uint shuffleIndex;
+
+        byte[] randomBytes = new byte[4 * shuffleRounds]; // Generate all random bytes at once
+        RandomNumberGenerator.Fill(randomBytes);
+        int randomIndex = 0;
+
         for (int i = 0; i < shuffleRounds; i++)
         {
-            shuffleIndex = 0;
-            do
+            uint shuffleIndex = 0;
+            while (shuffleIndex < leftStack.Length)
             {
-                RandomNumberGenerator.Fill(randomBytes);
-                uint chunkSize = BitConverter.ToUInt32(randomBytes, 0) % 8 + 3; // 3 to 10 cards
-                if (shuffleIndex + chunkSize >= leftStack.Length) //reduce chunk size if larger than rest of cards
-                {
+                uint chunkSize = (BitConverter.ToUInt32(randomBytes, randomIndex) % 8) + 3; // 3 to 10 cards
+                randomIndex += 4;
+                if (randomIndex >= randomBytes.Length) randomIndex = 0; // Reset index if needed
+
+                if (shuffleIndex + chunkSize > leftStack.Length) //reduce chunk size if larger than rest of cards
                     chunkSize = (uint)leftStack.Length - shuffleIndex;
-                }
-                // take chunk
+
                 uint leftStackStartIndex = (uint)leftStack.Length - (shuffleIndex + chunkSize);
-                Array.Copy(leftStack, leftStackStartIndex,rightStack,shuffleIndex,chunkSize);
+                Array.Copy(leftStack, leftStackStartIndex, rightStack, shuffleIndex, chunkSize);
                 shuffleIndex += chunkSize;
-            } while (shuffleIndex < leftStack.Length);
-            // swap arrays
-            (leftStack, rightStack) = (rightStack, leftStack); 
+            }
+            (leftStack, rightStack) = (rightStack, leftStack);
         }
 
         _shuffledCards = leftStack;
     }
+
 
     /// <summary>
     /// Cuts the deck at a random position, placing the top cards at the bottom<br/>

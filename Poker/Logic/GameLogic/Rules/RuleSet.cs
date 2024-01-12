@@ -12,7 +12,8 @@ namespace Poker.Logic.GameLogic.Rules
     {
         // TODO: test correct implementation
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuleSet"/> class.
+        /// Initializes a new instance of the <see cref="RuleSet"/> class.<br/>
+        /// WARNING: The initialisation of this Class is computationally intense. it is recommended to cache it on frequent use!
         /// </summary>
         /// <param name="ruleSet">The set of rules governing the game (e.g., Cash, Tournament).</param>
         /// <param name="buyIn">The amount required to buy into the game.</param>

@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Poker.PhysicalObjects.Cards;
 
-namespace Poker.Secrialisation
+namespace Poker.Serialisation
 {
     public class HandScoreEntryJsonConverter : JsonConverter<HandScoreEntry>
     {

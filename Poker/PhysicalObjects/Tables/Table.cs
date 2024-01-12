@@ -183,12 +183,13 @@ public partial class Table
     {
         RevokePlayerCards();
         TableDeck.ShuffleCards();
+        int seat = 0;
         for (int card = 1; card <= 2; card++)
         {
             int currentSeat = DealerSeat;
             if (this.TableGame != null)
             {
-                for (int activeSeat = 0; activeSeat < SeatsWithStakesCount; activeSeat++)
+                for (seat = 0; seat < SeatsWithStakesCount; seat++)
                 {
                     currentSeat = GetNextActiveSeat(currentSeat);
                     Seats[currentSeat].PlayerPocketCards.DealCard(TableDeck);
@@ -196,7 +197,7 @@ public partial class Table
             }
             else
             {
-                for (int seat = 0; seat < this.Seats.Length; seat++)
+                for (seat = 0; seat < this.Seats.Length; seat++)
                 {
                     if (Seats[seat].Player == null)
                         continue;
