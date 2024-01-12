@@ -1,4 +1,5 @@
 using Poker.PhysicalObjects.Chips;
+using System.Collections.Concurrent;
 
 namespace Poker.PhysicalObjects.Cards;
 
@@ -23,14 +24,23 @@ public class Card : IEquatable<Card>, IComparable<Card>
     /// <summary>
     /// Initializes a new instance of the <see cref="Card"/> class with a specified rank and suit.
     /// </summary>
-    /// <param name="cardRank">The rank of the card.</param>
+    /// <param name="rank">The rank of the card.</param>
     /// <param name="suit">The suit of the card.</param>
-    public Card(CardRank cardRank, CardSuit suit)
+    public static Card GetCard(CardRank rank, CardSuit suit)
     {
-        this.CardRank = cardRank;
-        this.Suit = suit;
+        return cardCache.GetOrAdd((rank, suit), _ => new Card(rank, suit));
     }
+
+    private static readonly ConcurrentDictionary<(CardRank, CardSuit), Card> cardCache = new ConcurrentDictionary<(CardRank, CardSuit), Card>();
+
+    private Card(CardRank cardRank, CardSuit suit) // Constructor is now private
+    {
+        CardRank = cardRank;
+        Suit = suit;
+    }
+
     
+
     /// <summary>
     /// The CardRank defines the value of a card. the higher, the better.
     /// </summary>
@@ -331,7 +341,7 @@ public class Card : IEquatable<Card>, IComparable<Card>
             throw new ArgumentException("Invalid rank in card string.", nameof(cardString));
         }
 
-        return new Card(rank, suit);
+        return Card.GetCard(rank, suit);
     }
 
 }

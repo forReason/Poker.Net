@@ -64,13 +64,13 @@ public partial class Game
             // shuffle deck if too little cards remaining
             if (this.GameTable.TableDeck.CardCount < ActiveSeats.Count)
                 this.GameTable.TableDeck.ShuffleCards();
-            // deal new cards
+            // deal Card.GetCards
             foreach (int seatId in ActiveSeats)
             {
                 this.GameTable.Seats[seatId].PlayerPocketCards.DealCard(this.GameTable.TableDeck);
             }
             // evaluate
-            Card highestCard = new Card(CardRank.Two, CardSuit.Hearts);
+            Card highestCard = Card.GetCard(CardRank.Two, CardSuit.Hearts);
             // need two rounds. one for determining the highest card, and one to remove all players with a lower card
             for (int i = 0; i < 2; i++)
             {

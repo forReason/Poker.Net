@@ -18,8 +18,7 @@ public partial class Game
                 communitsCards.Add(card);
         foreach (Player player in pot.Players)
         {
-            HandScore playerHandScore =
-                CardEvaluation.ScoreCards(communitsCards.ToArray(), player.Seat.PlayerPocketCards);
+            HandScore playerHandScore = PhysicalObjects.Decks.CardEvaluation.ScoreCards(communitsCards.ToArray(), player.Seat.PlayerPocketCards);
             if (highScore == null || playerHandScore > highScore)
             {
                 highScore = playerHandScore;

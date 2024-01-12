@@ -19,7 +19,12 @@ public partial class Table
         {
             Seats[i] = new Seat(i, this);
         }
-        this.TableGame = game;
+        
+        if (game is not null)
+        {
+            this.TableGame = game;
+            game.GameTable = this;
+        }
     }
     /// <summary>
     /// backreference to a running game on the table

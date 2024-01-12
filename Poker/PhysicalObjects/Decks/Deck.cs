@@ -26,7 +26,7 @@ public class Deck
     private Card[] _shuffledCards = new Card[52];
 
     /// <summary>
-    /// Draws a new Card from the Shuffled Deck
+    /// Draws a Card.GetCard from the Shuffled Deck
     /// </summary>
     /// <returns>The Drawn Card</returns>
     /// <exception cref="InvalidOperationException">thrown when there are no more cords in the deck and you still try to draw one</exception>
@@ -201,7 +201,7 @@ public class Deck
         {
             foreach (CardSuit suit in Enum.GetValuesAsUnderlyingType<CardSuit>())
             {
-                _shuffledCards[i] = new Card(cardRank, suit);
+                _shuffledCards[i] = Card.GetCard(cardRank, suit);
                 i++;
             }
         }
