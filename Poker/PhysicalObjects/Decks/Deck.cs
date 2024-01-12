@@ -108,11 +108,15 @@ public class Deck
         int middle = _shuffledCards.Length / 2;
         int leftIndex = 0, rightIndex = middle;
 
+        // Generate a batch of random numbers
+        byte[] randomNumbers = new byte[_shuffledCards.Length];
+        RandomNumberGenerator.Fill(randomNumbers);
+        int randomIndex = 0;
+
         for (int i = 0; i < _shuffledCards.Length; i++)
         {
-            byte[] randomNumber = new byte[1];
-            RandomNumberGenerator.Fill(randomNumber);
-            bool takeFromLeft = randomNumber[0] % 2 == 0;
+            bool takeFromLeft = (randomNumbers[randomIndex++] % 2) == 0;
+            if (randomIndex >= randomNumbers.Length) randomIndex = 0; // Reset index if needed
 
             if (takeFromLeft && leftIndex < middle)
             {
@@ -134,6 +138,7 @@ public class Deck
 
         _shuffledCards = shuffled;
     }
+
 
     /// <summary>
     /// takes stacks of random amounts of cards and places them under

@@ -11,7 +11,7 @@ namespace Poker.Tests.PhysicalObjects.Decks
         {
             // Arrange
             
-            var cards = new Card[] { new Card(CardRank.Ace, CardSuit.Hearts), new Card(CardRank.King, CardSuit.Diamonds), new Card(CardRank.Queen, CardSuit.Clubs) };
+            var cards = new Card[] { Card.GetCard(CardRank.Ace, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds), Card.GetCard(CardRank.Queen, CardSuit.Clubs) };
             var communityCards = new CommunityCards(cards);
 
 
@@ -145,7 +145,7 @@ namespace Poker.Tests.PhysicalObjects.Decks
             sharedCards.OpenNextStage(deck);
 
             var slotsCopy = sharedCards.TableCards;
-            slotsCopy[0] = new Card(CardRank.Ace, CardSuit.Diamonds); // Modify the copy
+            slotsCopy[0] = Card.GetCard(CardRank.Ace, CardSuit.Diamonds); // Modify the copy
 
             Assert.NotEqual(slotsCopy[0], sharedCards.TableCards[0]);
         }

@@ -14,7 +14,7 @@ public class CardTests
         var suit = CardSuit.Hearts;
 
         // Act
-        var card = new Card(cardRank, suit);
+        var card = Card.GetCard(cardRank, suit);
 
         // Assert
         Assert.Equal(cardRank, card.CardRank);
@@ -25,8 +25,8 @@ public class CardTests
     public void Equals_ReturnsTrueForEqualCards()
     {
         // Arrange
-        var card1 = new Card(CardRank.King, CardSuit.Clubs);
-        var card2 = new Card(CardRank.King, CardSuit.Clubs);
+        var card1 = Card.GetCard(CardRank.King, CardSuit.Clubs);
+        var card2 = Card.GetCard(CardRank.King, CardSuit.Clubs);
 
         // Act & Assert
         Assert.True(card1.Equals(card2));
@@ -47,8 +47,8 @@ public class CardTests
     public void Equals_ReturnsFalseForDifferentCards()
     {
         // Arrange
-        var card1 = new Card(CardRank.King, CardSuit.Clubs);
-        var card2 = new Card(CardRank.Queen, CardSuit.Clubs);
+        var card1 = Card.GetCard(CardRank.King, CardSuit.Clubs);
+        var card2 = Card.GetCard(CardRank.Queen, CardSuit.Clubs);
 
         // Act & Assert
         Assert.False(card1.Equals(card2));
@@ -57,7 +57,7 @@ public class CardTests
     public void Equals_ReturnsFalseForComparisonWithNull()
     {
         // Arrange
-        var card1 = new Card(CardRank.King, CardSuit.Clubs);
+        var card1 = Card.GetCard(CardRank.King, CardSuit.Clubs);
         // Arrange
         Card? nullCard = null; 
         
@@ -112,8 +112,8 @@ public class CardTests
     public void Operator_CorrectlyComparesCards(CardRank CardRank1, CardRank CardRank2)
     {
         // Arrange
-        var card1 = new Card(CardRank1, CardSuit.Hearts);
-        var card2 = new Card(CardRank2, CardSuit.Diamonds);
+        var card1 = Card.GetCard(CardRank1, CardSuit.Hearts);
+        var card2 = Card.GetCard(CardRank2, CardSuit.Diamonds);
 
         // try if the correct operator returns true as expected
         Assert.True(card1 > card2);
@@ -137,7 +137,7 @@ public class CardTests
             List<Card> cardsToCompare = new List<Card>();
             foreach(CardSuit suit in Enum.GetValues(typeof(CardSuit)))
             {
-                cardsToCompare.Add(new Card(CardRank, suit));
+                cardsToCompare.Add(Card.GetCard(CardRank, suit));
             }
             for(int i = 1; i < cardsToCompare.Count; i++)
             {

@@ -821,8 +821,8 @@ public class CardRankTestSamples
 
             },
         };
-    private static Card Hearts(CardRank CardRank) => new Card(CardRank, CardSuit.Hearts);
-    private static Card Spades(CardRank CardRank) => new Card(CardRank, CardSuit.Spades);
-    private static Card Diamonds(CardRank CardRank) => new Card(CardRank, CardSuit.Diamonds);
-    private static Card Clubs(CardRank CardRank) => new Card(CardRank, CardSuit.Clubs);
+    private static Card Hearts(CardRank CardRank) => Card.GetCard(CardRank, CardSuit.Hearts);
+    private static Card Spades(CardRank CardRank) => Card.GetCard(CardRank, CardSuit.Spades);
+    private static Card Diamonds(CardRank CardRank) => Card.GetCard(CardRank, CardSuit.Diamonds);
+    private static Card Clubs(CardRank CardRank) => Card.GetCard(CardRank, CardSuit.Clubs);
 }
