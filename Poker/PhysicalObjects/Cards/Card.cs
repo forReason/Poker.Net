@@ -1,4 +1,5 @@
 using Poker.PhysicalObjects.Chips;
+using System.Collections;
 using System.Collections.Concurrent;
 
 namespace Poker.PhysicalObjects.Cards;
@@ -21,25 +22,33 @@ namespace Poker.PhysicalObjects.Cards;
 /// </remarks>
 public class Card : IEquatable<Card>, IComparable<Card>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Card"/> class with a specified rank and suit.
-    /// </summary>
-    /// <param name="rank">The rank of the card.</param>
-    /// <param name="suit">The suit of the card.</param>
-    public static Card GetCard(CardRank rank, CardSuit suit)
+    private static readonly Card[] cardCache = new Card[52];
+
+    static Card()
     {
-        return cardCache.GetOrAdd((rank, suit), _ => new Card(rank, suit));
+        // Populate the card cache with all possible cards
+        foreach (CardSuit suit in Enum.GetValues(typeof(CardSuit)))
+        {
+            foreach (CardRank rank in Enum.GetValues(typeof(CardRank)))
+            {
+                Card card = new Card(rank, suit);
+                byte cardKey = card.SerializeToByte();
+                cardCache[cardKey] = card;
+            }
+        }
     }
 
-    private static readonly ConcurrentDictionary<(CardRank, CardSuit), Card> cardCache = new ConcurrentDictionary<(CardRank, CardSuit), Card>();
+    public static Card GetCard(CardRank rank, CardSuit suit)
+    {
+        byte cardKey = (byte)((byte)suit * 13 + (byte)rank);
+        return cardCache[cardKey];
+    }
 
     private Card(CardRank cardRank, CardSuit suit) // Constructor is now private
     {
         CardRank = cardRank;
         Suit = suit;
     }
-
-    
 
     /// <summary>
     /// The CardRank defines the value of a card. the higher, the better.
@@ -342,6 +351,80 @@ public class Card : IEquatable<Card>, IComparable<Card>
         }
 
         return Card.GetCard(rank, suit);
+    }
+    /// <summary>
+    /// Serializes the card to a byte.
+    /// </summary>
+    /// <returns>A byte representing the serialized card.</returns>
+    public byte SerializeToByte()
+    {
+        // Assuming 0-based indexing for both suits and ranks
+        return (byte)((byte)Suit * 13 + (byte)CardRank);
+    }
+
+    /// <summary>
+    /// Deserializes a byte to a Card object.
+    /// </summary>
+    /// <param name="data">The byte to deserialize.</param>
+    /// <returns>The deserialized Card object.</returns>
+    public static Card DeserializeFromByte(byte data)
+    {
+        // Assuming 0-based indexing for both suits and ranks
+        int suitIndex = data / 13; // Get the suit index
+        int rankIndex = data % 13; // Get the rank index
+
+        CardRank rank = (CardRank)rankIndex;
+        CardSuit suit = (CardSuit)suitIndex;
+
+        return GetCard(rank, suit);
+    }
+
+    /// <summary>
+    /// Serializes the card to a BitArray.
+    /// </summary>
+    /// <returns>A BitArray representing the serialized card.</returns>
+    public BitArray SerializeToBitArray()
+    {
+        int value = ((int)Suit * 13 + (int)CardRank);
+        BitArray bits = new BitArray(new bool[6]);
+
+        for (int i = 0; i < 6; i++)
+        {
+            bits[i] = (value & (1 << i)) != 0;
+        }
+
+        return bits;
+    }
+
+
+    /// <summary>
+    /// Deserializes a BitArray to a Card object.
+    /// </summary>
+    /// <param name="bits">The BitArray to deserialize.</param>
+    /// <returns>The deserialized Card object.</returns>
+    public static Card DeserializeFromBitArray(BitArray bits)
+    {
+        if (bits.Length != 6)
+        {
+            throw new ArgumentException("BitArray must be of length 6.", nameof(bits));
+        }
+
+        int value = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            if (bits[i])
+            {
+                value |= (1 << i);
+            }
+        }
+
+        int suitIndex = value / 13;
+        int rankIndex = value % 13;
+
+        CardRank rank = (CardRank)rankIndex;
+        CardSuit suit = (CardSuit)suitIndex;
+
+        return GetCard(rank, suit);
     }
 
 }

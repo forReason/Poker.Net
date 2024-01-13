@@ -283,10 +283,10 @@ public static class CardEvaluation
     {
         if (cards.Count < 5)
             return null;
-        ulong connectedCards = 1;
+        ushort connectedCards = 1;
         Card highestConnectedCard = cards[0];
         Card lowestConnectedCard = cards[0];
-        ulong wheelPossible = 0;
+        byte wheelPossible = 0;
         if (cards[0].CardRank == CardRank.Ace && cards[^1].CardRank == CardRank.Two)
             wheelPossible++;
         for (int i = 1; i < cards.Count; i++)
@@ -314,14 +314,14 @@ public static class CardEvaluation
                     // check if a straight is still possible
                     if (highestConnectedCard.CardRank < CardRank.Five - wheelPossible)
                         return null;
-                    ulong maxStraightSpan = (highestConnectedCard.CardRank - cards[^1].CardRank)+1;
+                    int maxStraightSpan = (highestConnectedCard.CardRank - cards[^1].CardRank)+1;
                     if (maxStraightSpan < 5 - wheelPossible) // account for possible wheel
                         return null;
                 }
                 else // was a repetition, chances shCardRank
                 {
                     int chances = cards.Count - i;
-                    if (connectedCards + (ulong)chances < 5 - wheelPossible) // account for possible wheel
+                    if (connectedCards + (ushort)chances < 5 - wheelPossible) // account for possible wheel
                         return null;
                 }
             }

@@ -153,4 +153,54 @@ public class CardTests
             }
         }
     }
+    [Theory]
+    [InlineData(CardRank.Ace, CardSuit.Spades)]
+    [InlineData(CardRank.King, CardSuit.Hearts)]
+    [InlineData(CardRank.Queen, CardSuit.Diamonds)]
+    [InlineData(CardRank.Jack, CardSuit.Clubs)]
+    // Add more cases as needed
+    public void SerializeAndDeserializeToByte_ShouldReturnEquivalentCard(CardRank rank, CardSuit suit)
+    {
+        // Arrange
+        var card = Card.GetCard(rank, suit);
+        byte serialized = card.SerializeToByte();
+
+        // Act
+        var deserializedCard = Card.DeserializeFromByte(serialized);
+
+        // Assert
+        Assert.Equal(card, deserializedCard);
+    }
+
+    [Theory]
+    [InlineData(CardRank.Ace, CardSuit.Spades)]
+    [InlineData(CardRank.King, CardSuit.Hearts)]
+    [InlineData(CardRank.Queen, CardSuit.Diamonds)]
+    [InlineData(CardRank.Jack, CardSuit.Clubs)]
+    // Add more cases as needed
+    public void SerializeAndDeserializeToBitArray_ShouldReturnEquivalentCard(CardRank rank, CardSuit suit)
+    {
+        // Arrange
+        var card = Card.GetCard(rank, suit);
+        var serialized = card.SerializeToBitArray();
+
+        // Act
+        var deserializedCard = Card.DeserializeFromBitArray(serialized);
+
+        // Assert
+        Assert.Equal(card, deserializedCard);
+    }
+
+    [Fact]
+    public void SerializeToBitArray_ShouldReturnCorrectLength()
+    {
+        // Arrange
+        var card = Card.GetCard(CardRank.Ace, CardSuit.Spades);
+
+        // Act
+        var bitArray = card.SerializeToBitArray();
+
+        // Assert
+        Assert.Equal(6, bitArray.Length);
+    }
 }
