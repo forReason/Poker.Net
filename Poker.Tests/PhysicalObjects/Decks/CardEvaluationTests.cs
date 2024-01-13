@@ -3,6 +3,7 @@ using Xunit;
 using Poker.Tests.TestAssets;
 using Poker.PhysicalObjects.Cards;
 using Poker.PhysicalObjects.Decks;
+using Poker.PhysicalObjects.HandScores;
 
 
 namespace Poker.Tests.PhysicalObjects.Decks;

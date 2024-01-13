@@ -4,10 +4,16 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>1.0.4</Version>
+        <Version>1.0.6</Version>
         <PackageOutputPath>Y:\Projects\Programmbibliotheken\LocalNugetPackages</PackageOutputPath>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <Platforms>AnyCPU;x64</Platforms>
+        <PackageReleaseNotes>1.0.6:
+- optimisations for card and handscoredictionary.
+- added handcordictionary
+
+1.0.5:
+updated card and Handscoreentry to use and serialize to Byte arrays</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,4 +1,6 @@
-﻿using Poker.PhysicalObjects.Cards;
+﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
+using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.HandScores;
 
 namespace Poker.Tests.PhysicalObjects.Cards;
 public class HandScoreEntryTests

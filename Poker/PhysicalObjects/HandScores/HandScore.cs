@@ -1,6 +1,7 @@
 using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.Decks;
 
-namespace Poker.PhysicalObjects.Decks;
+namespace Poker.PhysicalObjects.HandScores;
 /// <summary>
 /// represents the CardRank of a hand an allows to compare twi hands against each other
 /// </summary>
@@ -25,19 +26,19 @@ public class HandScore(HandCardRank cardRank, CardRank[] score)
     /// 1 if this hand id better<br/>
     /// 0 if both hands are equal<br/>
     /// -1 if the enemies hand is better</returns>
-    public int CompareHand (HandScore? enemyHand)
+    public int CompareHand(HandScore? enemyHand)
     {
         if (enemyHand == null)
             return 1;
-        if (this.CardRank > enemyHand.CardRank)
+        if (CardRank > enemyHand.CardRank)
             return 1;
-        else if (this.CardRank == enemyHand.CardRank)
+        else if (CardRank == enemyHand.CardRank)
         {
-            for (int i = 0; i < this.Score.Length; i++)
+            for (int i = 0; i < Score.Length; i++)
             {
-                if (this.Score[i] > enemyHand.Score[i])
+                if (Score[i] > enemyHand.Score[i])
                     return 1;
-                else if (this.Score[i] < enemyHand.Score[i])
+                else if (Score[i] < enemyHand.Score[i])
                     return -1;
             }
 
@@ -113,7 +114,7 @@ public class HandScore(HandCardRank cardRank, CardRank[] score)
     {
         if (obj is HandScore other)
         {
-            return this.CompareHand(other) == 0;
+            return CompareHand(other) == 0;
         }
         return false;
     }

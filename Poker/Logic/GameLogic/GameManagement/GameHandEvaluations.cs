@@ -1,6 +1,6 @@
 using Poker.PhysicalObjects.Cards;
 using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Decks;
+using Poker.PhysicalObjects.HandScores;
 using Poker.PhysicalObjects.Players;
 using System.Collections.Generic;
 

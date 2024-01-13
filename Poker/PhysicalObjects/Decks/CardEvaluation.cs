@@ -1,4 +1,5 @@
 using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.HandScores;
 
 namespace Poker.PhysicalObjects.Decks;
 

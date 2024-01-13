@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Poker.PhysicalObjects.Cards;
+using Poker.PhysicalObjects.HandScores;
 
 namespace Poker.Serialisation
 {
