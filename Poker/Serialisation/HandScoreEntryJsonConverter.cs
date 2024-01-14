@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.HandScores;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.HandScores;
 
-namespace Poker.Serialisation
+namespace Poker.Net.Serialisation
 {
     public class HandScoreEntryJsonConverter : JsonConverter<HandScoreEntry>
     {

@@ -1,6 +1,6 @@
-using Poker.Logic.GameLogic.GameManagement;
-using Poker.PhysicalObjects.Tables;
-namespace Poker.Logic.Blinds;
+using Poker.Net.Logic.GameLogic.GameManagement;
+using Poker.Net.PhysicalObjects.Tables;
+namespace Poker.Net.Logic.Blinds;
 
 /// <summary>
 /// Provides functionality to set the blinds and ante for a poker game. 

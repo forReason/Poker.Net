@@ -1,6 +1,6 @@
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.PhysicalObjects.Tables;
 
-namespace Poker.PhysicalObjects.Players;
+namespace Poker.Net.PhysicalObjects.Players;
 
 /// <summary>
 /// represents a player character

@@ -1,8 +1,8 @@
-﻿using Poker.PhysicalObjects.Players;
+﻿using Poker.Net.PhysicalObjects.Players;
 using System.Collections.Concurrent;
 using Multithreading_Library.DataTransfer;
 
-namespace Poker.PhysicalObjects.Tables;
+namespace Poker.Net.PhysicalObjects.Tables;
 
 public partial class Table
 {

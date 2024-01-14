@@ -1,4 +1,4 @@
-﻿namespace Poker.PhysicalObjects.Players;
+﻿namespace Poker.Net.PhysicalObjects.Players;
 
 /// <summary>
 /// represents the casino, used to track the fees for fun ;)

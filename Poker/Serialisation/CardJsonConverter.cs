@@ -1,8 +1,8 @@
-﻿using Poker.PhysicalObjects.Cards;
+﻿using Poker.Net.PhysicalObjects.Cards;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Poker.Serialisation;
+namespace Poker.Net.Serialisation;
 
 public class CardJsonConverter : JsonConverter<Card>
 {

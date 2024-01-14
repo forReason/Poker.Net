@@ -1,4 +1,4 @@
-namespace Poker.Logic.GameLogic.BettingRounds;
+namespace Poker.Net.Logic.GameLogic.BettingRounds;
 
 public partial class BettingRound
 {

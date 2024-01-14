@@ -1,4 +1,4 @@
-﻿namespace Poker.Logic.GameLogic.Rules;
+﻿namespace Poker.Net.Logic.GameLogic.Rules;
 /// <summary>
 /// defines the limit structure of a game.
 /// </summary>

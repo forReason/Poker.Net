@@ -1,10 +1,10 @@
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.HandScores;
-using Poker.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.HandScores;
+using Poker.Net.PhysicalObjects.Players;
 using System.Collections.Generic;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

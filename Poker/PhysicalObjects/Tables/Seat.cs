@@ -1,11 +1,11 @@
 ﻿
-using Poker.Logic.GameLogic.GameManagement;
-using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Decks;
-using Poker.PhysicalObjects.Players;
+using Poker.Net.Logic.GameLogic.GameManagement;
+using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.Players;
 
-namespace Poker.PhysicalObjects.Tables;
+namespace Poker.Net.PhysicalObjects.Tables;
 
 /// <summary>
 /// a TableSeat where a player can Sit

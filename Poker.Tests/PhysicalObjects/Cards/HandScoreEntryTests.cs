@@ -29,7 +29,27 @@ public class HandScoreEntryTests
         // Assert
         Assert.Equal(handScoreEntry, deserializedHandScoreEntry);
     }
+    [Fact]
+    public void SerializeAndDeserializeLessCards_ShouldReturnEquivalentHandScoreEntry()
+    {
+        // Arrange
+        var cards = new Card[] {
+            Card.GetCard(CardRank.Two, CardSuit.Clubs),
+            Card.GetCard(CardRank.Three, CardSuit.Clubs),
+            Card.GetCard(CardRank.Four, CardSuit.Clubs),
+            Card.GetCard(CardRank.Five, CardSuit.Clubs),
+        };
+        var handScoreEntry = new HandScoreEntry(cards);
+        handScoreEntry.WinRate = 6.6F;
+        handScoreEntry.EvaluatedRounds = 5;
 
+        // Act
+        byte[] serialized = handScoreEntry.Serialize();
+        var deserializedHandScoreEntry = HandScoreEntry.Deserialize(serialized);
+
+        // Assert
+        Assert.Equal(handScoreEntry, deserializedHandScoreEntry);
+    }
     [Fact]
     public void GetHashCode_ShouldReturnSameHashCodeForSameCards()
     {

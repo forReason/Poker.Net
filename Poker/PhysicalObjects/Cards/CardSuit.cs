@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Cards;
+namespace Poker.Net.PhysicalObjects.Cards;
 
 /// <summary>
 /// Suits are not CardRanked, so hands that differ by suit alone are of equal CardRank.

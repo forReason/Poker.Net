@@ -1,8 +1,8 @@
-﻿using Poker.Logic.Blinds;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Players;
+﻿using Poker.Net.Logic.Blinds;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Players;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

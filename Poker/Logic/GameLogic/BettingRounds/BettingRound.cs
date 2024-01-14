@@ -1,7 +1,7 @@
-using Poker.Logic.Blinds;
-using Poker.Logic.GameLogic.GameManagement;
+using Poker.Net.Logic.Blinds;
+using Poker.Net.Logic.GameLogic.GameManagement;
 
-namespace Poker.Logic.GameLogic.BettingRounds;
+namespace Poker.Net.Logic.GameLogic.BettingRounds;
 
 /// <summary>
 /// the betting round is one of the core logics of the game.<br/>

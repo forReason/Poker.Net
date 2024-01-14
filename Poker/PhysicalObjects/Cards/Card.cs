@@ -1,8 +1,8 @@
-using Poker.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Chips;
 using System.Collections;
 using System.Collections.Concurrent;
 
-namespace Poker.PhysicalObjects.Cards;
+namespace Poker.Net.PhysicalObjects.Cards;
 
 /// <summary>
 /// Represents a playing card with a specific rank and suit, commonly used in card games.
@@ -22,7 +22,7 @@ namespace Poker.PhysicalObjects.Cards;
 /// </remarks>
 public class Card : IEquatable<Card>, IComparable<Card>
 {
-    private static readonly Card[] cardCache = new Card[52];
+    private static readonly Card[] cardCache = new Card[53];
 
     static Card()
     {
@@ -40,7 +40,7 @@ public class Card : IEquatable<Card>, IComparable<Card>
 
     public static Card GetCard(CardRank rank, CardSuit suit)
     {
-        byte cardKey = (byte)((byte)suit * 13 + (byte)rank);
+        byte cardKey = (byte)((byte)suit * 13 + (byte)rank + 1);
         return cardCache[cardKey];
     }
 
@@ -358,9 +358,10 @@ public class Card : IEquatable<Card>, IComparable<Card>
     /// <returns>A byte representing the serialized card.</returns>
     public byte SerializeToByte()
     {
-        // Assuming 0-based indexing for both suits and ranks
-        return (byte)((byte)Suit * 13 + (byte)CardRank);
+        // Shift values by 1; 0 will represent 'no card'
+        return (byte)((byte)Suit * 13 + (byte)CardRank + 1);
     }
+
 
     /// <summary>
     /// Deserializes a byte to a Card object.
@@ -369,15 +370,21 @@ public class Card : IEquatable<Card>, IComparable<Card>
     /// <returns>The deserialized Card object.</returns>
     public static Card DeserializeFromByte(byte data)
     {
-        // Assuming 0-based indexing for both suits and ranks
-        int suitIndex = data / 13; // Get the suit index
-        int rankIndex = data % 13; // Get the rank index
+        if (data == 0) // No card
+            return null;
+
+        // Adjust for the shifted values
+        data -= 1;
+
+        int suitIndex = data / 13;
+        int rankIndex = data % 13;
 
         CardRank rank = (CardRank)rankIndex;
         CardSuit suit = (CardSuit)suitIndex;
 
         return GetCard(rank, suit);
     }
+
 
     /// <summary>
     /// Serializes the card to a BitArray.

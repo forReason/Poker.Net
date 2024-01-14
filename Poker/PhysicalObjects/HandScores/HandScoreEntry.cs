@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Text.Json;
-using Poker.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Cards;
 
-namespace Poker.PhysicalObjects.HandScores;
+namespace Poker.Net.PhysicalObjects.HandScores;
 
 public class HandScoreEntry
 {
@@ -164,11 +164,11 @@ public class HandScoreEntry
     {
         byte[] serialized = new byte[14]; // 6 bytes for cards + 4 bytes for WinRate + 4 bytes for EvaluatedRounds
 
-        // Serialize cards to 6 bytes (7 cards * 6 bits each = 42 bits)
-        BitArray cardBits = new BitArray(42);
-        for (int i = 0, bitIndex = 0; i < 7; i++)
+        BitArray cardBits = new BitArray(42, false);
+        for (int i = 0, bitIndex = 0; i < Cards.Length && i < 7; i++)
         {
-            BitArray cardBitArray = Cards[i].SerializeToBitArray();
+            byte serializedCard = Cards[i] != null ? Cards[i].SerializeToByte() : (byte)0;
+            BitArray cardBitArray = new BitArray(new byte[] { serializedCard });
             for (int j = 0; j < 6; j++, bitIndex++)
             {
                 cardBits[bitIndex] = cardBitArray[j];
@@ -176,34 +176,30 @@ public class HandScoreEntry
         }
         cardBits.CopyTo(serialized, 0);
 
-        // Serialize WinRate (4 bytes)
         Buffer.BlockCopy(BitConverter.GetBytes(WinRate), 0, serialized, 6, 4);
-
-        // Serialize EvaluatedRounds (4 bytes)
         Buffer.BlockCopy(BitConverter.GetBytes(EvaluatedRounds), 0, serialized, 10, 4);
 
         return serialized;
     }
 
+
+
     public byte[] SerializeCards()
     {
-        byte[] cardBytes = new byte[6]; // 6 bytes for 7 cards (42 bits)
+        byte[] serialized = new byte[6]; // 6 bytes for cards + 4 bytes for WinRate + 4 bytes for EvaluatedRounds
 
-        // Serialize cards to 6 bytes
-        BitArray cardBits = new BitArray(42);
-        for (int i = 0, bitIndex = 0; i < 7; i++)
+        BitArray cardBits = new BitArray(42, false);
+        for (int i = 0, bitIndex = 0; i < Cards.Length && i < 7; i++)
         {
-            if (Cards[i] == null)
-                continue;
-
-            BitArray cardBitArray = Cards[i].SerializeToBitArray();
+            byte serializedCard = Cards[i] != null ? Cards[i].SerializeToByte() : (byte)0;
+            BitArray cardBitArray = new BitArray(new byte[] { serializedCard });
             for (int j = 0; j < 6; j++, bitIndex++)
             {
                 cardBits[bitIndex] = cardBitArray[j];
             }
         }
-        cardBits.CopyTo(cardBytes, 0);
-        return cardBytes;
+        cardBits.CopyTo(serialized, 0);
+        return serialized;
     }
 
     /// <summary>
@@ -213,32 +209,39 @@ public class HandScoreEntry
     /// <returns>The deserialized HandScoreEntry object.</returns>
     public static HandScoreEntry Deserialize(byte[] data)
     {
-        if (data.Length != 14) // 6 bytes for cards + 8 bytes for WinRate and EvaluatedRounds
+        if (data.Length != 14)
         {
             throw new ArgumentException("Data must be 14 bytes long.", nameof(data));
         }
 
+        ;
+        List<Card> cards = new List<Card>();
+        BitArray cardBits = new BitArray(data.Take(6).ToArray());
+        for (int i = 0, bitIndex = 0; i < 7; i++)
+        {
+            byte[] cardByte = new byte[1];
+            for (int j = 0; j < 6; j++, bitIndex++)
+            {
+                cardByte[0] |= (byte)(cardBits[bitIndex] ? (1 << j) : 0);
+            }
+
+            if (cardByte[0] == 0) // No more cards
+            {
+                break;
+            }
+
+            cards.Add(Card.DeserializeFromByte(cardByte[0]));
+        }
         HandScoreEntry entry = new HandScoreEntry
         {
-            Cards = new Card[7],
+            Cards = cards.ToArray(),
             WinRate = BitConverter.ToSingle(data, 6),
             EvaluatedRounds = BitConverter.ToUInt32(data, 10)
         };
 
-        // Deserialize cards from first 6 bytes
-        BitArray cardBits = new BitArray(data.Take(6).ToArray()); // Takes the first 6 bytes and converts to BitArray
-
-        for (int i = 0, bitIndex = 0; i < 7; i++)
-        {
-            BitArray cardBitArray = new BitArray(6);
-            for (int j = 0; j < 6; j++, bitIndex++)
-            {
-                cardBitArray[j] = cardBits[bitIndex];
-            }
-            entry.Cards[i] = Card.DeserializeFromBitArray(cardBitArray);
-        }
-
         return entry;
     }
+
+
 
 }

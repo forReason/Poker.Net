@@ -1,4 +1,4 @@
-namespace Poker.Logic.Fees;
+namespace Poker.Net.Logic.Fees;
 
 /// <summary>
 /// Represents a level of rake structure in a poker game, including the small blind, rake percentage, and caps based on player count.

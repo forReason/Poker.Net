@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Tables;
+namespace Poker.Net.PhysicalObjects.Tables;
 
 /// <summary>
 /// Represents the possible results of a move button operation.

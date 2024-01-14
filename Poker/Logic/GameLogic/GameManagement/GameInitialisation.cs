@@ -1,9 +1,9 @@
 
 
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Tables;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
-using Poker.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Cards;
 
-namespace Poker.PhysicalObjects.Decks;
+namespace Poker.Net.PhysicalObjects.Decks;
 /// <summary>
 /// Represents the Raw Deck with all 52 Cards. Primarily used for shuffling and drawing
 /// </summary>
@@ -32,12 +32,9 @@ public class Deck
     /// <exception cref="InvalidOperationException">thrown when there are no more cords in the deck and you still try to draw one</exception>
     public Card DrawCard()
     {
-        if (CardCount <= 0)
-            throw new InvalidOperationException("You can not draw more cards than the Deck has in Total! Please reshuffle!");
-        Card selectedCard = _shuffledCards[CardCount-1];
-        CardCount--;
-        return selectedCard;
+        return _shuffledCards[--CardCount];
     }
+
     /// <summary>
     /// Provides a secure snapshot of the current state of the deck.
     /// </summary>

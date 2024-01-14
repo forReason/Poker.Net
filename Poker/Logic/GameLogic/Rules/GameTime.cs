@@ -1,4 +1,4 @@
-﻿namespace Poker.Logic.GameLogic.Rules
+﻿namespace Poker.Net.Logic.GameLogic.Rules
 {
     /// <summary>
     /// the GameTime specifies how the Time is beeing calculated. Either by using the actual system clock or calculate it from the rounds played

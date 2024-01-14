@@ -1,6 +1,6 @@
 ﻿using QuickStatistics.Net.Average_NS;
 
-namespace Poker.PhysicalObjects.HandScores;
+namespace Poker.Net.PhysicalObjects.HandScores;
 
 public class HandScoreDictionary
 {
@@ -22,21 +22,24 @@ public class HandScoreDictionary
         Dictionary[entry.SerializeCards()] = (entry.WinRate, entry.EvaluatedRounds);
     }
 
-    public void AddIteration(byte[] key, bool win)
+    public bool AddIteration(byte[] key, bool win)
     {
-        float value = 0;
-        if (win)
-            value = 100;
+        float valueToAdd = win ? 100F : 0F; // 100 for win, 0 for loss
         if (TryGetValue(key, out (float WinRate, uint Iterations) info))
         {
-            ProgressingAverage_Nano.AddValue(ref info.WinRate, ref info.Iterations, 100F);
-            Dictionary[key] = info;
+            // Update the win rate and iteration count
+            bool success = ProgressingAverage_Nano.AddValue(ref info.WinRate, ref info.Iterations, valueToAdd);
+            Dictionary[key] = info; // Update the dictionary entry
+            return success;
         }
         else
         {
-            Dictionary[key] = (value, 1);
+            // Add new entry with initial values
+            Dictionary[key] = (valueToAdd, 1);
+            return true;
         }
     }
+
 
     public bool TryGetValue(byte[] key, out (float WinRate, uint Iterations) value)
     {

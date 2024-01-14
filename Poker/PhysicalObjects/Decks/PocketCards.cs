@@ -1,6 +1,6 @@
-using Poker.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Cards;
 
-namespace Poker.PhysicalObjects.Decks;
+namespace Poker.Net.PhysicalObjects.Decks;
 
 /// <summary>
 /// represents a players hand with a maximum of 2 Cards
@@ -40,7 +40,7 @@ public class PocketCards
     /// <summary>
     /// returns true if the player has 2 hands
     /// </summary>
-    public bool HandIsFull => CardCount >= 2;
+    public bool HandIsFull => _cards[1] is null;
     /// <summary>
     /// checks if the player has at least 1 card
     /// </summary>
@@ -53,22 +53,19 @@ public class PocketCards
     /// <exception cref="InvalidOperationException">if you try to draw more than two cards</exception>
     public void DealCard(Deck deck)
     {
-        if (HandIsFull)
-            throw new InvalidOperationException("You Cannot draw more than two Cards!");
-        _cards[CardCount] = deck.DrawCard();
-        CardCount++;
+        _cards[CardCount++] = deck.DrawCard();
+
     }
-    
+
 
     /// <summary>
     /// clears the Slots
     /// </summary>
     public void Clear()
     {
-        for (int i = 0; i < _cards.Length; i++)
-        {
-            _cards[i] = null;
-        }
+        _cards[0] = null;
+        _cards[1] = null;
         CardCount = 0;
     }
+
 }

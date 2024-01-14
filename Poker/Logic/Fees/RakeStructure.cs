@@ -1,7 +1,7 @@
-﻿using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Chips;
+﻿using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Chips;
 
-namespace Poker.Logic.Fees;
+namespace Poker.Net.Logic.Fees;
 
 /// <summary>
 /// Represents the rake structure of a poker game, detailing the rake levels based on the small blind amount.

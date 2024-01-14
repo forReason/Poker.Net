@@ -1,4 +1,4 @@
-namespace Poker.Logic.GameLogic.Rules;
+namespace Poker.Net.Logic.GameLogic.Rules;
 
 /// <summary>
 /// The GameMode defines wether the Table follows Tournament or Cash Game Rules

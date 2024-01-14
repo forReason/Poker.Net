@@ -1,4 +1,4 @@
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

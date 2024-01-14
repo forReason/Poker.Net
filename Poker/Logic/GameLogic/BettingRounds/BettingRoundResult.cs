@@ -1,4 +1,4 @@
-namespace Poker.Logic.GameLogic.BettingRounds;
+namespace Poker.Net.Logic.GameLogic.BettingRounds;
 
 /// <summary>
 /// Enumerates possible outcomes of a betting round in a poker game.

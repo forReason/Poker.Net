@@ -1,4 +1,4 @@
-﻿namespace Poker.PhysicalObjects.Decks;
+﻿namespace Poker.Net.PhysicalObjects.Decks;
 
 /// <summary>
 /// represents the stage of the CommunityCards

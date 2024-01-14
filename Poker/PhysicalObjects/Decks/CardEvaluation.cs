@@ -1,7 +1,7 @@
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.HandScores;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.HandScores;
 
-namespace Poker.PhysicalObjects.Decks;
+namespace Poker.Net.PhysicalObjects.Decks;
 
 /// <summary>
 /// the CardEvaluation class is used to score hand against each other and determining the winner

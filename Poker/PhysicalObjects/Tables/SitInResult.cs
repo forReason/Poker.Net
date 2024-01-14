@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Tables;
+namespace Poker.Net.PhysicalObjects.Tables;
 
 /// <summary>
 /// Enumerates the possible outcomes when a player attempts to sit in or buy into a table.

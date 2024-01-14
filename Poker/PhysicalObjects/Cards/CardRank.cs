@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Cards;
+namespace Poker.Net.PhysicalObjects.Cards;
 
 /// <summary>
 /// Individual cards are CardRanked, from highest to lowest: A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3 and 2.<br/>

@@ -1,4 +1,4 @@
-﻿namespace Poker.PhysicalObjects.Players;
+﻿namespace Poker.Net.PhysicalObjects.Players;
 
 /// <summary>
 /// Defines the different actions a player can take during an action

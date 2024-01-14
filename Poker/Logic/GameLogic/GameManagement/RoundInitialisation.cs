@@ -1,7 +1,7 @@
-using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Tables;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

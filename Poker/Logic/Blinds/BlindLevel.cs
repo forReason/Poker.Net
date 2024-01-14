@@ -1,4 +1,4 @@
-namespace Poker.Logic.Blinds;
+namespace Poker.Net.Logic.Blinds;
 /// <summary>
 /// Represents a level in a blind structure for a poker game, including the sizes of the small blind, big blind, and ante.
 /// </summary>

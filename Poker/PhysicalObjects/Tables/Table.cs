@@ -1,8 +1,8 @@
-using Poker.Logic.GameLogic.GameManagement;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Decks;
+using Poker.Net.Logic.GameLogic.GameManagement;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Decks;
 
-namespace Poker.PhysicalObjects.Tables;
+namespace Poker.Net.PhysicalObjects.Tables;
 
 /// <summary>
 /// table is the central hub for all physical game actions. It contains the cards, chips, seats and players

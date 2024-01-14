@@ -1,7 +1,7 @@
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Decks;
 
-namespace Poker.PhysicalObjects.HandScores;
+namespace Poker.Net.PhysicalObjects.HandScores;
 /// <summary>
 /// represents the CardRank of a hand an allows to compare twi hands against each other
 /// </summary>

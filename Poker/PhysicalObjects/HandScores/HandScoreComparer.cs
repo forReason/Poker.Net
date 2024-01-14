@@ -1,4 +1,4 @@
-﻿namespace Poker.PhysicalObjects.HandScores
+﻿namespace Poker.Net.PhysicalObjects.HandScores
 {
     public class HandScoreComparer : IEqualityComparer<byte[]>
     {

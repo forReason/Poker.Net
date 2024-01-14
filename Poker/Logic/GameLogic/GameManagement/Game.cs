@@ -1,13 +1,13 @@
-using Poker.Logic.Blinds;
-using Poker.Logic.GameLogic.BettingRounds;
-using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Decks;
-using Poker.PhysicalObjects.Players;
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.Logic.Blinds;
+using Poker.Net.Logic.GameLogic.BettingRounds;
+using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Tables;
 using System.Diagnostics;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public partial class Game
 {

@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Chips;
+namespace Poker.Net.PhysicalObjects.Chips;
 /// <summary>
 /// Poker chips are used to bet at the game. they are of type enum : ulong
 /// </summary>

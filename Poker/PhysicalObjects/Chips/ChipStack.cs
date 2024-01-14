@@ -1,5 +1,6 @@
-using Poker.PhysicalObjects.Chips;
 using System.Collections.ObjectModel;
+
+namespace Poker.Net.PhysicalObjects.Chips;
 
 public class ChipStack
 {

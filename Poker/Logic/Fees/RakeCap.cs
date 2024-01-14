@@ -1,4 +1,4 @@
-namespace Poker.Logic.Fees;
+namespace Poker.Net.Logic.Fees;
 
 /// <summary>
 /// Defines the maximum rake cap for a specific player count.

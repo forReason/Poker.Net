@@ -1,4 +1,4 @@
-namespace Poker.PhysicalObjects.Decks;
+namespace Poker.Net.PhysicalObjects.Decks;
 
 /// <summary>
 /// defines the primary score of a hand which can be compared to each other

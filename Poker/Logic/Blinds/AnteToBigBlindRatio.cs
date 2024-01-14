@@ -1,4 +1,4 @@
-namespace Poker.Logic.Blinds;
+namespace Poker.Net.Logic.Blinds;
 
 /// <summary>
 /// Represents the ratio of the ante to the big blind in a game of poker.

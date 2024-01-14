@@ -1,6 +1,6 @@
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.PhysicalObjects.Tables;
 
-namespace Poker.Logic.GameLogic.GameManagement;
+namespace Poker.Net.Logic.GameLogic.GameManagement;
 
 public interface IPlayerActionHandler
 {

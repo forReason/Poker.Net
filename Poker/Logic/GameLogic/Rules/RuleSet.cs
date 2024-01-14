@@ -1,9 +1,9 @@
 ﻿
-using Poker.Logic.Blinds;
-using Poker.Logic.Fees;
-using Poker.PhysicalObjects.Chips;
+using Poker.Net.Logic.Blinds;
+using Poker.Net.Logic.Fees;
+using Poker.Net.PhysicalObjects.Chips;
 
-namespace Poker.Logic.GameLogic.Rules
+namespace Poker.Net.Logic.GameLogic.Rules
 {
     /// <summary>
     /// Defines the betting structure for a poker game, including rules, blinds, antes, and rake.

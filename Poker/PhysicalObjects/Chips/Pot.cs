@@ -1,8 +1,8 @@
-﻿using Poker.PhysicalObjects.Players;
-using Poker.PhysicalObjects.Tables;
+﻿using Poker.Net.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Tables;
 
 
-namespace Poker.PhysicalObjects.Chips;
+namespace Poker.Net.PhysicalObjects.Chips;
 
 /// <summary>
 /// Represents the pot in a poker game, holding the chips bet by players.

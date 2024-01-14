@@ -1,4 +1,4 @@
-﻿namespace Poker.Logic.Blinds;
+﻿namespace Poker.Net.Logic.Blinds;
 
 /// <summary>
 /// Represents the ratio of the initial buy-in to the small blind in a poker game.
