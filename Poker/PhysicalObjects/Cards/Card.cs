@@ -68,10 +68,10 @@ public class Card : IEquatable<Card>, IComparable<Card>
         // Assuming the namespace of your assembly and the location of images
         string assemblyNamespace = "Poker.Net";
         string resourceFolder = "PhysicalObjects.Cards.CardImages";
-        string resourceName = $"{assemblyNamespace}.{resourceFolder}.{card.SerializeToByte()}.png";
-        if (card is null)
+        string resourceName = $"{assemblyNamespace}.{resourceFolder}.0.png";
+        if (card is not null)
         {
-            resourceName = $"{assemblyNamespace}.{resourceFolder}.0.png";
+            resourceName = $"{assemblyNamespace}.{resourceFolder}.{card.SerializeToByte()}.png";
         }
 
         var assembly = Assembly.GetExecutingAssembly();
