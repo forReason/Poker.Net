@@ -1,6 +1,7 @@
 using Poker.Net.PhysicalObjects.Chips;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Poker.Net.PhysicalObjects.Cards;
 
@@ -62,6 +63,24 @@ public class Card : IEquatable<Card>, IComparable<Card>
     /// The Suit defines the Group or Kind a card belongs to. 
     /// </summary>
     public CardSuit Suit { get; }
+    public static Stream GetImageStream(Card? card)
+    {
+        // Assuming the namespace of your assembly and the location of images
+        string assemblyNamespace = "Poker.Net";
+        string resourceFolder = "PhysicalObjects.Cards.CardImages";
+        string resourceName = $"{assemblyNamespace}.{resourceFolder}.{card.SerializeToByte()}.png";
+        if (card is null)
+        {
+            resourceName = $"{assemblyNamespace}.{resourceFolder}.0.png";
+        }
+
+        var assembly = Assembly.GetExecutingAssembly();
+        Stream imageStream = assembly.GetManifestResourceStream(resourceName);
+
+        return imageStream;
+    }
+
+
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.

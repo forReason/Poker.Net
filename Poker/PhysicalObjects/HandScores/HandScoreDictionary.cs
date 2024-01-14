@@ -88,6 +88,38 @@ public class HandScoreDictionary
             }
         }
     }
+    /// <summary>
+    /// this function is faster for individual lookups in different hands since it is returning early
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <exception cref="InvalidDataException"></exception>
+    public bool ScanForEntry(string filePath, byte[] key, out (float WinRate, uint Iterations) value)
+    { 
+        using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+        {
+            byte[] cardKey = new byte[6];
+            byte[] winRateBytes = new byte[4];
+            byte[] iterationsBytes = new byte[4];
+            HandScoreComparer comparer = new HandScoreComparer();
+            while (fileStream.Read(cardKey, 0, cardKey.Length) == cardKey.Length)
+            {
+                if (fileStream.Read(winRateBytes, 0, winRateBytes.Length) != winRateBytes.Length ||
+                    fileStream.Read(iterationsBytes, 0, iterationsBytes.Length) != iterationsBytes.Length)
+                {
+                    throw new InvalidDataException("File format is invalid or corrupted.");
+                }
+                
+                
+                if (comparer.Equals(key, cardKey))
+                {
+                    value = (BitConverter.ToSingle(winRateBytes, 0), BitConverter.ToUInt32(iterationsBytes, 0));
+                    return true;
+                }
+            }
+        }
+        value = (0,0);
+        return false;
+    }
 
     public void Clear()
     {
