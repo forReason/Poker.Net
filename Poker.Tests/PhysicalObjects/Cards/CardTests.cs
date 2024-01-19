@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Decks;
 
 namespace Poker.Tests.PhysicalObjects.Cards;
 

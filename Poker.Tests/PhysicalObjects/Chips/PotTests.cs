@@ -1,6 +1,6 @@
 
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Players;
 using System.Linq;
 
 namespace Poker.Tests.PhysicalObjects.Chips;

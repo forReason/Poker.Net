@@ -1,10 +1,10 @@
-using Poker.Logic.Blinds;
-using Poker.Logic.GameLogic.GameManagement;
-using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Chips;
-using Poker.PhysicalObjects.Players;
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.Logic.Blinds;
+using Poker.Net.Logic.GameLogic.GameManagement;
+using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Tables;
 
 namespace Poker.Tests.Logic.GameRoundTests;
 

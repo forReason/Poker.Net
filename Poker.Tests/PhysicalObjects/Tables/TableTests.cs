@@ -1,11 +1,11 @@
 using System.Data;
-using Poker.Logic.Blinds;
-using Poker.Logic.GameLogic.GameManagement;
-using Poker.Logic.GameLogic.Rules;
+using Poker.Net.Logic.Blinds;
+using Poker.Net.Logic.GameLogic.GameManagement;
+using Poker.Net.Logic.GameLogic.Rules;
 using Xunit;
-using Poker.PhysicalObjects.Tables;
-using Poker.PhysicalObjects.Players;
-using Poker.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Tables;
+using Poker.Net.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Chips;
 
 namespace Poker.Tests.PhysicalObjects.Tables;
 public class TableQueueTests

@@ -1,5 +1,5 @@
 
-using Poker.PhysicalObjects.Chips;
+using Poker.Net.PhysicalObjects.Chips;
 
 namespace Poker.Tests.PhysicalObjects.Chips;
 public class BankChipValueConversionTests

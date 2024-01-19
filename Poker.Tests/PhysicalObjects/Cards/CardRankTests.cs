@@ -1,4 +1,4 @@
-﻿using Poker.PhysicalObjects.Cards;
+﻿using Poker.Net.PhysicalObjects.Cards;
 
 namespace Poker.Tests.PhysicalObjects.Cards;
 public class CardRankTests

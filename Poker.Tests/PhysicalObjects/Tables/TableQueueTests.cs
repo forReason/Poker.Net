@@ -1,6 +1,6 @@
 using Xunit;
-using Poker.PhysicalObjects.Players;
-using Poker.PhysicalObjects.Tables;
+using Poker.Net.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Tables;
 
 namespace Poker.Tests.PhysicalObjects.Tables;
 public class TableTests

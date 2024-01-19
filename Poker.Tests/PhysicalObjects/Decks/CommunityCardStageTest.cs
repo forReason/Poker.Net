@@ -1,4 +1,4 @@
-﻿using Poker.PhysicalObjects.Decks;
+﻿using Poker.Net.PhysicalObjects.Decks;
 using System;
 using System.Collections.Generic;
 using System.Linq;

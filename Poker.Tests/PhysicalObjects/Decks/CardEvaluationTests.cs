@@ -1,9 +1,9 @@
 using NuGet.Frameworks;
 using Xunit;
 using Poker.Tests.TestAssets;
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Decks;
-using Poker.PhysicalObjects.HandScores;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.HandScores;
 
 
 namespace Poker.Tests.PhysicalObjects.Decks;
@@ -23,7 +23,7 @@ public class CardEvaluationTests
         };
         var playerPocketCards = new PocketCards(Card.GetCard(CardRank.Three, CardSuit.Hearts), Card.GetCard(CardRank.Two, CardSuit.Clubs));
 
-        var handScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(communityCards, playerPocketCards);
+        var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
         Assert.Equal(HandCardRank.FullHouse, handScore.CardRank);
         // Add more assertions as needed
@@ -41,7 +41,7 @@ public class CardEvaluationTests
 
 
         // Act
-        HandScore handScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(communityCards, playerPocketCards);
+        HandScore handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
         // Assert
         Assert.Equal(expectedHandCardRank, handScore.CardRank);
@@ -58,7 +58,7 @@ public class CardEvaluationTests
         {
             sample1PocketCards = new PocketCards(sample1.PocketCards[0], sample1.PocketCards[1]);
         }
-        var sample1Score = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(sample1.CommunityCards, sample1PocketCards);
+        var sample1Score = CardEvaluation.ScoreCards(sample1.CommunityCards, sample1PocketCards);
         foreach (var sample in samples)
         {
             var pocketCards = new PocketCards();
@@ -66,7 +66,7 @@ public class CardEvaluationTests
             {
                 pocketCards = new PocketCards(sample.PocketCards[0], sample.PocketCards[1]);
             }
-            var sampleScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(sample.CommunityCards, pocketCards);
+            var sampleScore = CardEvaluation.ScoreCards(sample.CommunityCards, pocketCards);
             Assert.Equal(sample1Score, sampleScore);
         }
     }
@@ -82,7 +82,7 @@ public class CardEvaluationTests
             {
                 royalFlushPocketCards = new PocketCards(royalFlush.PocketCards[0], royalFlush.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(royalFlush.CommunityCards, royalFlushPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(royalFlush.CommunityCards, royalFlushPocketCards);
             foreach (var straightFlush in straightFlushes)
             {
                 var straightFlushPocketCards = new PocketCards();
@@ -90,7 +90,7 @@ public class CardEvaluationTests
                 {
                     straightFlushPocketCards = new PocketCards(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -110,7 +110,7 @@ public class CardEvaluationTests
             {
                 straightFlushPocketCards = new PocketCards(straightFlush.PocketCards[0], straightFlush.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(straightFlush.CommunityCards, straightFlushPocketCards);
             foreach (var fourOfAkind in fourOfAkinds)
             {
                 var fourOfAkindPocketCards = new PocketCards();
@@ -118,7 +118,7 @@ public class CardEvaluationTests
                 {
                     fourOfAkindPocketCards = new PocketCards(fourOfAkind.PocketCards[0], fourOfAkind.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(fourOfAkind.CommunityCards, fourOfAkindPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(fourOfAkind.CommunityCards, fourOfAkindPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -138,7 +138,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in fullHouses)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -146,7 +146,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -165,7 +165,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in flush)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -173,7 +173,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -192,7 +192,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in straight)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -200,7 +200,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -219,7 +219,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in threeOfaKind)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -227,7 +227,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -246,7 +246,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in twoPairs)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -254,7 +254,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -272,7 +272,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in onePair)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -280,7 +280,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -298,7 +298,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in highCard)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -306,7 +306,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(higherScore > lowerScore);
                 Assert.True(lowerScore < higherScore);
             }
@@ -325,7 +325,7 @@ public class CardEvaluationTests
             {
                 higherPocketCards = new PocketCards(higherCards.PocketCards[0], higherCards.PocketCards[1]);
             }
-            var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
+            var higherScore = CardEvaluation.ScoreCards(higherCards.CommunityCards, higherPocketCards);
             foreach (var lowerCards in highCard)
             {
                 var lowerCardsPocketCards = new PocketCards();
@@ -333,7 +333,7 @@ public class CardEvaluationTests
                 {
                     lowerCardsPocketCards = new PocketCards(lowerCards.PocketCards[0], lowerCards.PocketCards[1]);
                 }
-                var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
+                var lowerScore = CardEvaluation.ScoreCards(lowerCards.CommunityCards, lowerCardsPocketCards);
                 Assert.True(lowerScore < higherScore);
                 Assert.True(higherScore > lowerScore);
             }
@@ -354,7 +354,7 @@ public class CardEvaluationTests
         var playerPocketCards = new PocketCards();
         playerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Ace, CardSuit.Diamonds));
 
-        var handScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(communityCards, playerPocketCards);
+        var handScore = CardEvaluation.ScoreCards(communityCards, playerPocketCards);
 
         Assert.Equal(HandCardRank.HighCard, handScore.CardRank);
         // Assert that the highest card is correctly identified
@@ -373,7 +373,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Hearts));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -386,7 +386,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Ace, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -406,7 +406,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Hearts));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -419,7 +419,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Queen, CardSuit.Hearts), Card.GetCard(CardRank.Queen, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -439,7 +439,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Hearts));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -452,7 +452,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -472,7 +472,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Hearts));
 
-        HandScore higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        HandScore higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -485,7 +485,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -505,7 +505,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Hearts));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -518,7 +518,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Queen, CardSuit.Hearts));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -538,7 +538,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -551,7 +551,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Ace, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -571,7 +571,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -584,7 +584,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Ace, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -604,7 +604,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -617,7 +617,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -637,7 +637,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Eight, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -650,7 +650,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -670,7 +670,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Eight, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -683,7 +683,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -703,7 +703,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -716,7 +716,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Queen, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -736,7 +736,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Eight, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -749,7 +749,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.King, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -769,7 +769,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.King, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -782,7 +782,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Eight, CardSuit.Hearts), Card.GetCard(CardRank.Queen, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);
@@ -802,7 +802,7 @@ public class CardEvaluationTests
         var higherPocketCards = new PocketCards();
         higherPocketCards = new PocketCards(Card.GetCard(CardRank.Two, CardSuit.Hearts), Card.GetCard(CardRank.Nine, CardSuit.Spades));
 
-        var higherScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
+        var higherScore = CardEvaluation.ScoreCards(higherCommunityCards, higherPocketCards);
 
         var lowerCommunityCards = new Card[]
         {
@@ -815,7 +815,7 @@ public class CardEvaluationTests
         var lowerPocketCards = new PocketCards();
         lowerPocketCards = new PocketCards(Card.GetCard(CardRank.Two, CardSuit.Hearts), Card.GetCard(CardRank.Seven, CardSuit.Diamonds));
 
-        var lowerScore = Poker.PhysicalObjects.Decks.CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
+        var lowerScore = CardEvaluation.ScoreCards(lowerCommunityCards, lowerPocketCards);
 
         Assert.True(higherScore > lowerScore);
         Assert.True(lowerScore < higherScore);

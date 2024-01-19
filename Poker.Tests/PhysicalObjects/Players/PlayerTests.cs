@@ -1,5 +1,5 @@
 using Xunit;
-using Poker.PhysicalObjects.Players;
+using Poker.Net.PhysicalObjects.Players;
 
 namespace Poker.Tests.PhysicalObjects.Players;
 public class PlayerTests

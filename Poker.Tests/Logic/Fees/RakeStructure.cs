@@ -1,5 +1,5 @@
-﻿using Poker.Logic.GameLogic.Rules;
-using Poker.PhysicalObjects.Chips;
+﻿using Poker.Net.Logic.GameLogic.Rules;
+using Poker.Net.PhysicalObjects.Chips;
 
 namespace Poker.Logic.Fees;
 

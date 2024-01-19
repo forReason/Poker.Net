@@ -1,6 +1,6 @@
-﻿using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Decks;
-using Poker.PhysicalObjects.HandScores;
+﻿using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.HandScores;
 
 namespace Poker.Tests.PhysicalObjects.Decks
 {

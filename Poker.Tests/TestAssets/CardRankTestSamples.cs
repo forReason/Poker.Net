@@ -1,5 +1,5 @@
-using Poker.PhysicalObjects.Cards;
-using Poker.PhysicalObjects.Decks;
+using Poker.Net.PhysicalObjects.Cards;
+using Poker.Net.PhysicalObjects.Decks;
 using System.Collections.Generic;
 
 namespace Poker.Tests.TestAssets;
